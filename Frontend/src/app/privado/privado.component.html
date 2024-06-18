@@ -1,4 +1,31 @@
-<div class="flex flex-row gap-4 h-full ">
-    <app-menu-lateral />
-    <router-outlet />
-</div>
+<nz-layout class="container">
+    <app-menu-lateral [isCollapsed]="isCollapsed"/>
+    <nz-layout [ngClass]="{'content-collapsed': isCollapsed, 'content-expand': !isCollapsed}">
+      <nz-header>
+        <div class="app-header">
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+          </span>
+          <span nz-typography nzEllipsis>
+            Sistema de Gestión de Comisiones de la Dirección de Admisión de la UNS
+          </span>
+          <a class="header-dropdown" nz-dropdown [nzDropdownMenu]="subMenu">
+            {{ rolUsuario }} <nz-divider nzType="vertical"></nz-divider> {{ nombreUsuario }}
+            <span nz-icon nzType="down" style="margin-left: 1em"></span>
+          </a>
+          <nz-dropdown-menu #subMenu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item nzDanger (click)="salir()">
+                <span nz-icon nzType="logout" nzTheme="outline"></span>
+                <span style="padding-left: .75em;">Salir</span>
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </nz-header>
+      <nz-content>
+          <router-outlet></router-outlet>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+  
