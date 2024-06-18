@@ -1,0 +1,54 @@
+<div #sideBar class="menu-sidebar" [ngClass]="{'content-collapsed': isCollapsed, 'content-expand': !isCollapsed}">
+    <nz-sider
+      nzCollapsible
+      nzWidth="255px"
+      nzBreakpoint="md"
+      [(nzCollapsed)]="isCollapsed"
+      [nzTrigger]="null"
+    >
+      <div class="sidebar-logo" [ngClass]="{'fixed-logo': !isCollapsed}">
+        <img src="./assets/imagenes/logo.png" alt="logo" />
+        <h1 style="display: inline;">SGC-DA</h1>
+      </div>
+      <ul nz-menu nzMode="inline" nzTheme="dark">
+        <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menuItems }"></ng-container>
+        <ng-template #menuTpl let-menus>
+          <ng-container *ngFor="let menu of menus">
+            @if(!menu.children) {
+                <li
+                  nz-menu-item
+                  nz-tooltip
+                  nzTooltipPlacement="right"
+                  [nzTooltipTitle]="isCollapsed ? menu.title : ''"
+                  [nzPaddingLeft]="isCollapsed ? undefined : menu.level * 16"
+                  [nzDisabled]="menu.disabled"
+                  [nzSelected]="menu.selected"
+                  [routerLink]="menu.routerLink"
+                  nzMatchRouter
+                  (click)="onMenuClick($event)"
+                >
+                  <span *ngIf="menu.icon" nz-icon [nzType]="menu.icon"></span>
+                  <span>{{ menu.title }}</span>
+                </li>
+            } @else {
+                <li
+                nz-submenu
+                [nzPaddingLeft]="isCollapsed ? null : menu.level * 16"
+                [(nzOpen)]="menu.open"
+                [nzTitle]="menu.title"
+                [nzIcon]="menu.icon"
+                [nzDisabled]="menu.disabled"
+                nzMatchRouter
+                (click)="onMenuClick($event)"
+              >
+                <ul>
+                  <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
+                </ul>
+              </li>
+              }
+          </ng-container>
+        </ng-template>
+      </ul>
+    </nz-sider>
+  </div>
+  
