@@ -26,7 +26,7 @@ return new class extends Migration {
     {
         Schema::create('cargos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador único para el cargo');
-            $table->string('descripcion', 255)->comment('Descripcion del cargo');
+            $table->string('descripcion', 255)->nullable()->comment('Descripcion del cargo');
         });
     }
 

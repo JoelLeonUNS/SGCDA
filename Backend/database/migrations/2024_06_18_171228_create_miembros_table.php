@@ -26,8 +26,8 @@ return new class extends Migration {
     {
         Schema::create('miembros', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador único para el miembro');
-            $table->string('nombre', 100)->nullable()->comment('Nombre del miembro');
-            $table->string('apellido', 100)->nullable()->comment('Apellido del miembro');
+            $table->string('nombres', 100)->nullable()->comment('Nombre del miembro');
+            $table->string('apellidos', 100)->nullable()->comment('Apellido del miembro');
         });
     }
 

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Comision extends Model
 {
     use HasFactory;
+
+    protected $table = 'comisiones';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'descripcion',
+        'estado',
+    ];
+
 }

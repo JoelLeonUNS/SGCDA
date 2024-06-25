@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Cargo extends Model
 {
     use HasFactory;
+
+    protected $table = 'cargos';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'descripcion',
+        'estado',
+    ];
+
 }

@@ -26,7 +26,7 @@ return new class extends Migration {
     {
         Schema::create('comisiones', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador único para la comisión');
-            $table->string('descripcion', 255)->comment('Descripción de la comisión');
+            $table->string('descripcion', 255)->nullable()->comment('Descripción de la comisión');
         });
     }
 
