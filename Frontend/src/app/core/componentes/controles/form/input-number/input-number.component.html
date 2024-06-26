@@ -1,0 +1,17 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe introducir un' + prefijo + ' ' + label + '!'"
+  >
+    <nz-input-number
+      style="width: 100%;"
+      [formControlName]="controlName!"
+      [nzPlaceHolder]="'Ingrese un' + prefijo + ' ' + label"
+      [nzFormatter]="formatter"
+      [nzMin]="minimum"
+      [nzStep]="step"
+    ></nz-input-number>
+  </nz-form-control>
+</nz-form-item>

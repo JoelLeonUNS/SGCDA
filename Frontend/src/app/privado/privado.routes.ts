@@ -8,36 +8,38 @@ export const PRIVADO_ROUTES: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'credenciales',
+        redirectTo: 'inicio',
         pathMatch: 'full',
       },
       {
-        path: 'credenciales',
+        path: 'inicio',
         loadChildren: () =>
-          import('./paginas/credenciales/credenciales.routes').then(
-            (m) => m.CREDENCIALES_ROUTES
+          import('./paginas/inicio/inicio.routes').then(
+            (m) => m.Inicio_ROUTES
           ),
+        data: {
+          breadcrumb: 'Inicio'
+        },
       },
       {
-        path: 'comisiones',
+        path: 'servicios',
         loadChildren: () =>
-          import('./paginas/comisiones/comisiones.routes').then(
-            (m) => m.COMISIONES_ROUTES
+          import('./paginas/servicios/servicios.routes').then(
+            (m) => m.SERVICIOS_ROUTES
           ),
+        data: {
+          breadcrumb: 'Servicios'
+        },
       },
       {
-        path: 'procesos',
+        path: 'configuracion',
         loadChildren: () =>
-          import('./paginas/procesos/procesos.routes').then(
-            (m) => m.PROCESOS_ROUTES
+          import('./paginas/configuracion/configuracion.routes').then(
+            (m) => m.CONFIGURACION_ROUTES
           ),
-      },
-      {
-        path: 'miembros',
-        loadChildren: () =>
-          import('./paginas/miembros/miembros.routes').then(
-            (m) => m.MIEMBROS_ROUTES
-          ),
+        data: {
+          breadcrumb: 'Configuración'
+        },
       },
     ],
   },

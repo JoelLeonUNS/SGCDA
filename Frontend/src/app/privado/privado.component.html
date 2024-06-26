@@ -24,7 +24,8 @@
         </div>
       </nz-header>
       <nz-content>
-          <router-outlet></router-outlet>
+        <nz-breadcrumb [nzAutoGenerate]="true" style="margin: 1.5em 1.5em 0;"></nz-breadcrumb>
+        <router-outlet></router-outlet>
       </nz-content>
     </nz-layout>
   </nz-layout>

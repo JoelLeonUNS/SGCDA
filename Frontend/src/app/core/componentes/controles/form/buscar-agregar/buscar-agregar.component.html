@@ -1,0 +1,22 @@
+<nz-flex [nzGap]="'small'" nzAlign="center">
+  <nz-form-item style="width: 100%;">
+    <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+    <nz-form-control
+      [nzSpan]="null"
+      [nzHasFeedback]="true"
+      [nzValidateStatus]="control?.valid ? 'success' : (control?.dirty ? 'error' : '')"
+      [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+    >
+      <input
+        nz-input 
+        readonly
+        [disabled]="isDisabled"
+        [placeholder]="'Buscar para seleccionar un' + prefijo + ' ' + label + ''"
+        [(ngModel)]="valor"
+        (click)="buscar()"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <button nz-button nzType="default" style="margin-top: .45em;" (click)="buscar()">Buscar</button>
+</nz-flex>
+<ng-container #vcrModal></ng-container>

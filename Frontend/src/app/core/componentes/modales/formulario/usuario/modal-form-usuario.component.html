@@ -1,0 +1,58 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzDraggable
+  nzCentered
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="cerrar()"
+  [nzWidth]="ancho"
+>
+  <ng-template #modalTitle>
+    {{ titulo }}
+  </ng-template>
+  <ng-template #modalContent>
+    <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-select [label]="'Rol'" [controlName]="'rol_id'" [atributte]="['id', 'descripcion', 'estado']" [servicio]="rolService" [accion]="accion" [option]="[item.rol_id, item.rol]"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-input [label]="'Nombre de usuario'" [controlName]="'login_name'" />
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        @if(isCambiarClave) {
+          <div nz-col [nzSpan]="24">
+            <app-input-password [label]="'Contraseña'" [controlName]="'password'" [gender]="'F'" />
+          </div>
+        } @else {
+          <button nz-button nzType="link" (click)="cambiarClave()" >¿Desea cambiar la contraseña?</button>
+        }
+      </div>
+    </Form>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="default"
+      [disabled]="disabledCancelar"
+      [nzLoading]="cancelando"
+      (click)="cerrar()"
+    >
+      {{ btnSecundario }}
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="disabledConfirmar"
+      [nzLoading]="confirmando"
+      (click)="enviarForm()"
+    >
+      {{ btnPrimario }}
+    </button>
+  </ng-template>
+</nz-modal>
+ 

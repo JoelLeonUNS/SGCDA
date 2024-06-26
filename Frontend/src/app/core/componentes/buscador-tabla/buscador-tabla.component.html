@@ -1,0 +1,87 @@
+<div nz-flex [nzVertical]="false" nzGap="small" nzAlign="start">
+  <nz-select
+    nzAllowClear
+    nzPlaceHolder="Buscar Por"
+    [(ngModel)]="columnaBusqueda"
+    (ngModelChange)="buscarPorColumna()"
+  >
+    @for (c of columnasBusqueda; track $index) {
+        <nz-option [nzValue]="c" [nzLabel]="c.name"></nz-option>
+    } 
+  </nz-select>
+  <nz-form-item style="width: 100%">
+    <nz-form-control [nzValidateStatus]="columnaBusqueda == null ? 'error' : 'success'">
+      <nz-input-group nzPrefixIcon="search" style="height: 32px;">
+        @switch (columnaBusqueda?.type) {
+          @case ("TEXT") {
+            <input
+              nz-input
+              [(ngModel)]="terminoBusqueda"
+              (ngModelChange)="buscarPorTermino()"
+              (keyup.enter)="buscarPorTermino()"
+              [disabled]="columnaBusqueda == null"
+              placeholder="Realice una busqueda ..."
+            />
+          }
+          @case ("NUMBER") {
+            <nz-input-number
+              nzBorderless
+              nzSize="small"
+              [(ngModel)]="numeroBusqueda"
+              (ngModelChange)="buscarPorNumero()"
+              (keyup.enter)="buscarPorNumero()"
+              [nzMin]="0"
+              nzPlaceHolder="Realice una busqueda ..."
+              style="width: 100%;"></nz-input-number>
+          }
+          @case ("DATE") {
+            <nz-date-picker 
+            nzBorderless 
+            nzMode="date"
+            nzSize="small"
+            nzFormat="dd/MM/yyyy" 
+            [(ngModel)]="fechaBusqueda"
+            (ngModelChange)="buscarPorDate()"
+            (keyup.enter)="buscarPorDate()"
+            nzPlaceHolder="Seleccione una fecha ..."
+            style="width: 100%"></nz-date-picker>
+          }
+          @case ("MONTH") {
+            <nz-date-picker 
+            nzBorderless 
+            nzMode="month"
+            nzSize="small"
+            nzFormat="MM"
+            [(ngModel)]="mesBusqueda"
+            (ngModelChange)="buscarPorMonth()"
+            (keyup.enter)="buscarPorMonth()"
+            nzPlaceHolder="Seleccione un mes ..."
+            style="width: 100%"></nz-date-picker>
+          }
+          @case ("YEAR") {
+            <nz-date-picker 
+            nzBorderless 
+            nzMode="year"
+            nzSize="small"
+            nzFormat="yyyy"
+            [(ngModel)]="anioBusqueda"
+            (ngModelChange)="buscarPorYear()"
+            (keyup.enter)="buscarPorYear()"
+            nzPlaceHolder="Seleccione un año ..."
+            style="width: 100%"></nz-date-picker>
+          }
+          @default {
+            <input
+              nz-input
+              [(ngModel)]="terminoBusqueda"
+              (ngModelChange)="terminoBusquedaChange.emit(terminoBusqueda)"
+              (keyup.enter)="terminoBusquedaChange.emit(terminoBusqueda)"
+              [disabled]="columnaBusqueda == null"
+              placeholder="Realice una busqueda ..."
+            />
+          }
+        }
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+</div>

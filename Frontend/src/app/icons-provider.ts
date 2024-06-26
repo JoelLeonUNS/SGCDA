@@ -52,6 +52,7 @@ import {
   EyeOutline,
   TeamOutline,
   LogoutOutline,
+  EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -107,7 +108,8 @@ const icons = [
   EyeInvisibleOutline,
   EyeOutline,
   TeamOutline,
-  LogoutOutline
+  LogoutOutline,
+  EditOutline
 ];
 
 export function provideNzIcons(): EnvironmentProviders {

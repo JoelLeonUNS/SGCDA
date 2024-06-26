@@ -1,0 +1,28 @@
+<nz-select
+      nzShowSearch
+      [nzSize]="size"
+      [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label"
+      [(ngModel)]="valor"
+      (ngModelChange)="valorChange.emit($event)"
+      (nzFocus)="cargarDatos()"
+    >
+  @if(!cargando) { @for (item of options; track $index) {
+    <nz-option
+      [nzValue]="item[atributte[0]]"
+      [nzLabel]="item[atributte[1]]"
+      [nzDisabled]="atributte[2] ? item[atributte[2]] == 0 : false"
+    ></nz-option>
+    } @empty {
+      @if (item) {
+        <nz-option [nzValue]="item[atributte[0]]" [nzLabel]="item[atributte[1]]"></nz-option>
+      } @else {
+        <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
+      } 
+    } 
+  } @else {
+    <nz-option nzDisabled nzCustomContent>
+      <span nz-icon nzType="loading" class="loading-icon"></span>
+      Cargando datos...
+    </nz-option>
+  }
+</nz-select>

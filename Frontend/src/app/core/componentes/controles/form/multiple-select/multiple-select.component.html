@@ -1,0 +1,36 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+  >
+    <nz-select
+      nzShowSearch
+      nzAllowClear
+      nzMode="tags"
+      [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label"
+      [formControlName]="controlName!"
+      (nzFocus)="cargarDatos()"
+    >
+      @if(!cargando) {
+        @for (item of options; track $index) {
+          <nz-option [nzValue]="item[atributte[0]]" [nzLabel]="item[atributte[1]]" 
+          [nzDisabled]="atributte[2] ? item[atributte[2]] == 0 : false"></nz-option>
+        } @empty {
+          @if (option && option[0] && option[1]) {
+            <nz-option [nzValue]="option[0]" [nzLabel]="option[1]"></nz-option>
+          } @else {
+            <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
+          }  
+        }
+      } @else {
+        <nz-option nzDisabled nzCustomContent>
+          <span nz-icon nzType="loading" class="loading-icon"></span>
+          Cargando datos...
+        </nz-option>
+      }
+      
+    </nz-select>
+  </nz-form-control>
+</nz-form-item>

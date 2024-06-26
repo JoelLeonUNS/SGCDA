@@ -1,0 +1,26 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    nzErrorTip="¡Debe escoger el rango!"
+  >
+    <nz-date-picker
+      style="border-radius: 0.4em 0 0 0.4em; border-right: 0;"
+      [nzDisabledDate]="disabledStartDate"
+      [nzFormat]="'dd/MM/yyyy'"
+      [formControlName]="controlNames[0]"
+      nzPlaceHolder="Fecha de inicio"
+      (nzOnOpenChange)="handleStartOpenChange($event)"
+    ></nz-date-picker>
+    <nz-date-picker
+      style="border-radius: 0 0.4em 0.4em 0; border-left: 0;"
+      #endDatePicker
+      [nzDisabledDate]="disabledEndDate"
+      [nzFormat]="'dd/MM/yyyy'"
+      [formControlName]="controlNames[1]"
+      nzPlaceHolder="Fecha de fin"
+      (nzOnOpenChange)="handleEndOpenChange($event)"
+    ></nz-date-picker>
+  </nz-form-control>
+</nz-form-item>

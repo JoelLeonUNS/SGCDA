@@ -1,0 +1,10 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+  >
+  <nz-date-picker [formControlName]="controlName!" [nzFormat]="'dd/MM/yyyy'"></nz-date-picker>
+  </nz-form-control>
+</nz-form-item>

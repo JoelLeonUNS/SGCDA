@@ -49,15 +49,11 @@
   }
   
   nz-layout {
-    background: #b9bdc2
+    background: #d2dae2
   }
   
   nz-content {
-    margin: 24px;
-    padding: 24px;
-    border-radius: 0.4em;
-    background: #f7f7f7;
-    box-shadow: 0 50px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   

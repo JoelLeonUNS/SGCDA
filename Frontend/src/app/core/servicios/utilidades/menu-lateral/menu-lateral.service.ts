@@ -13,39 +13,59 @@ export class MenuLateralService {
   menuItems: MenuItem[] = [
     {
       level: 1,
-      title: 'Credenciales',
-      icon: 'credit-card',
-      routerLink: '/credenciales',
+      title: 'Inicio',
+      icon: 'home',
+      routerLink: '/inicio'
     },
     {
       level: 1,
-      title: 'Comisiones',
-      icon: 'team',
-      routerLink: '/comisiones',
+      title: 'Servicios',
+      icon: 'tool',
+      children: [
+        {
+          level: 2,
+          title: 'Credenciales',
+          icon: 'credit-card',
+          routerLink: '/servicios/credenciales',
+        },
+        {
+          level: 2,
+          title: 'Comisiones',
+          icon: 'team',
+          routerLink: '/servicios/comisiones',
+        },
+      ]
     },
     {
       level: 1,
-      title: 'Miembros',
-      icon: 'user',
-      routerLink: '/miembros',
-    },
-    {
-      level: 1,
-      title: 'Cargos',
-      icon: 'apartment',
-      routerLink: '/cargos',
-    },
-    {
-      level: 1,
-      title: 'Procesos',
-      icon: 'control',
-      routerLink: '/procesos',
-    },
-    {
-      level: 1,
-      title: 'Periodos',
-      icon: 'calendar',
-      routerLink: '/periodos',
+      title: 'Configuración',
+      icon: 'setting',
+      children: [
+        {
+          level: 2,
+          title: 'Miembros',
+          icon: 'user',
+          routerLink: '/configuracion/miembros',
+        },
+        {
+          level: 2,
+          title: 'Cargos',
+          icon: 'apartment',
+          routerLink: '/configuracion/cargos',
+        },
+        {
+          level: 2,
+          title: 'Procesos',
+          icon: 'control',
+          routerLink: '/configuracion/procesos',
+        },
+        {
+          level: 2,
+          title: 'Periodos',
+          icon: 'calendar',
+          routerLink: '/configuracion/periodos',
+        },
+      ]
     },
   ]
 }

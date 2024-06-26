@@ -1,0 +1,17 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null" nzRequired>{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+  >
+    <nz-radio-group
+      [formControlName]="controlName!"
+      (ngModelChange)="cambio($event)"
+    >
+      @for (option of options; track option; let i = $index) {
+      <label nz-radio [nzValue]="options[i]">{{ options[i] }}</label>
+      }
+    </nz-radio-group>
+  </nz-form-control>
+</nz-form-item>

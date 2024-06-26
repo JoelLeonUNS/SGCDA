@@ -1,0 +1,32 @@
+<div nz-flex [nzVertical]="false" nzWrap="nowrap" nzGap="small" style="width: 100%" nzAlign="center">
+  <span>Exportar</span>
+  <button
+    class="success_button"
+    nz-button
+    nzType="default"
+    (click)="exportarExcel()"
+    [nzLoading]="exportandoExcel"
+  >
+    <span nz-icon nzType="file-excel" nzTheme="outline"></span>Excel
+  </button>
+  <button class="danger-button" nz-button nzDanger nz-dropdown [nzDropdownMenu]="menu" [nzLoading]="exportandoPdf">
+    <span nz-icon nzType="file-pdf" nzTheme="outline"></span>PDF
+    <span nz-icon nzType="down"></span>
+  </button>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item (click)="exportarPdf()">
+         <span nz-icon nzType="download" nzTheme="outline" style="margin-right: .5em;"></span>
+         <span>Descargar</span>
+      </li>
+      <li nz-menu-item>
+        <span nz-icon nzType="export" nzTheme="outline" style="margin-right: .5em;"></span>
+        <span>Abrir en una ventana</span>
+      </li>
+      <!-- <li nz-menu-item>
+        <span nz-icon nzType="edit" nzTheme="outline" style="margin-right: .5em;"></span>
+        <span>Personalizado</span>
+      </li> -->
+    </ul>
+  </nz-dropdown-menu>
+</div>

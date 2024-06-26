@@ -1,0 +1,61 @@
+<div nz-row [nzGutter]="16">
+  <div nz-col [nzSpan]="12">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="null">{{ label![0] }}</nz-form-label>
+      <nz-form-control
+        [nzSpan]="null"
+        nzHasFeedback
+        [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label![0] + '!'"
+      >
+        <nz-select
+          nzShowSearch
+          [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label![0]"
+          [formControlName]="controlName![0]"
+          (ngModelChange)="cambiarOrigen($event)"
+        >
+          @for (item of optionsOrigen; track $index) {
+          <nz-option
+            [nzValue]="item[atributte[0]]"
+            [nzLabel]="item[atributte[1]]"
+            [nzDisabled]="atributte[2] ? item[atributte[2]] == 0 : false"
+          ></nz-option>
+          } @empty {
+          <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col [nzSpan]="12">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="null">{{ label![1] }}</nz-form-label>
+      <nz-form-control
+        [nzSpan]="null"
+        nzHasFeedback
+        [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label![1] + '!'"
+      >
+        <nz-select
+          nzShowSearch
+          [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label![1]"
+          [formControlName]="controlName![1]"
+          (ngModelChange)="cambiarDestino($event)"
+        >
+          @for (item of optionsDestino; track $index) {
+          <nz-option
+            [nzValue]="item[atributte[0]]"
+            [nzLabel]="item[atributte[1]]"
+            [nzDisabled]="atributte[2] ? item[atributte[2]] == 0 : false"
+          ></nz-option>
+          } @empty {
+          <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<nz-transfer
+  [nzDataSource]="lista"
+  (nzChange)="change($event)"
+>
+</nz-transfer>

@@ -1,0 +1,15 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe introducir un' + prefijo + ' ' + label + '!'"
+  >
+    <textarea
+      nz-input
+      [formControlName]="controlName!"
+      [placeholder]="'Ingrese un' + prefijo + ' ' + label"
+      [nzAutosize]="{ minRows: 3, maxRows: 6 }"
+    ></textarea>
+  </nz-form-control>
+</nz-form-item>

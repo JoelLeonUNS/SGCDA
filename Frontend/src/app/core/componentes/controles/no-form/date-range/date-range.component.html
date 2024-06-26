@@ -1,0 +1,15 @@
+<nz-date-picker
+  style="border-radius: 0.4em 0 0 0.4em; border-right: 0"
+  [nzDisabledDate]="disabledStartDate"
+  [nzFormat]="'dd/MM/yyyy'"
+  nzPlaceHolder="Fecha de inicio"
+  (nzOnOpenChange)="handleStartOpenChange($event)"
+></nz-date-picker>
+<nz-date-picker
+  style="border-radius: 0 0.4em 0.4em 0; border-left: 0"
+  #endDatePicker
+  [nzDisabledDate]="disabledEndDate"
+  [nzFormat]="'dd/MM/yyyy'"
+  nzPlaceHolder="Fecha de fin"
+  (nzOnOpenChange)="handleEndOpenChange($event)"
+></nz-date-picker>

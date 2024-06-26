@@ -1,0 +1,24 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzValidatingTip]="'Validando ' + label + '...'"
+    [nzErrorTip]="userErrorTpl"
+  >
+    <input
+      nz-input
+      [type]="type"
+      [formControlName]="controlName!"
+      [placeholder]="'Ingrese un' + prefijo + ' ' + label"
+    />
+    <ng-template #userErrorTpl let-control>
+      @if (control.errors?.['required']) {
+        ¡Debe introducir un {{ prefijo }} {{ label }}!
+      }
+      @if (control.errors?.['duplicated']) {
+        El {{ label }} ya existe!
+      }
+    </ng-template>
+  </nz-form-control>
+</nz-form-item>

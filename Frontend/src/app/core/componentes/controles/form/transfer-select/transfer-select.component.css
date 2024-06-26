@@ -1,0 +1,11 @@
+.loading-icon {
+  margin-right: 8px;
+}
+
+::ng-deep .ant-transfer {
+  width: 100%;
+}
+
+::ng-deep .ant-transfer-list {
+  width: 50%;
+}

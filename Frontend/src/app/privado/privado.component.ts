@@ -10,12 +10,14 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { CommonModule } from '@angular/common';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 @Component({
   selector: 'app-privado',
   standalone: true,
   imports: [
     CommonModule,
+    NzBreadCrumbModule,
     MenuLateralComponent,
     RouterOutlet,
     NzIconModule,
