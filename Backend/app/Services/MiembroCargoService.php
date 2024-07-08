@@ -3,17 +3,20 @@
 namespace App\Services;
 
 use App\Repositories\MiembroCargoRepository;
+use App\Repositories\MiembroRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class MiembroCargoService
 {
+    protected MiembroRepository $miembroRepository;
     protected MiembroCargoRepository $miembroCargoRepository;
 
-    public function __construct(MiembroCargoRepository $miembroCargoRepository)
+    public function __construct(MiembroCargoRepository $miembroCargoRepository, MiembroRepository $miembroRepository)
     {
         $this->miembroCargoRepository = $miembroCargoRepository;
+        $this->miembroRepository = $miembroRepository;
     }
 
     /**
@@ -45,7 +48,16 @@ class MiembroCargoService
      */
     public function create(array $data): Model
     {
-        return $this->miembroCargoRepository->crear($data);
+        $miembro = [
+            'nombres' => $data['nombres'],
+            'apellidos' => $data['apellidos'],
+        ];
+        $nuevoMiembroId = $this->miembroRepository->crearYObtenerId($miembro);
+        $miembroCargo = [
+            'miembro_id' => $nuevoMiembroId,
+            'cargo_id' => $data['cargo_id'],
+        ];
+        return $this->miembroCargoRepository->crear($miembroCargo);
     }
 
     /**

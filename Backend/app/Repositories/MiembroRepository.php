@@ -24,6 +24,11 @@ class MiembroRepository extends EstadoRepository
         return Miembro::select('id', 'descripcion', 'estado')->get();
     }
 
+    public function crearYObtenerId(array $miembro): int|null
+    {
+        return $this->modelo->insertGetId($miembro);
+    }
+
     protected function aplicarFiltros(Builder $consulta, array $filtros): void
     {
         foreach ($filtros as $key => $value) {
