@@ -16,7 +16,8 @@ class ComisionProceso extends Model
     protected $fillable = [
         'proceso_periodo_id',
         'comision_id',
-        'miembro_cargo_id',
+        'fecha',
+        'hora',
         'paga',
         'estado',
     ];
@@ -32,8 +33,4 @@ class ComisionProceso extends Model
         return $this->belongsTo(Comision::class);
     }
 
-    public function miembroCargo(): BelongsTo
-    {
-        return $this->belongsTo(MiembroCargo::class);
-    }
 }

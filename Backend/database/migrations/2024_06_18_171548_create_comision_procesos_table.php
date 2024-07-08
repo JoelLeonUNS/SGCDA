@@ -28,11 +28,11 @@ return new class extends Migration {
             $table->id()->autoIncrement()->comment('Identificador de la comisión proceso');
             $table->unsignedBigInteger('proceso_periodo_id')->nullable()->comment('Identificador del proceso periodo');
             $table->unsignedBigInteger('comision_id')->nullable()->comment('Identificador de la comisión');
-            $table->unsignedBigInteger('miembro_cargo_id')->nullable()->comment('Identificador del miembro cargo');
+            $table->date('fecha')->nullable()->comment('Fecha de la comisión');
+            $table->time('hora')->nullable()->comment('Hora de la comisión');
             $table->double('paga', 8, 2)->nullable()->comment('Paga del miembro cargo');
             $table->foreign('proceso_periodo_id')->references('id')->on('proceso_periodos');
             $table->foreign('comision_id')->references('id')->on('comisiones');
-            $table->foreign('miembro_cargo_id')->references('id')->on('miembro_cargos');
         });
     }
 

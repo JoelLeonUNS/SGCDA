@@ -43,6 +43,12 @@ export class MenuLateralService {
       children: [
         {
           level: 2,
+          title: 'Comisiones',
+          icon: 'team',
+          routerLink: '/configuracion/comisiones',
+        },
+        {
+          level: 2,
           title: 'Miembros',
           icon: 'user',
           routerLink: '/configuracion/miembros',

@@ -1,14 +1,20 @@
 import { Routes } from '@angular/router';
-import { ComisionesComponent } from './secciones/comisiones/comisiones.component';
 import { CredencialesComponent } from './secciones/credenciales/credenciales.component';
+import { ComisionesProcesoComponent } from './secciones/comisiones-proceso/comisiones-proceso.component';
 
 export const SERVICIOS_ROUTES: Routes = [
   {
     path: 'comisiones',
-    component: ComisionesComponent,
+    component: ComisionesProcesoComponent,
+    data: {
+      breadcrumb: 'Comisiones'
+    }
   },
   {
     path: 'credenciales',
-    component: CredencialesComponent
+    component: CredencialesComponent,
+    data: {
+      breadcrumb: 'Credenciales'
+    }
   }
 ];

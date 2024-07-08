@@ -1,0 +1,27 @@
+<nz-select
+      nzShowSearch
+      nzAllowClear
+      [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label"
+      [(ngModel)]="valor"
+      (ngModelChange)="itemCambiado($event)"
+      (nzFocus)="cargarDatos()"
+    >
+  @if(!cargando) { @for (item of options; track $index) {
+    <nz-option
+      [nzValue]="item.id"
+      [nzLabel]="item.periodo"
+    ></nz-option>
+    } @empty {
+      @if (item) {
+        <nz-option [nzValue]="item.id" [nzLabel]="item.periodo"></nz-option>
+      } @else {
+        <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
+      } 
+    } 
+  } @else {
+    <nz-option nzDisabled nzCustomContent>
+      <span nz-icon nzType="loading" class="loading-icon"></span>
+      Cargando datos...
+    </nz-option>
+  }
+</nz-select>

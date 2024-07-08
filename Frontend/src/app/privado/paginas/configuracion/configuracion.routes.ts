@@ -3,12 +3,20 @@ import { CargosComponent } from './secciones/cargos/cargos.component';
 import { MiembrosComponent } from './secciones/miembros/miembros.component';
 import { ProcesosComponent } from './secciones/procesos/procesos.component';
 import { PeriodosComponent } from './secciones/periodos/periodos.component';
+import { ComisionesComponent } from './secciones/comisiones/comisiones.component';
 
 export const CONFIGURACION_ROUTES: Routes = [
   {
     path: '',
-    redirectTo: 'miembros',
+    redirectTo: 'comisiones',
     pathMatch: 'full',
+  },
+  {
+    path: 'comisiones',
+    component: ComisionesComponent,
+    data: {
+      breadcrumb: 'Comisiones'
+    }
   },
   {
     path: 'miembros',

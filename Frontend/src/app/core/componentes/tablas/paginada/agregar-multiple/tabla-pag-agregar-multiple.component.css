@@ -1,0 +1,15 @@
+nz-form-item {
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+nz-select {
+  margin: 0;
+  margin-bottom: 1em;
+  min-width: 150px;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 0 8px 1px;
+}
+

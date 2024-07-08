@@ -8,7 +8,7 @@ import { es_ES, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { ConcatenarPipe } from './core/pipes/concatenar/concatenar.pipe';
 import { MesPipe } from './core/pipes/mes/mes.pipe';
 import { MonedaPipe } from './core/pipes/moneda/moneda.pipe';
@@ -28,6 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideNzIcons(),
     provideClientHydration(), 
-    provideAnimationsAsync(), provideNzI18n(es_ES), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient()
+    provideAnimationsAsync(), provideNzI18n(es_ES), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient(withFetch())
   ]
 };

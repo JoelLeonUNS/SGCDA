@@ -1,0 +1,34 @@
+<nz-page-header>
+  <nz-page-header-title>
+    <span nz-icon nzType="team" nzTheme="outline"></span>
+    <span style="margin: 0 0.5em">Comisiones</span>
+  </nz-page-header-title>
+  <nz-page-header-subtitle>Lista de comisiones</nz-page-header-subtitle>
+  <nz-page-header-extra>
+    <div
+      nz-flex
+      [nzVertical]="false"
+      nzJustify="end"
+      nzAlign="center"
+      nzGap="small"
+    >
+      <button nz-button nzType="primary" (click)="abrirModal()">
+        <span nz-icon nzType="plus" nzTheme="outline"></span>
+        <span>Nueva Comisión</span>
+      </button>
+      <nz-divider nzType="vertical"></nz-divider>
+      <app-select-item />
+      <app-select-item />
+      <nz-divider nzType="vertical"></nz-divider>
+      <app-control-exportacion-cargo ngSkipHydration />
+    </div>
+  </nz-page-header-extra>
+</nz-page-header>
+<div class="panel">
+  <app-tabla-pag-editar-comisiones
+    ngSkipHydration
+    #tablaComisiones
+    [scroll]="{ x: '1000px', y: '400px' }"
+  />
+</div>
+<ng-container #vcrModal></ng-container>

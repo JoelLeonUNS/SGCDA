@@ -35,7 +35,7 @@ import { TablaPagEditarEstadoPeriodosComponent } from '../../../../../core/compo
         NzSpaceModule,
         NzPageHeaderModule,
         ControlExportacionCargoComponent,
-        TablaPagEditarEstadoProcesosComponent
+        TablaPagEditarEstadoPeriodosComponent
     ]
 })
 export class PeriodosComponent {

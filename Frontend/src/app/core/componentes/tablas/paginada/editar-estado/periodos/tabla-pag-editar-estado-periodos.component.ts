@@ -21,6 +21,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ProcesoService } from '../../../../../servicios/rest/proceso/proceso.service';
+import { PeriodoService } from '../../../../../servicios/rest/periodo/periodo.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-periodos',
@@ -54,6 +55,10 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
       type: 'NUMBER',
     },
     {
+      name: 'Año',
+      columnKey: 'anio'
+    },
+    {
       name: 'Fecha Inicial',
       columnKey: 'fecha_incial',
       default: true,
@@ -62,28 +67,12 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
       name: 'Fecha Final',
       columnKey: 'fecha_final',
     },
-    {
-      name: 'Año',
-      columnKey: 'anio'
-    }
   ];
   override columnas: ColumnItem[] = [
     {
       name: 'Id',
       attribute: 'id',
       width: '50px',
-      showSort: true,
-      sortFn: true,
-    },
-    {
-      name: 'Fecha Inicial',
-      attribute: 'fecha_inicial',
-      showSort: true,
-      sortFn: true,
-    },
-    {
-      name: 'Fecha Final',
-      attribute: 'fecha_final',
       showSort: true,
       sortFn: true,
     },
@@ -96,6 +85,18 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
     {
       name: 'Correlativo',
       attribute: 'correlativo_romano',
+      showSort: true,
+      sortFn: true,
+    },
+    {
+      name: 'Fecha Inicial',
+      attribute: 'fecha_inicial',
+      showSort: true,
+      sortFn: true,
+    },
+    {
+      name: 'Fecha Final',
+      attribute: 'fecha_final',
       showSort: true,
       sortFn: true,
     },
@@ -125,7 +126,7 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
   constructor(
     msgService: NzMessageService,
     pipeService: PipeService,
-    servicio: ProcesoService,
+    servicio: PeriodoService,
     modalService:ModalService
   ) {
     super(msgService, pipeService, servicio, modalService);

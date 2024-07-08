@@ -15,9 +15,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   }]
 })
 export class DateRangeComponent {
-  @Input() fecha_inicio?: any;
-  @Input() fecha_fin?: any;
-  @Input() controlNames:string[] = ['fecha_inicio', 'fecha_fin'];
+  @Input() inicio?: any;
+  @Input() fin?: any;
+  @Input() controlNames:string[] = ['fecha_inicial', 'fecha_final'];
   @Input() label?:string = 'Fecha de inicio y fin'
   @Input() gender?:string;
 
@@ -29,25 +29,25 @@ export class DateRangeComponent {
 
   @ViewChild('endDatePicker') endDatePicker!: NzDatePickerComponent;
 
-  disabledStartDate = (fecha_inicio: Date): boolean => {
-    if (!fecha_inicio || !this.fecha_fin) {
+  disabledStartDate = (inicio: Date): boolean => {
+    if (!inicio || !this.fin) {
       return false;
     }
-    if (typeof this.fecha_fin == 'string') {
+    if (typeof this.fin == 'string') {
       return false
     } else {
-      return fecha_inicio.getTime() > this.fecha_fin.getTime();
+      return inicio.getTime() > this.fin.getTime();
     }
   };
 
-  disabledEndDate = (fecha_fin: Date): boolean => {
-    if (!fecha_fin || !this.fecha_inicio) {
+  disabledEndDate = (fin: Date): boolean => {
+    if (!fin || !this.inicio) {
       return false;
     }
-    if (typeof this.fecha_inicio == 'string') {
+    if (typeof this.inicio == 'string') {
       return false
     } else {
-      return fecha_fin.getTime() <= this.fecha_inicio.getTime()
+      return fin.getTime() <= this.inicio.getTime()
     }
     
   };

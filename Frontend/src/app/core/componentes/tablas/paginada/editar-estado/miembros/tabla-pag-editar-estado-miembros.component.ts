@@ -20,7 +20,7 @@ import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.compon
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { MiembroService } from '../../../../../servicios/rest/miembro/miembro.service';
+import { MiembroCargoService } from '../../../../../servicios/rest/miembro-cargo/miembro-cargo.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-miembros',
@@ -121,7 +121,7 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
   constructor(
     msgService: NzMessageService,
     pipeService: PipeService,
-    servicio: MiembroService,
+    servicio: MiembroCargoService,
     modalService:ModalService
   ) {
     super(msgService, pipeService, servicio, modalService);

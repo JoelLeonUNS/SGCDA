@@ -1,0 +1,47 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzDraggable
+  nzCentered
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="cerrar()"
+  [nzWidth]="ancho"
+>
+  <ng-template #modalTitle>
+    {{ titulo }}
+  </ng-template>
+  <ng-template #modalContent>
+    <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="12">
+          <app-input [label]="'Año'" [controlName]="'anio'" [type]="'number'" [gender]="'M'"></app-input>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <app-input [label]="'Correlativo'" [controlName]="'correlativo_romano'" />
+        </div>
+      </div>
+    </Form>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="default"
+      [disabled]="disabledCancelar"
+      [nzLoading]="cancelando"
+      (click)="cerrar()"
+    >
+      {{ btnSecundario }}
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="disabledConfirmar"
+      [nzLoading]="confirmando"
+      (click)="enviarForm()"
+    >
+      {{ btnPrimario }}
+    </button>
+  </ng-template>
+</nz-modal>
+ 

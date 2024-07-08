@@ -1,0 +1,98 @@
+<div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
+  <app-buscador-tabla
+    [columnasBusqueda]="columnasBusqueda"
+    (columnaBusquedaChange)="parametrosPag.searchColumn = $event"
+    (terminoBusquedaChange)="busqueda.next($event)"
+    style="width: 100%"
+  />
+</div>
+<nz-table
+  #tabla
+  nzShowSizeChanger
+  [nzShowTotal]="totalTemplate"
+  [nzData]="datos$ | async"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageIndex]="parametrosPag.pageIndex"
+  [nzPageSize]="parametrosPag.pageSize"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  (nzCurrentPageDataChange)="onDatosPaginaActualChange($event)"
+  [nzScroll]="{ y: '275px' }"
+  nzSize="small"
+  [nzNoResult] = "noResultados"
+>
+  <thead>
+    <tr>
+      @for (c of columnas; track $index) {
+        @if(c.checkeable) {
+          <th 
+          [(nzChecked)]="checked"
+          [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onTodosSeleccionados($event)"
+          [nzWidth]="c.width == undefined ? null : c.width"
+          >
+          </th>
+        } @else {
+          <th
+          [nzColumnKey]="c.columnKey == undefined ? c.attribute : c.columnKey"
+          [nzWidth]="c.width == undefined ? null : c.width"
+          [nzShowSort]="c.showSort"
+          [nzSortFn]="c.sortFn == undefined ? null : c.sortFn"
+          >
+          {{ c.name }}
+        </th>
+        }
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (data of tabla.data; track $index) {
+    <tr>
+      @for (c of columnas; track $index) {
+        @if(c.checkeable) {
+        <td [nzChecked]="itemsInput.has(data.id)" (nzCheckedChange)="onItemSeleccionado(data, $event)"></td>
+      } @else {
+        @if (c.attribute) { 
+        <td [nzAlign]="c.align == undefined ? 'left' : c.align" 
+            (click)="onFilaSeleccionada(data)" > 
+            {{ transPipe(data[c.attribute], c.pipe) }} 
+        </td> }
+      }
+    }
+    </tr>
+    }
+  </tbody>
+</nz-table>
+<nz-form-label>{{ label }} Seleccionadas</nz-form-label>
+<nz-select
+  style="width: 100%; margin-bottom: 0;"
+  [nzShowSearch]="false"
+  [nzOptionHeightPx]="0"
+  [nzSize]="'small'"
+  nzMode="multiple"
+  [nzNotFoundContent]="'No se encontraron resultados'"
+  [nzPlaceHolder]="'Aqui se mostrarán las' + label + 'seleccionadas'"
+  [(ngModel)]="listaSeleccionada"
+  (ngModelChange)="deseleccionarItemChange($event)"
+  >
+  <nz-option *ngFor="let entry of itemsInput | keyvalue" [nzLabel]="entry.value" [nzValue]="entry.key"></nz-option>
+</nz-select>
+<ng-template #noResultados>
+  <nz-empty
+  style="width: 100%;"
+  nzNotFoundTitle="No se encontraron resultados"
+  nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+  [nzNotFoundContent]="contentTpl"
+  [nzNotFoundFooter]="footerTpl"
+>
+  <ng-template #contentTpl>
+    <span>Si no encontró lo que busca, puede crear una {{ entidad }}.</span>
+  </ng-template>
+  <ng-template #footerTpl>
+    <button nz-button nzType="primary" (click)="abrirModal()">Crear Ahora</button>
+  </ng-template>
+</nz-empty>
+</ng-template>
+<ng-template #totalTemplate let-total>Total: {{ total }}</ng-template>
+<ng-container #vcrModal></ng-container>
