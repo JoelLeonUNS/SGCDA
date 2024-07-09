@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\v1\StoreUpdate\StoreUpdateComisionRequest;
-use App\Http\Requests\v1\Validacion\EstadoBitRequest;
+use App\Http\Requests\StoreUpdate\StoreUpdateComisionRequest;
+use App\Http\Requests\Validacion\EstadoBitRequest;
 use App\Services\ResponseService;
 use App\Services\ComisionService;
 use App\Traits\Http\Controllers\CriterioTrait;

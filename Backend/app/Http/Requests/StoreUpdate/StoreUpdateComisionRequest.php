@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\StoreUpdate;
 
-use App\Http\Requests\v1\Validacion\ValidacionRequest;
+use App\Http\Requests\Validacion\ValidacionRequest;
 
 class StoreUpdateComisionRequest extends ValidacionRequest
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Requests\v1\Validacion;
+namespace App\Http\Requests\Validacion;
+
+use App\Http\Requests\v1\Validacion\ValidacionRequest;
 
 class EstadoBitRequest extends ValidacionRequest
 {
