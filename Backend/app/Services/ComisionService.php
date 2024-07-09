@@ -2,54 +2,54 @@
 
 namespace App\Services;
 
-use App\Repositories\MiembroRepository;
+use App\Repositories\ComisionRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class MiembroService
+class ComisionService
 {
-    protected MiembroRepository $miembroRepository;
+    protected ComisionRepository $comisionRepository;
 
-    public function __construct(MiembroRepository $miembroRepository)
+    public function __construct(ComisionRepository $comisionRepository)
     {
-        $this->miembroRepository = $miembroRepository;
+        $this->comisionRepository = $comisionRepository;
     }
 
     /**
-     * Obtiene todos los miembros.
+     * Obtiene todos los comisiones.
      *
      * @return Collection
      */
     public function getAll(): Collection
     {
-        return $this->miembroRepository->obtenerTodos();
+        return $this->comisionRepository->obtenerTodos();
     }
 
     /**
-     * Obtiene un miembro por su ID.
+     * Obtiene una comisión por su ID.
      *
      * @param int $id
      * @return Model
      */
     public function getById(int $id): Model
     {
-        return $this->miembroRepository->obtenerPorId($id);
+        return $this->comisionRepository->obtenerPorId($id);
     }
 
     /**
-     * Crea un nuevo miembro.
+     * Crea un nuevo comision.
      *
      * @param array $data
      * @return Model
      */
     public function create(array $data): Model
     {
-        return $this->miembroRepository->crear($data);
+        return $this->comisionRepository->crear($data);
     }
 
     /**
-     * Actualiza un miembro existente.
+     * Actualiza una comisión existente.
      *
      * @param int $id
      * @param array $data
@@ -57,22 +57,22 @@ class MiembroService
      */
     public function update(int $id, array $data): bool
     {
-        return $this->miembroRepository->actualizar($id, $data);
+        return $this->comisionRepository->actualizar($id, $data);
     }
 
     /**
-     * Elimina un miembro existente.
+     * Elimina una comisión existente.
      *
      * @param int $id
      * @return bool
      */
     public function delete(int $id): bool
     {
-        return $this->miembroRepository->eliminar($id);
+        return $this->comisionRepository->eliminar($id);
     }
 
     /**
-     * Cambia el estado de un miembro.
+     * Cambia el estado de un comision.
      *
      * @param int $id
      * @param int $estado
@@ -80,51 +80,50 @@ class MiembroService
      */
     public function cambiarEstado(int $id, int $estado): bool
     {
-        return $this->miembroRepository->cambiarEstado($id, $estado);
+        return $this->comisionRepository->cambiarEstado($id, $estado);
     }
 
     /**
-     * Obtiene el último ID de la tabla de miembros.
+     * Obtiene el último ID de la tabla de comisiones.
      *
      * @return int
      */
     public function obtenerUltimoId(): int
     {
-        return $this->miembroRepository->obtenerUltimoId();
+        return $this->comisionRepository->obtenerUltimoId();
     }
 
     /**
-     * Obtiene todos los miembros activos.
+     * Obtiene todos los comisiones activos.
      *
      * @return Collection
      */
     public function obtenerActivos(): Collection
     {
-        return $this->miembroRepository->obtenerActivos();
+        return $this->comisionRepository->obtenerActivos();
     }
 
     /**
-     * Obtiene todos los miembros con selección de columnas específicas.
+     * Obtiene todos los comisiones con selección de columnas específicas.
      *
      * @return Collection
      */
     public function obtenerConColumnas(): Collection
     {
-        return $this->miembroRepository->obtenerTodosConColumnasEspecificas();
+        return $this->comisionRepository->obtenerTodosConColumnasEspecificas();
     }
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
-        return $this->miembroRepository->obtenerPaginado($criteria);
+        return $this->comisionRepository->obtenerPaginado($criteria);
     }
 
     public function obtenerConNombres(): Collection
     {
-        return $this->miembroRepository->obtenerTodos()->map(function ($miembro) {
+        return $this->comisionRepository->obtenerTodos()->map(function ($comision) {
             return [
-                'id' => $miembro->id,
-                'nombres' => $miembro->nombres,
-                'apellidos' => $miembro->apellidos,
+                'id' => $comision->id,
+                'descripcion' => $comision->descripcion,
             ];
         });
     }

@@ -50,8 +50,8 @@ class MiembroController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $tipoDocumento = $this->miembroService->getById($id);
-            return $this->responseService->success($tipoDocumento);
+            $miembro = $this->miembroService->getById($id);
+            return $this->responseService->success($miembro);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener el miembro: ' . $e->getMessage());
         }
@@ -66,8 +66,8 @@ class MiembroController extends Controller
     public function store(StoreUpdateMiembroRequest $request): JsonResponse
     {
         try {
-            $tipoDocumento = $this->miembroService->create($request->validate($request->rules()));
-            return $this->responseService->success($tipoDocumento, ResponseAlias::HTTP_CREATED);
+            $miembro = $this->miembroService->create($request->validate($request->rules()));
+            return $this->responseService->success($miembro, ResponseAlias::HTTP_CREATED);
         } catch (Exception $e) {
             return $this->responseService->error('Error al crear el miembro: ' . $e->getMessage());
         }
@@ -163,7 +163,7 @@ class MiembroController extends Controller
     public function obtenerTodosConColumnasEspecificas(): JsonResponse
     {
         try {
-            $miembros = $this->miembroService->obtenerMiembroConColumnas();
+            $miembros = $this->miembroService->obtenerConColumnas();
             return $this->responseService->success($miembros);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los miembros: ' . $e->getMessage());
@@ -181,7 +181,7 @@ class MiembroController extends Controller
 
     }
 
-    public function obtenerMiembrosPaginados(Request $request): JsonResponse
+    public function obtenerPag(Request $request): JsonResponse
     {
         try {
             $criteria = $this->obtenerCriterios($request);

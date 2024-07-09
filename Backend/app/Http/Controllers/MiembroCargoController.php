@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\v1\StoreUpdate\StoreUpdateMiembroRequest;
+use App\Http\Requests\v1\StoreUpdate\StoreUpdateMiembroCargoRequest;
 use App\Http\Requests\v1\Validacion\EstadoBitRequest;
 use App\Services\ResponseService;
-use App\Services\MiembroService;
+use App\Services\MiembroCargoService;
 use App\Traits\Http\Controllers\CriterioTrait;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -13,16 +13,16 @@ use Illuminate\Http\Request;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class MiembroController extends Controller
+class MiembroCargoController extends Controller
 {
     use CriterioTrait;
 
-    protected MiembroService $miembroService;
+    protected MiembroCargoService $miembroCargoService;
     protected ResponseService $responseService;
 
-    public function __construct(MiembroService $miembroService, ResponseService $responseService)
+    public function __construct(MiembroCargoService $miembroCargoService, ResponseService $responseService)
     {
-        $this->miembroService = $miembroService;
+        $this->miembroCargoService = $miembroCargoService;
         $this->responseService = $responseService;
     }
 
@@ -34,8 +34,8 @@ class MiembroController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $miembros = $this->miembroService->getAll();
-            return $this->responseService->success($miembros);
+            $miembroCargos = $this->miembroCargoService->getAll();
+            return $this->responseService->success($miembroCargos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los miembros: ' . $e->getMessage());
         }
@@ -50,8 +50,8 @@ class MiembroController extends Controller
     public function show(int $id): JsonResponse
     {
         try {
-            $tipoDocumento = $this->miembroService->getById($id);
-            return $this->responseService->success($tipoDocumento);
+            $miembroCargo = $this->miembroCargoService->getById($id);
+            return $this->responseService->success($miembroCargo);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener el miembro: ' . $e->getMessage());
         }
@@ -60,14 +60,14 @@ class MiembroController extends Controller
     /**
      * Crea un nuevo miembro.
      *
-     * @param StoreUpdateMiembroRequest $request
+     * @param StoreUpdateMiembroCargoRequest $request
      * @return JsonResponse
      */
-    public function store(StoreUpdateMiembroRequest $request): JsonResponse
+    public function store(StoreUpdateMiembroCargoRequest $request): JsonResponse
     {
         try {
-            $tipoDocumento = $this->miembroService->create($request->validate($request->rules()));
-            return $this->responseService->success($tipoDocumento, ResponseAlias::HTTP_CREATED);
+            $miembroCargo = $this->miembroCargoService->create($request->validate($request->rules()));
+            return $this->responseService->success($miembroCargo, ResponseAlias::HTTP_CREATED);
         } catch (Exception $e) {
             return $this->responseService->error('Error al crear el miembro: ' . $e->getMessage());
         }
@@ -76,17 +76,17 @@ class MiembroController extends Controller
     /**
      * Actualiza un miembro existente.
      *
-     * @param StoreUpdateMiembroRequest $request
+     * @param StoreUpdateMiembroCargoRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function update(StoreUpdateMiembroRequest $request, int $id): JsonResponse
+    public function update(StoreUpdateMiembroCargoRequest $request, int $id): JsonResponse
     {
         try {
-            if (!$this->miembroService->getById($id)) {
+            if (!$this->miembroCargoService->getById($id)) {
                 return $this->responseService->error('Miembro no encontrado', ResponseAlias::HTTP_NOT_FOUND);
             }
-            $this->miembroService->update($id, $request->validate($request->rules()));
+            $this->miembroCargoService->update($id, $request->validate($request->rules()));
             return $this->responseService->success("Miembro actualizado correctamente");
         } catch (Exception $e) {
             return $this->responseService->error('Error al actualizar el miembro: ' . $e->getMessage());
@@ -102,10 +102,10 @@ class MiembroController extends Controller
     public function destroy(int $id): JsonResponse
     {
         try {
-            if (!$this->miembroService->delete($id)) {
+            if (!$this->miembroCargoService->delete($id)) {
                 return $this->responseService->error('Miembro no encontrado', ResponseAlias::HTTP_NOT_FOUND);
             }
-            $this->miembroService->delete($id);
+            $this->miembroCargoService->delete($id);
             return $this->responseService->success("Miembro eliminado correctamente");
         } catch (Exception $e) {
             return $this->responseService->error('Error al eliminar el miembro: ' . $e->getMessage());
@@ -115,7 +115,7 @@ class MiembroController extends Controller
     public function obtenerUltimoId(): JsonResponse
     {
         try {
-            $ultimoId = $this->miembroService->obtenerUltimoId();
+            $ultimoId = $this->miembroCargoService->obtenerUltimoId();
             return $this->responseService->success(['id' => $ultimoId]);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener el último ID de miembro: ' . $e->getMessage());
@@ -132,7 +132,7 @@ class MiembroController extends Controller
     public function cambiarEstado(EstadoBitRequest $request, int $id): JsonResponse
     {
         try {
-            $this->miembroService->cambiarEstado($id, $request->validated()['estado']);
+            $this->miembroCargoService->cambiarEstado($id, $request->validated()['estado']);
             return $this->responseService->success("Estado del miembro actualizado correctamente");
         } catch (Exception $e) {
             return $this->responseService->error('Error al cambiar el estado del miembro: ' . $e->getMessage());
@@ -147,8 +147,8 @@ class MiembroController extends Controller
     public function obtenerActivos(): JsonResponse
     {
         try {
-            $miembrosActivos = $this->miembroService->obtenerActivos();
-            return $this->responseService->success($miembrosActivos);
+            $miembroCargosActivos = $this->miembroCargoService->obtenerActivos();
+            return $this->responseService->success($miembroCargosActivos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los miembros activos: ' . $e->getMessage());
         }
@@ -163,8 +163,8 @@ class MiembroController extends Controller
     public function obtenerTodosConColumnasEspecificas(): JsonResponse
     {
         try {
-            $miembros = $this->miembroService->obtenerMiembroConColumnas();
-            return $this->responseService->success($miembros);
+            $miembroCargos = $this->miembroCargoService->obtenerConColumnas();
+            return $this->responseService->success($miembroCargos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los miembros: ' . $e->getMessage());
         }
@@ -173,22 +173,22 @@ class MiembroController extends Controller
     public function obtenerConNombres(): JsonResponse
     {
         try {
-            $miembros = $this->miembroService->obtenerConNombres();
-            return $this->responseService->success($miembros);
+            $miembroCargos = $this->miembroCargoService->obtenerConNombres();
+            return $this->responseService->success($miembroCargos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los miembros: ' . $e->getMessage());
         }
 
     }
 
-    public function obtenerMiembrosPaginados(Request $request): JsonResponse
+    public function obtenerPag(Request $request): JsonResponse
     {
         try {
             $criteria = $this->obtenerCriterios($request);
-            $miembros = $this->miembroService->obtenerPaginado($criteria);
+            $miembroCargos = $this->miembroCargoService->obtenerPaginado($criteria);
             return $this->responseService->success(([
-                'data' => $miembros->items(),
-                'total' => $miembros->total(),
+                'data' => $miembroCargos->items(),
+                'total' => $miembroCargos->total(),
             ]));
         } catch (InvalidArgumentException $e) {
             return $this->responseService->error($e->getMessage(), ResponseAlias::HTTP_BAD_REQUEST);

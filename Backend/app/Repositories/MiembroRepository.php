@@ -21,7 +21,7 @@ class MiembroRepository extends EstadoRepository
      */
     public function obtenerTodosConColumnasEspecificas(): Collection
     {
-        return Miembro::select('id', 'descripcion', 'estado')->get();
+        return $this->modelo::select('id', 'descripcion', 'estado')->get();
     }
 
     public function crearYObtenerId(array $miembro): int|null

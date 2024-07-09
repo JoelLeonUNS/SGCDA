@@ -20,7 +20,7 @@ class MiembroCargoService
     }
 
     /**
-     * Obtiene todos los miembros.
+     * Obtiene todos los miembro cargos.
      *
      * @return Collection
      */
@@ -69,11 +69,15 @@ class MiembroCargoService
      */
     public function update(int $id, array $data): bool
     {
+        $this->miembroRepository->actualizar($data['miembro_id'], [
+            'nombres' => $data['nombres'],
+            'apellidos' => $data['apellidos'],
+        ]);
         return $this->miembroCargoRepository->actualizar($id, $data);
     }
 
     /**
-     * Elimina un miembro existente.
+     * Elimina un miembro cargo existente.
      *
      * @param int $id
      * @return bool
@@ -84,7 +88,7 @@ class MiembroCargoService
     }
 
     /**
-     * Cambia el estado de un miembro.
+     * Cambia el estado de un miembro cargo.
      *
      * @param int $id
      * @param int $estado
@@ -96,7 +100,7 @@ class MiembroCargoService
     }
 
     /**
-     * Obtiene el último ID de la tabla de miembros.
+     * Obtiene el último ID de la tabla de miembro cargos.
      *
      * @return int
      */
@@ -106,7 +110,7 @@ class MiembroCargoService
     }
 
     /**
-     * Obtiene todos los miembros activos.
+     * Obtiene todos los miembro cargos activos.
      *
      * @return Collection
      */
@@ -116,18 +120,31 @@ class MiembroCargoService
     }
 
     /**
-     * Obtiene todos los miembros con selección de columnas específicas.
+     * Obtiene todos los miembro cargos con selección de columnas específicas.
      *
      * @return Collection
      */
-    public function obtenerMiembroConColumnas(): Collection
+    public function obtenerConColumnas(): Collection
     {
         return $this->miembroCargoRepository->obtenerTodosConColumnasEspecificas();
     }
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
-        return $this->miembroCargoRepository->obtenerPaginado($criteria);
+        $miembroCargoPag = $this->miembroCargoRepository->obtenerPaginado($criteria);
+        $miembroCargoParse = $miembroCargoPag->getCollection()->map(function ($miembroCargo) {
+            return [
+                'id' => $miembroCargo->id,
+                'miembro_id' => $miembroCargo->miembro_id,
+                'nombres' => $miembroCargo->miembro->nombres,
+                'apellidos' => $miembroCargo->miembro->apellidos,
+                'cargo_id' => $miembroCargo->cargo_id,
+                'cargo' => $miembroCargo->cargo->descripcion ?? 'Sin cargo asignado',
+                'estado' => $miembroCargo->estado,
+            ];
+        });
+        $miembroCargoPag->setCollection($miembroCargoParse);
+        return $miembroCargoPag;
     }
 
     public function obtenerConNombres(): Collection
@@ -139,7 +156,7 @@ class MiembroCargoService
                 'nombres' => $miembroCargo->miembro->nombres,
                 'apellidos' => $miembroCargo->miembro->apellidos,
                 'cargo_id' => $miembroCargo->cargo_id,
-                'cargo' => $miembroCargo->cargo->nombre ?? 'Sin cargo asignado',
+                'cargo' => $miembroCargo->cargo->descripcion ?? 'Sin cargo asignado',
             ];
         });
     }

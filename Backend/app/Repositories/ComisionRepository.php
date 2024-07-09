@@ -2,26 +2,31 @@
 
 namespace App\Repositories;
 
-use App\Models\MiembroCargo;
+use App\Models\Comision;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class MiembroCargoRepository extends EstadoRepository
+class ComisionRepository extends EstadoRepository
 {
 
-    public function __construct(MiembroCargo $modelo)
+    public function __construct(Comision $modelo)
     {
         parent::__construct($modelo);
     }
 
     /**
-     * Obtiene todos los miembro cargos con selección de columnas específicas.
+     * Obtiene todos los comisiones con selección de columnas específicas.
      *
      * @return Collection
      */
     public function obtenerTodosConColumnasEspecificas(): Collection
     {
         return $this->modelo::select('id', 'descripcion', 'estado')->get();
+    }
+
+    public function crearYObtenerId(array $comision): int|null
+    {
+        return $this->modelo->insertGetId($comision);
     }
 
     protected function aplicarFiltros(Builder $consulta, array $filtros): void
