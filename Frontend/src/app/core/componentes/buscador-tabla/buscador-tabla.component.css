@@ -1,5 +1,14 @@
 nz-select {
     margin: 0;
     margin-bottom: 1em;
-    min-width: 157px;
+    min-width: min-content;
+    max-width: 160px;
+}
+
+@media (max-width: 1000px) {
+    nz-select {
+        min-width: min-content;
+        max-width: 125px;
+    }
+
 }

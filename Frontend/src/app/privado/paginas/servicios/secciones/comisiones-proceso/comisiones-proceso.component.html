@@ -12,18 +12,21 @@
       nzAlign="center"
       nzGap="small"
     >
+      <app-control-exportacion-cargo ngSkipHydration />
+      <nz-divider nzType="vertical"></nz-divider>
       <button nz-button nzType="primary" (click)="abrirModal()">
         <span nz-icon nzType="plus" nzTheme="outline"></span>
         <span>Nueva Comisión</span>
       </button>
-      <nz-divider nzType="vertical"></nz-divider>
-      <app-select-item />
-      <app-select-item />
-      <nz-divider nzType="vertical"></nz-divider>
-      <app-control-exportacion-cargo ngSkipHydration />
     </div>
   </nz-page-header-extra>
 </nz-page-header>
+<div class="panel-filtro">
+  <app-select-item [servicio]="procesoService" [atributos]="['descripcion']" label="Proceso"/>
+  <nz-divider nzType="vertical"></nz-divider>
+  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+</div>
 <div class="panel">
   <app-tabla-pag-editar-comisiones
     ngSkipHydration

@@ -94,6 +94,16 @@ class ComisionService
     }
 
     /**
+     * Obtiene el último comision.
+     *
+     * @return Model
+     */
+    public function obtenerUltimo(): Model
+    {
+        return $this->comisionRepository->obtenerUltimo();
+    }
+
+    /**
      * Obtiene todos los comisiones activos.
      *
      * @return Collection

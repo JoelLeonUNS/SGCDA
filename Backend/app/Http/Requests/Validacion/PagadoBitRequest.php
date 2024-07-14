@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\v1\Validacion;
+namespace App\Http\Requests\Validacion;
 
 class PagadoBitRequest extends ValidacionRequest
 {

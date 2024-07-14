@@ -25,7 +25,7 @@ export class MenuLateralService {
         {
           level: 2,
           title: 'Credenciales',
-          icon: 'credit-card',
+          icon: 'idcard',
           routerLink: '/servicios/credenciales',
         },
         {

@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component} from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -47,8 +47,38 @@ export class ModalFormPeriodoComponent extends ModalFormComponent {
     msgService: NzMessageService,
     servicio: PeriodoService,
     fb: NonNullableFormBuilder,
+    private datePipe: DatePipe
   ) {
     super(msgService, servicio, fb);
+  }
+
+  override enviarNuevo() {
+    const formParseado = this.crearFormParseado();
+    super.enviarNuevo(formParseado);
+  }
+  
+  override enviarEditado() {
+    const formParseado = this.crearFormParseado();
+    super.enviarEditado(formParseado);
+  }
+
+  private crearFormParseado(): FormGroup {
+    let formParseado: FormGroup = this.fb.group({
+      anio: [null],
+      correlativo_romano: [null],
+      fecha_inicial: [null],
+      fecha_final: [null],
+    });
+
+    formParseado.setValue(this.modalForm.getRawValue());
+    
+    // Parsear la fecha
+    let nuevaFecha = this.datePipe.transform(formParseado.get('fecha_inicial')?.value, 'yyyy-MM-dd');
+    formParseado.get('fecha_inicial')?.setValue(nuevaFecha!);
+    nuevaFecha = this.datePipe.transform(formParseado.get('fecha_final')?.value, 'yyyy-MM-dd');
+    formParseado.get('fecha_final')?.setValue(nuevaFecha!);
+  
+    return formParseado;
   }
 
 }

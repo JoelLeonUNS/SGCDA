@@ -104,6 +104,18 @@ abstract class BaseRepository
     }
 
     /**
+     * Obtiene el último registro insertado en el modelo.
+     * 
+     * @return Model|null
+     */
+
+    public function obtenerUltimo(): ?Model
+    {
+        return $this->modelo->orderBy('id', 'desc')->first();
+    }
+
+
+    /**
      * Aplica los filtros a la consulta.
      *
      * @param Builder $consulta

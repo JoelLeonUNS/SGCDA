@@ -1,6 +1,6 @@
 <nz-select
       nzShowSearch
-      nzAllowClear
+      [nzBorderless]="sinBorde"
       [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label"
       [(ngModel)]="valor"
       (ngModelChange)="itemCambiado($event)"
@@ -9,11 +9,11 @@
   @if(!cargando) { @for (item of options; track $index) {
     <nz-option
       [nzValue]="item.id"
-      [nzLabel]="item.periodo"
+      [nzLabel]="item | concatenar:atributos:separador"
     ></nz-option>
     } @empty {
       @if (item) {
-        <nz-option [nzValue]="item.id" [nzLabel]="item.periodo"></nz-option>
+        <nz-option [nzValue]="item.id" [nzLabel]="item | concatenar:atributos:separador"></nz-option>
       } @else {
         <nz-option [nzValue]="null" nzLabel="No hay datos"></nz-option>
       } 

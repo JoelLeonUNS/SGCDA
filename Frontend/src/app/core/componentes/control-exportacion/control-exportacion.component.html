@@ -7,10 +7,12 @@
     (click)="exportarExcel()"
     [nzLoading]="exportandoExcel"
   >
-    <span nz-icon nzType="file-excel" nzTheme="outline"></span>Excel
+    <span nz-icon nzType="file-excel" nzTheme="outline"></span>
+    <span class="hidden">Excel</span>
   </button>
   <button class="danger-button" nz-button nzDanger nz-dropdown [nzDropdownMenu]="menu" [nzLoading]="exportandoPdf">
-    <span nz-icon nzType="file-pdf" nzTheme="outline"></span>PDF
+    <span nz-icon nzType="file-pdf" nzTheme="outline"></span>
+    <span class="hidden">PDF</span>
     <span nz-icon nzType="down"></span>
   </button>
   <nz-dropdown-menu #menu="nzDropdownMenu">

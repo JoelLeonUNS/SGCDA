@@ -1,0 +1,71 @@
+.credencial {
+  width: 100%;
+  border-radius: 0.4em;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  transition: all 0.3s;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.credencial:hover {
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+  transform: rotateX(var(--rotate-x, 0)) rotateY(var(--rotate-y, 0))  scale(0.95);
+}
+
+
+.header {
+  background-color: #c41e3a;
+  color: white;
+  padding: 1em 1.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  height: 5em;
+  margin-right: 10px;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  margin-right: 1em;
+}
+.comision {
+  font-size: 18px;
+  font-weight: bold;
+}
+.comision-detalle {
+  font-size: 14px;
+}
+.body {
+  padding: 3.5em 1.5em 1.5em;
+  background-color: #ede8e7;
+}
+.miembro {
+  color: #3a0088;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.15em;
+}
+.cargo {
+  color: #555;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2em;
+}
+.details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.columna {
+  display: flex;
+  flex-direction: column;
+}
+.footer {
+  background-color: #c41e3a;
+  padding: 1em 1.5em;
+}

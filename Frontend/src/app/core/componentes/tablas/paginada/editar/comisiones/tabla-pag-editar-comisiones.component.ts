@@ -20,7 +20,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { TablaPagEditarComponent } from '../tabla-pag-editar.component';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { ComisionService } from '../../../../../servicios/rest/comision/comision.service';
 import { ComisionProcesoService } from '../../../../../servicios/rest/comision-proceso/comision-proceso.service';
 
 @Component({
@@ -55,8 +54,8 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
       type: 'NUMBER',
     },
     {
-      name: 'Descripción',
-      columnKey: 'descripcion',
+      name: 'Comisión',
+      columnKey: 'comision',
       default: true,
     },
   ];
@@ -64,13 +63,13 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
     {
       name: 'Id',
       attribute: 'id',
-      width: '50px',
+      width: '65px',
       showSort: true,
       sortFn: true,
     },
     {
-      name: 'Descripción',
-      attribute: 'descripcion',
+      name: 'Comisión',
+      attribute: 'comision',
       showSort: true,
       sortFn: true,
     },
@@ -93,7 +92,14 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
       attribute: 'hora',
       showSort: true,
       sortFn: true,
-      width: '80px',
+      width: '90px',
+    },
+    {
+      name: 'Periodo',
+      attribute: 'periodo',
+      showSort: true,
+      sortFn: true,
+      width: '100px',
     },
     {
       name: 'Paga',

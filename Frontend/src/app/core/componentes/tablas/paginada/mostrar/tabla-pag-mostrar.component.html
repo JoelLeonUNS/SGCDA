@@ -1,0 +1,78 @@
+<div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
+  <app-buscador-tabla
+    [columnasBusqueda]="columnasBusqueda"
+    (columnaBusquedaChange)="parametrosPag.searchColumn = $event"
+    (terminoBusquedaChange)="busqueda.next($event)"
+    style="width: 100%"
+  />
+  <nz-divider nzType="vertical" style="margin: 0.75em 0"></nz-divider>
+  <div nz-flex [nzVertical]="false" nzGap="small" nzAlign="center">
+    <span>Reiniciar</span>
+    <button nz-button (click)="reiniciarFiltros()">
+      <span nz-icon nzType="filter" nzTheme="outline"></span>
+    </button>
+    <button nz-button (click)="reiniciarOrden()">
+      <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+    </button>
+  </div>
+</div>
+<nz-table
+  #tabla
+  nzShowSizeChanger
+  [nzShowTotal]="totalTemplate"
+  [nzData]="datos$ | async"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageIndex]="parametrosPag.pageIndex"
+  [nzPageSize]="parametrosPag.pageSize"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [nzScroll]="scroll == undefined ? { y: '400px' } : scroll"
+  nzSize="small"
+>
+  <thead>
+    <tr>
+      @for (c of columnas; track c) {
+      <th
+        [nzColumnKey]="c.columnKey == undefined ? c.attribute : c.columnKey"
+        [nzWidth]="c.width == undefined ? null : c.width"
+        [nzShowSort]="c.showSort"
+        [nzSortOrder]="c.sortOrder == undefined ? null : c.sortOrder"
+        [nzSortFn]="c.sortFn == undefined ? null : c.sortFn"
+        [nzSortDirections]="c.sortDirections == undefined ? [] : c.sortDirections"
+        [nzShowFilter]="c.showFilter"
+        [nzFilters]="c.listOfFilter == undefined ? [] : c.listOfFilter"
+        [nzFilterFn]="c.filterFn == undefined ? null : c.filterFn"
+        [nzFilterMultiple]="c.filterMultiple == undefined ? false : c.filterMultiple"
+        [nzLeft]="c.left == undefined ? false : c.left"
+        [nzRight]="c.right == undefined ? false : c.right"
+        >
+        {{ c.name }}
+      </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (data of tabla.data; track data) {
+    <tr>
+      @for (c of columnas; track c) { @if(c.attribute != undefined) {
+      <td [nzLeft]="c.left == undefined ? false : c.left"
+          [nzAlign]="c.align == undefined ? 'left' : c.align">
+        @if(c.etiquetable) {
+          <nz-tag [nzColor]="tags[data[c.attribute]] ? tags[data[c.attribute]].color : 'default'">
+            {{ transPipe(data[c.attribute], c.pipe) }}</nz-tag
+          >
+        } @else {
+          {{
+            transPipe(data[c.attribute], c.pipe)
+          }}
+        }
+      </td>
+      }
+    }
+    </tr>
+    }
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>Se encontraron {{ total }} registros</ng-template>
+<ng-container #vcrModal></ng-container>

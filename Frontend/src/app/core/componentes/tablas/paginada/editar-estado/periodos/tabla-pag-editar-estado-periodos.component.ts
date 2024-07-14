@@ -56,16 +56,19 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
     },
     {
       name: 'Año',
-      columnKey: 'anio'
+      columnKey: 'anio',
+      default: true,
+      type:'YEAR'
     },
     {
       name: 'Fecha Inicial',
       columnKey: 'fecha_incial',
-      default: true,
+      type: 'DATE',
     },
     {
       name: 'Fecha Final',
       columnKey: 'fecha_final',
+      type: 'DATE',
     },
   ];
   override columnas: ColumnItem[] = [
@@ -93,12 +96,14 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
       attribute: 'fecha_inicial',
       showSort: true,
       sortFn: true,
+      pipe: { nombre: 'date', datos: ['dd/MM/yyyy'] },
     },
     {
       name: 'Fecha Final',
       attribute: 'fecha_final',
       showSort: true,
       sortFn: true,
+      pipe: { nombre: 'date', datos: ['dd/MM/yyyy'] },
     },
     {
       name: 'Estado',

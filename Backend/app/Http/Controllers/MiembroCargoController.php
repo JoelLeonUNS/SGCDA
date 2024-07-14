@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\v1\StoreUpdate\StoreUpdateMiembroCargoRequest;
-use App\Http\Requests\v1\Validacion\EstadoBitRequest;
+use App\Http\Requests\StoreUpdate\StoreUpdateMiembroCargoRequest;
+use App\Http\Requests\Validacion\EstadoBitRequest;
 use App\Services\ResponseService;
 use App\Services\MiembroCargoService;
 use App\Traits\Http\Controllers\CriterioTrait;
@@ -27,7 +27,7 @@ class MiembroCargoController extends Controller
     }
 
     /**
-     * Obtiene todos los miembros.
+     * Obtiene todos los miembro cargos.
      *
      * @return JsonResponse
      */
@@ -140,7 +140,7 @@ class MiembroCargoController extends Controller
     }
 
     /**
-     * Obtiene todos los tipos de documento activos.
+     * Obtiene todos los miembro cargos activos.
      *
      * @return JsonResponse
      */

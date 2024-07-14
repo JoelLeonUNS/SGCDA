@@ -3,12 +3,17 @@ nz-form-item {
   margin-bottom: 1em;
 }
 
-nz-select {
-  margin: 0;
-  margin-bottom: 1em;
-  min-width: 155px;
-}
-
 .ant-table-tbody > tr > td {
   padding: 0 8px 1px;
+}
+
+/* media queries, para cuando la pantalla es menor a 1000px */
+@media (max-width: 1000px) {
+  nz-select {
+    min-width: 125px;
+  }
+
+  .hidden {
+    display: none;
+  }
 }

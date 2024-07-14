@@ -36,6 +36,10 @@ export abstract class ServicioCrud<T> {
     return this.http.put(`${this.API_URL}/${id}/cambiar-estado`, data);
   }
 
+  obtenerUltimo(): Observable<T> {
+    return this.http.get<T>(`${this.API_URL}-ultimo`);
+  }
+
   obtenerActivos(): Observable<T[]> {
     return this.http.get<T[]>(`${this.API_URL}-activos`);
   }

@@ -14,11 +14,34 @@
   <ng-template #modalContent>
     <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
       <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-select [controlName]="'comision'" [label]="'Comisión'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.comision_id, item.comision]" [servicio]="comisionService"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="14">
+          <app-select [controlName]="'proceso'" [label]="'Proceso'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.proceso_id, item.proceso]" [servicio]="procesoService"/>
+        </div>
+        <div nz-col [nzSpan]="10">
+          <app-select [controlName]="'periodo'" [label]="'Periodo'" [atributte]="['id', 'anio', 'estado']" [option]="[item.periodo_id, item.periodo]" [servicio]="periodoService"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-buscar-agregar-multiple formControlName="miembros_ids" [label]="'Miembro'" [entidad]="'Miembro'" [valores]="item.id" [control]="modalForm.get('miembros_ids')"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="12">
-          <app-input [label]="'Año'" [controlName]="'anio'" [type]="'number'" [gender]="'M'"></app-input>
+          <app-date [label]="'Fecha de Ingreso'" [controlName]="'fecha'" [gender]="'F'"/>
         </div>
         <div nz-col [nzSpan]="12">
-          <app-input [label]="'Correlativo'" [controlName]="'correlativo_romano'" />
+          <app-time [label]="'Hora de Ingreso'" [controlName]="'hora'" [gender]="'F'"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-input-number [label]="'Paga'" [controlName]="'paga'" [type]="'soles'" [gender]="'F'"/>
         </div>
       </div>
     </Form>

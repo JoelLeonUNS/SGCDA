@@ -14,6 +14,8 @@ import { ControlExportacionCargoComponent } from '../../../../../core/componente
 import { ModalService } from '../../../../../core/servicios/modal/modal.service';
 import { TablaPagEditarComisionesComponent } from '../../../../../core/componentes/tablas/paginada/editar/comisiones/tabla-pag-editar-comisiones.component';
 import { SelectItemComponent } from "../../../../../core/componentes/controles/no-form/select-item/select-item.component";
+import { PeriodoService } from '../../../../../core/servicios/rest/periodo/periodo.service';
+import { ProcesoService } from '../../../../../core/servicios/rest/proceso/proceso.service';
 
 @Component({
     selector: 'app-comisiones-proceso',
@@ -45,9 +47,10 @@ export class ComisionesProcesoComponent {
   @ViewChild('tablaComisiones') tablaComisiones!: TablaPagEditarComisionesComponent;
 
   constructor(
-    private modalService: ModalService
+    private modalService: ModalService,
+    public periodoService: PeriodoService,
+    public procesoService: ProcesoService
   ) {
-    
   }
 
   abrirModal() {

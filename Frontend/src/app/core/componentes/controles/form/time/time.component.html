@@ -1,0 +1,10 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+  >
+  <nz-time-picker [formControlName]="controlName!" [nzUse12Hours]="true" nzFormat="h:mm a"></nz-time-picker>
+  </nz-form-control>
+</nz-form-item>

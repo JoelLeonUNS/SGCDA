@@ -44,8 +44,8 @@ import { MiembroCargoService } from '../../../../../servicios/rest/miembro-cargo
 export class TablaPagAgregarMultipleMiembrosComponent extends TablaPagAgregarMultipleComponent {
   override entidad:string = 'Miembro'
   override label = 'Miembros';
-  override separador: string = ' - ';
-  override atributte?: string[] = ['descripcion'];
+  override separador: string = ' ';
+  override atributte?: string[] = ['nombres', 'apellidos'];
 
   override columnasBusqueda: ColumnaBusqueda[] = [
     {
@@ -54,14 +54,18 @@ export class TablaPagAgregarMultipleMiembrosComponent extends TablaPagAgregarMul
       type: 'NUMBER',
     },
     {
-      name: 'Tipo de Pago',
-      columnKey: 'tipo_pago',
-    },
-    {
-      name: 'Descripcion',
-      columnKey: 'descripcion',
+      name: 'Nombres',
+      columnKey: 'nombres',
       default: true,
     },
+    {
+      name: 'Apellidos',
+      columnKey: 'apellidos',
+    },
+    {
+      name: 'Cargo',
+      columnKey: 'cargo',
+    }
   ]
   override columnas:ColumnItem[] = [
     {
@@ -70,26 +74,23 @@ export class TablaPagAgregarMultipleMiembrosComponent extends TablaPagAgregarMul
       checkeable: true,
     },
     {
-      name: 'Tipo de Pago',
-      attribute: 'tipo_pago',
-      width: '170px',
+      name: 'Nombres',
+      attribute: 'nombres',
       sortFn: true,
       showSort: true,
     },
     {
-      name: 'Descripcion',
-      attribute: 'descripcion',
+      name: 'Apellidos',
+      attribute: 'apellidos',
       sortFn: true,
       showSort: true,
     },
     {
-      name: 'Monto',
-      attribute: 'monto',
-      width: '100px',
+      name: 'Cargo',
+      attribute: 'cargo',
       sortFn: true,
       showSort: true,
-      pipe: {nombre: 'moneda', datos: []},
-    },
+    }
   ]
 
   constructor(

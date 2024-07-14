@@ -122,6 +122,16 @@ class ComisionController extends Controller
         }
     }
 
+    public function obtenerUltimo(): JsonResponse
+    {
+        try {
+            $comision = $this->comisionService->obtenerUltimo();
+            return $this->responseService->success($comision);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener el último comision: ' . $e->getMessage());
+        }
+    }
+
     /**
      * Cambia el estado de un comision.
      *
@@ -140,7 +150,7 @@ class ComisionController extends Controller
     }
 
     /**
-     * Obtiene todos los tipos de documento activos.
+     * Obtiene todos las comisiones activas.
      *
      * @return JsonResponse
      */

@@ -8,8 +8,14 @@
   <nz-divider nzType="vertical" style="margin: 0.75em 0"></nz-divider>
   <div nz-flex [nzVertical]="false" nzGap="small" nzAlign="center">
     <span>Reiniciar</span>
-    <button nz-button (click)="reiniciarFiltros()">Filtros</button>
-    <button nz-button (click)="reiniciarOrden()">Orden</button>
+    <button nz-button (click)="reiniciarFiltros()">
+      <span nz-icon nzType="filter" nzTheme="outline"></span>
+      <span class="hidden">Filtros</span>
+    </button>
+    <button nz-button (click)="reiniciarOrden()">
+      <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+      <span class="hidden">Orden</span>
+    </button>
   </div>
 </div>
 <nz-table

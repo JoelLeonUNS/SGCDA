@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\v1\StoreUpdate\StoreUpdateMiembroRequest;
-use App\Http\Requests\v1\Validacion\EstadoBitRequest;
+use App\Http\Requests\StoreUpdate\StoreUpdateMiembroRequest;
+use App\Http\Requests\Validacion\EstadoBitRequest;
 use App\Services\ResponseService;
 use App\Services\MiembroService;
 use App\Traits\Http\Controllers\CriterioTrait;

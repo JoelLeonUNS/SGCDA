@@ -1,1 +1,47 @@
-<p>comisiones works!</p>
+<nz-page-header>
+  <nz-page-header-title>
+    <span nz-icon nzType="idcard" nzTheme="outline"></span>
+    <span style="margin: 0 0.5em">Credenciales</span>
+  </nz-page-header-title>
+  <nz-page-header-subtitle>Lista de credenciales</nz-page-header-subtitle>
+  <nz-page-header-extra>
+    <div
+      nz-flex
+      [nzVertical]="false"
+      nzJustify="end"
+      nzAlign="center"
+      nzGap="small"
+    >
+      <app-control-exportacion-cargo ngSkipHydration />
+    </div>
+  </nz-page-header-extra>
+</nz-page-header>
+<div class="panel-filtro">
+  <app-select-item [servicio]="comisionService" [atributos]="['descripcion']" label="Comisión"/>
+  <nz-divider nzType="vertical"></nz-divider>
+  <app-select-item [servicio]="procesoService" [atributos]="['descripcion']" label="Proceso"/>
+  <nz-divider nzType="vertical"></nz-divider>
+  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+</div>
+<div class="panel-mosaico">
+  <div class="panel">
+    <app-vista-previa-credencial
+    [miembro]="'ALBERTO BOCANEGRA RAMOS'"
+    [cargo]="'DOCENTE UNS'"
+    [procesoPeriodo]="'II SUMATIVO CEPUNS 2024 - III'"
+    [fecha]="'10/03/2024'"
+    [hora]="'06:00 Hrs'"
+    />
+  </div>
+  <div class="panel">
+    <app-tabla-pag-mostrar-miembros
+      ngSkipHydration
+      #tablaComisiones
+      [scroll]="{ x: '650px', y: '400px' }"
+    />
+  </div>
+</div>
+
+<ng-container #vcrModal></ng-container>
+  

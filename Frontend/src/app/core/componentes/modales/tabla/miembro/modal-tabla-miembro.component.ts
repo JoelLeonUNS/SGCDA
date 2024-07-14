@@ -13,7 +13,7 @@ import { TablaPagAgregarMultipleMiembrosComponent } from '../../../tablas/pagina
 })
 export class ModalTablaMiembroComponent extends ModalTablaComponent {
     separador: string = ' ';
-    atributte?: string[] = ['descripcion'];
+    atributte?: string[] = ['nombres', 'apellidos'];
 
     constructor(private modalService: ModalService) {
         super();

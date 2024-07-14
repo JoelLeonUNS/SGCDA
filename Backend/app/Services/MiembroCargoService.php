@@ -52,7 +52,7 @@ class MiembroCargoService
             'nombres' => $data['nombres'],
             'apellidos' => $data['apellidos'],
         ];
-        $nuevoMiembroId = $this->miembroRepository->crearYObtenerId($miembro);
+        $nuevoMiembroId = $this->miembroRepository->insertarObtenerId($miembro);
         $miembroCargo = [
             'miembro_id' => $nuevoMiembroId,
             'cargo_id' => $data['cargo_id'],

@@ -25,3 +25,10 @@
     color:  rgb(29, 111, 66, 0.7);
     border-color: rgb(29, 111, 66, 0.7)
   }
+
+  /* media queries, para cuando la pantalla es menor 768px */
+@media (max-width: 768px) {
+  .hidden {
+    display: none;
+  }
+}
