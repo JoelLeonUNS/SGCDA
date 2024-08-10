@@ -11,6 +11,7 @@ class StoreUpdateComisionMiembroRequest extends ValidacionRequest
         return [
             'comision_proceso_id' => 'required|integer',
             'miembro_cargo_id' => 'required|integer',
+            'horario_id' => 'required|integer',
         ];
     }
 }

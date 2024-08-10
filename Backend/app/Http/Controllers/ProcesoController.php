@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdate\StoreUpdateProcesoRequest;
 use App\Http\Requests\Validacion\EstadoBitRequest;
+use App\Http\Requests\Validacion\EstadoEnumRequest;
 use App\Services\ResponseService;
 use App\Services\ProcesoService;
 use App\Traits\Http\Controllers\CriterioTrait;
@@ -135,11 +136,11 @@ class ProcesoController extends Controller
     /**
      * Cambia el estado de un proceso.
      *
-     * @param EstadoBitRequest $request
+     * @param EstadoEnumRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function cambiarEstado(EstadoBitRequest $request, int $id): JsonResponse
+    public function cambiarEstado(EstadoEnumRequest $request, int $id): JsonResponse
     {
         try {
             $this->procesoService->cambiarEstado($id, $request->validated()['estado']);

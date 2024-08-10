@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $this->createProcesoPeriodosTable();
+        $this->createTable();
         $this->addEstadoColumn();
     }
 
@@ -22,12 +22,14 @@ return new class extends Migration {
         Schema::dropIfExists('proceso_periodos');
     }
 
-    private function createProcesoPeriodosTable(): void
+    private function createTable(): void
     {
         Schema::create('proceso_periodos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador del proceso periodo');
             $table->unsignedBigInteger('periodo_id')->nullable()->comment('Identificador del periodo');
             $table->unsignedBigInteger('proceso_id')->nullable()->comment('Identificador del proceso');
+            $table->date('fecha_inicial')->nullable()->comment('Fecha inicial del proceso periodo');
+            $table->date('fecha_final')->nullable()->comment('Fecha final del proceso periodo');
             $table->foreign('periodo_id')->references('id')->on('periodos');
             $table->foreign('proceso_id')->references('id')->on('procesos');
         });
@@ -36,7 +38,7 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('proceso_periodos', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado del proceso periodo');
+            $table->enum('estado', ['ABIERTO', 'CERRADO', 'ELIMINADO'])->default('ABIERTO')->comment('Estado del proceso periodo');
         });
     }
 };

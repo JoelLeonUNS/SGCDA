@@ -1,0 +1,26 @@
+<nz-flex nzAlign="center" nzJustify="start" nzGap="middle" style="width: 100%;">    
+    <nz-flex nzAlign="center">
+        <span style="margin-right: .5em;">Ordenar</span>
+        <nz-select
+            [(ngModel)]="columnaOrden"
+            (ngModelChange)="ordenarPorColumna()">
+            @for (c of columnasOrden; track $index) {
+                <nz-option [nzValue]="c" [nzLabel]="c.name"></nz-option>
+            } 
+        </nz-select>
+        <button nz-button nzType="default" (click)="cambiarOrden()" style="border-radius: 0 .4em .4em 0; margin-left: -.8px;">
+            <span nz-icon nzType="swap" nzTheme="outline" class="swap-rotado"></span>
+        </button>
+    </nz-flex>
+    <nz-divider nzType="vertical"></nz-divider>
+    <nz-flex nzAlign="center">
+        <button nz-button nzType="default" style="border-radius: .4em 0 0 .4em;" 
+            (click)="distribuirPor('MOSAICO')">
+            <span nz-icon nzType="appstore" nzTheme="outline"></span>
+        </button>
+        <button nz-button nzType="default" style="border-radius: 0 .4em .4em 0; margin-left: -.8px;"
+            (click)="distribuirPor('LISTA')">
+            <span nz-icon nzType="unordered-list" nzTheme="outline"></span>
+        </button>
+    </nz-flex>
+</nz-flex>

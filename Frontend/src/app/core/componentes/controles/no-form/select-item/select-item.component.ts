@@ -17,7 +17,7 @@ import { ConcatenarPipe } from "../../../../pipes/concatenar/concatenar.pipe";
     NzIconModule,
     FormsModule,
     ConcatenarPipe
-],
+  ],
 })
 export class SelectItemComponent implements OnInit {
   @Input() servicio!:ServicioCrud<any>;
@@ -32,7 +32,7 @@ export class SelectItemComponent implements OnInit {
   @Input() modo:'ACTUAL' | 'POR_ID' = 'ACTUAL';
   @Input() sinBorde: boolean = true;
 
-  @Output() valorChange = new EventEmitter<any>();
+  @Output() idChange = new EventEmitter<any>();
   @Output() itemChange = new EventEmitter<any>();
   @Output() cargadoChange = new EventEmitter<boolean>();
   
@@ -54,7 +54,7 @@ export class SelectItemComponent implements OnInit {
   }
 
   itemCambiado(event:any) {
-    this.valorChange.emit(event);
+    this.idChange.emit(event);
     this.itemChange.emit(this.options.find((i) => i.id == event));
   }
 
@@ -83,20 +83,20 @@ export class SelectItemComponent implements OnInit {
   manejarItem(respuesta:any) {
     this.item = respuesta;
     this.valor = respuesta.id;
-    this.valorChange.emit(respuesta.id);
+    this.idChange.emit(respuesta.id);
     this.itemChange.emit(respuesta);
     this.cargadoChange.emit(true);
   }
 
   cargarDatos() {
-    // this.servicio.mostrarPeriodosDeuda().subscribe({
-    //   next: (respuesta) => {
-    //     this.options = respuesta;
-    //   },
-    //   error: () => {
-    //     this.options = [];
-    //   },
-    // });
+    this.servicio.obtenerTodos().subscribe({
+      next: (respuesta) => {
+        this.options = respuesta;
+      },
+      error: () => {
+        this.options = [];
+      },
+    });
   }
 
 

@@ -34,7 +34,7 @@ import { ProcesoService } from '../../../../servicios/rest/proceso/proceso.servi
 export class ModalFormProcesoComponent extends ModalFormComponent {
   
   protected override modalForm = this.fb.group({
-    descripcion: ['', [Validators.required]],
+    nombre: ['', [Validators.required]],
   });
 
   constructor(

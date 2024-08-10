@@ -11,7 +11,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { ModalService } from '../../../../../servicios/modal/modal.service';
 import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.service';
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
@@ -20,7 +19,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { TablaPagMostrarComponent } from '../tabla-pag-mostrar.component';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { ComisionProcesoService } from '../../../../../servicios/rest/comision-proceso/comision-proceso.service';
+import { ComisionMiembroService } from '../../../../../servicios/rest/comision-miembro/comision-miembro.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-mostrar-miembros',
@@ -48,11 +48,6 @@ import { ComisionProcesoService } from '../../../../../servicios/rest/comision-p
 export class TablaPagMostrarMiembrosComponent extends TablaPagMostrarComponent {
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
-      name: 'Id',
-      columnKey: 'id',
-      type: 'NUMBER',
-    },
-    {
       name: 'Nombres',
       columnKey: 'nombres',
       default: true,
@@ -67,13 +62,6 @@ export class TablaPagMostrarMiembrosComponent extends TablaPagMostrarComponent {
     }
   ];
   override columnas: ColumnItem[] = [
-    {
-      name: 'Id',
-      attribute: 'id',
-      width: '50px',
-      showSort: true,
-      sortFn: true,
-    },
     {
       name: 'Nombres',
       attribute: 'nombres',
@@ -91,16 +79,69 @@ export class TablaPagMostrarMiembrosComponent extends TablaPagMostrarComponent {
       attribute: 'cargo',
       showSort: true,
       sortFn: true,
+      width: '115px'
     },
   ];
+
+  rangoInicial?: any;
+  rangoFinal?: any;
 
   constructor(
     msgService: NzMessageService,
     pipeService: PipeService,
-    servicio: ComisionProcesoService,
+    servicio: ComisionMiembroService,
+    cdService: CargadorDatosService
   ) {
-    super(msgService, pipeService, servicio);
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService);
+    this.cdService.cargarFiltrosInternos();
   }
+
+  setRangos(key: string, inicio: any, fin: any) {
+    if(inicio) this.rangoInicial = inicio;
+    if(fin) this.rangoFinal = fin;
+    this.parametrosPag.range = {
+      key: key,
+      bounds: [this.rangoInicial, this.rangoFinal]
+    }
+  } 
+
+  setFiltros(key: string, value: any) {
+    this.consultarFiltro(key, value);
+  }
+
+  filtrarRango(key: string, inicio:any, fin:any) {
+    if(inicio) this.rangoInicial = inicio;
+    if(fin) this.rangoFinal = fin;
+    this.parametrosPag.range = {
+      key: key,
+      bounds: [this.rangoInicial, this.rangoFinal]
+    }
+    this.cargarDatosServidor();
+  }
+
+  filtrar(key: string, value: any) {
+    this.consultarFiltro(key, value);
+    this.cargarDatosServidor();
+  }
+
+  consultarFiltro(key:string, value: any) {
+    if (!key && !value) {
+      return
+    }
+    const existe = this.parametrosPag.filter.find(
+      (filtro) => filtro.key === key
+    );
+    if (!existe) {
+      this.parametrosPag.filter.push({key: key, value: value});
+    } else {
+      this.parametrosPag.filter.forEach((filtro) => {
+        if (filtro.key === key) {
+          filtro.value = value;
+        }
+      });
+    }
+  }
+
+
+
 }

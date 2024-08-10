@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\PeriodoRepository;
 use App\Traits\General\FechaFormatoABarraTrait;
+use App\Traits\General\PeriodoNumericoTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -11,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class PeriodoService
 {
     use FechaFormatoABarraTrait;
+    use PeriodoNumericoTrait;
     protected PeriodoRepository $periodoRepository;
 
     public function __construct(PeriodoRepository $periodoRepository)
@@ -25,10 +27,11 @@ class PeriodoService
      */
     public function getAll(): Collection
     {
-        // Modificar el formato de las fechas
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
         return $this->periodoRepository->obtenerTodos()->map(function ($periodo) {
             $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
             $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
+            $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
             return $periodo;
         });
     }
@@ -41,10 +44,11 @@ class PeriodoService
      */
     public function getById(int $id): Model
     {
-        // Modificar el formato de las fechas
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
         $periodo = $this->periodoRepository->obtenerPorId($id);
         $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
         $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
         return $periodo;
     }
 
@@ -56,6 +60,8 @@ class PeriodoService
      */
     public function create(array $data): Model
     {
+        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlativo_romano']);
+        $data['periodo_numerico'] = $periodo_numerico;
         return $this->periodoRepository->crear($data);
     }
 
@@ -68,6 +74,8 @@ class PeriodoService
      */
     public function update(int $id, array $data): bool
     {
+        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlativo_romano']);
+        $data['periodo_numerico'] = $periodo_numerico;
         return $this->periodoRepository->actualizar($id, $data);
     }
 
@@ -86,10 +94,10 @@ class PeriodoService
      * Cambia el estado de un periodo.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->periodoRepository->cambiarEstado($id, $estado);
     }
@@ -112,10 +120,25 @@ class PeriodoService
 
     public function obtenerUltimo(): Model
     {
-        // Modificar el formato de las fechas
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
         $periodo = $this->periodoRepository->obtenerUltimo();
         $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
         $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+        return $periodo;
+    }
+
+    /**
+     * Obtiene el periodo actual que esté abierto.
+     *
+     * @return Model|null 
+     */
+    public function obtenerPeriodoActual(): Model|null
+    {
+        $periodo = $this->periodoRepository->obtenerPeriodoActual();
+        $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
+        $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
         return $periodo;
     }
     
@@ -126,10 +149,11 @@ class PeriodoService
      */
     public function obtenerActivos(): Collection
     {
-        // Modificar el formato de las fechas
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
         return $this->periodoRepository->obtenerActivos()->map(function ($periodo) {
             $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
             $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
+            $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
             return $periodo;
         });
     }

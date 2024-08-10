@@ -75,10 +75,10 @@ class ProcesoService
      * Cambia el estado de un proceso.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->procesoRepository->cambiarEstado($id, $estado);
     }

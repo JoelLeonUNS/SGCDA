@@ -45,7 +45,6 @@ export class ControlExportacionCargoComponent extends ControlExportacionComponen
   override parametrosPdf:ParametrosPdf  = {
     titulo: 'Listado de Cargos de SGC-DA',
     mostrarTitulo: true,
-    orientacion: 'landscape',
     columnasTabla: this.columnasTabla, 
     mostrarPiePagina: true,
     contenidoPiePagina: 'SGC-DA - Sistema de Gestión de Comisiones de la Dirección de Admisión',

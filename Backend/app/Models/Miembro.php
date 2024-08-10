@@ -15,6 +15,7 @@ class Miembro extends Model
     protected $fillable = [
         'nombres',
         'apellidos',
+        'dni',
         'estado',
     ];
 

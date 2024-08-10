@@ -1,0 +1,50 @@
+<div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
+  <app-buscador-tabla
+    [columnasBusqueda]="columnasBusqueda"
+    (columnaBusquedaChange)="parametrosPag.searchColumn = $event"
+    (terminoBusquedaChange)="busqueda.next($event)"
+    style="width: 100%"
+  ></app-buscador-tabla>
+  <app-organizador-fichero 
+    [columnasOrden]="columnasOrden"
+    (columnaOrdenChange)="ordenarPor($event)"
+    (ordenChange)="cambiarOrden($event)"
+  />
+</div>
+<div nz-flex [nzVertical]="true">
+  <nz-spin [nzSpinning]="loading" nzTip="Cargando" style="width: 100%">
+    <nz-flex nzGap="large" nzWrap="wrap">
+      @for (item of datos$ | async; track $index) {
+          <app-tarjeta-procesos 
+          [titulo]="item.proceso" 
+          [fechaInicial]="item.fecha_inicial"
+          [fechaFinal]="item.fecha_final"
+          [periodo]="item.periodo"
+          [estado]="item.estado"
+          [item]="item"
+          (refrescar)="cargarDatosServidor()"
+          />
+      }  @empty {
+        <nz-empty nzNotFoundContent="No se encontraron resultados" style="width: 100%"></nz-empty>
+      }
+    </nz-flex>
+    
+  </nz-spin>
+  <nz-flex nzJustify="end" nzAlign="center" style="margin-top: 2em;">
+      <nz-pagination [nzPageIndex]="parametrosPag.pageIndex" [nzPageSize]="parametrosPag.pageSize" [nzTotal]="total" [nzShowTotal]="totalTemplate" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+  </nz-flex>
+</div>
+<ng-template #totalTemplate>
+  @switch (total) {
+      @case (0) {
+          <span>No se encontró ningún elemento</span>
+      }
+      @case (1) {
+          <span>Se encontró 1 elemento</span>
+      }
+      @default {
+          <span>Se encontraron {{total}} elementos</span>
+      }
+  }
+</ng-template>
+<ng-container #vcrModal></ng-container>

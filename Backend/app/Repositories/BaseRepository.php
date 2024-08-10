@@ -114,6 +114,15 @@ abstract class BaseRepository
         return $this->modelo->orderBy('id', 'desc')->first();
     }
 
+    /**
+     * Aplica un rango a la consulta.
+     * 
+     * @param Builder $consulta
+     * @param array $rango
+     */
+
+     abstract protected function aplicarRango(Builder $consulta, array $range): void;
+
 
     /**
      * Aplica los filtros a la consulta.
@@ -154,10 +163,14 @@ abstract class BaseRepository
         $pageSize = $criterios['pageSize'] ?? 10;
         $sortField = $criterios['sortField'];
         $sortOrder = $criterios['sortOrder'];
+        $range = $criterios['range'] ?? null;
         $filters = $criterios['filters'];
         $searchTerm = $criterios['searchTerm'] ?? null;
         $searchColumn = $criterios['searchColumn'] ?? null;
         $query = $query ?? $this->modelo->query();
+
+        // Aplicar rango
+        $this->aplicarRango($query, $range);
 
         // Aplicar filtros
         $this->aplicarFiltros($query, $filters);

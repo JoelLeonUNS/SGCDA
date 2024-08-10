@@ -40,7 +40,8 @@ export class ModalFormMiembroComponent extends ModalFormComponent {
     miembro_id: [null],
     nombres: [null, [Validators.required]],
     apellidos: [null, [Validators.required]],
-    cargo_id: [null, [Validators.required]],
+    dni: [null], // despues poner required
+    cargo_especialidad_id: [null, [Validators.required]],
   });
 
   constructor(

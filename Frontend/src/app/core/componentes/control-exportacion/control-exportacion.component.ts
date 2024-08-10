@@ -40,12 +40,13 @@ export class ControlExportacionComponent {
     });  
   }
 
-  exportarPdf() {
+  exportarPdf(tipo:string) {
     this.exportandoPdf = true;
     this.cargarDatosExportar(() => {
       this.genradorPdfService.establecerEstrategia(new GenerarTablaPdfStrategy(this.pipeService));
       const doc = this.genradorPdfService.generarPdf(this.parametrosPdf);
-      this.genradorPdfService.guardarPdf(doc, this.parametrosPdf.titulo);
+      if (tipo === 'descargar') this.genradorPdfService.guardarPdf(doc, this.parametrosPdf.titulo);
+      else this.genradorPdfService.abrirPdf(doc);
       this.exportandoPdf = false;
     });
   }

@@ -117,7 +117,23 @@ class ComisionMiembroService
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
-        return $this->comisionMiembroRepository->obtenerPaginado($criteria);
+        $comisionMiembroPag =  $this->comisionMiembroRepository->obtenerPaginado($criteria);
+        $comisionMiembroPag->getCollection()->transform(function ($comisionMiembro) {
+            return [
+                'id' => $comisionMiembro->id,
+                'comision' => $comisionMiembro->comisionProceso->comision->descripcion,
+                'proceso_periodo' => $comisionMiembro->comisionProceso->procesoPeriodo->proceso->descripcion .
+                    ' ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->correlativo_romano,
+                'nombres' => $comisionMiembro->miembroCargo->miembro->nombres,
+                'apellidos' => $comisionMiembro->miembroCargo->miembro->apellidos,
+                'cargo' => $comisionMiembro->miembroCargo->cargo->descripcion,
+                'fecha' => $comisionMiembro->comisionProceso->fecha,
+                'hora' => $comisionMiembro->comisionProceso->hora,
+                'estado' => $comisionMiembro->estado,
+            ];
+        });
+
+        return $comisionMiembroPag;
     }
 
     public function obtenerConNombres(): Collection

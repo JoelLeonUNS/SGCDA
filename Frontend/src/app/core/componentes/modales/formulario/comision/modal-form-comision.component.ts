@@ -34,7 +34,7 @@ import { ComisionService } from '../../../../servicios/rest/comision/comision.se
 export class ModalFormComisionComponent extends ModalFormComponent {
   
   protected override modalForm = this.fb.group({
-    descripcion: ['', [Validators.required]],
+    nombre: ['', [Validators.required]],
   });
 
   constructor(

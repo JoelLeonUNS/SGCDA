@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdate\StoreUpdatePeriodoRequest;
-use App\Http\Requests\Validacion\EstadoBitRequest;
+use App\Http\Requests\Validacion\EstadoEnumRequest;
 use App\Services\ResponseService;
 use App\Services\PeriodoService;
 use App\Traits\Http\Controllers\CriterioTrait;
@@ -132,35 +132,30 @@ class PeriodoController extends Controller
         }
     }
 
+    public function obtenerActual(): JsonResponse
+    {
+        try {
+            $periodoActual = $this->periodoService->obtenerPeriodoActual();
+            return $this->responseService->success($periodoActual);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener el periodo actual: ' . $e->getMessage());
+        }
+    }
+
     /**
      * Cambia el estado de un periodo.
      *
-     * @param EstadoBitRequest $request
+     * @param EstadoEnumRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function cambiarEstado(EstadoBitRequest $request, int $id): JsonResponse
+    public function cambiarEstado(EstadoEnumRequest $request, int $id): JsonResponse
     {
         try {
             $this->periodoService->cambiarEstado($id, $request->validated()['estado']);
             return $this->responseService->success("Estado del periodo actualizado correctamente");
         } catch (Exception $e) {
             return $this->responseService->error('Error al cambiar el estado del periodo: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Obtiene todos las periodos activas.
-     *
-     * @return JsonResponse
-     */
-    public function obtenerActivos(): JsonResponse
-    {
-        try {
-            $periodosActivos = $this->periodoService->obtenerActivos();
-            return $this->responseService->success($periodosActivos);
-        } catch (Exception $e) {
-            return $this->responseService->error('Error al obtener los periodos activos: ' . $e->getMessage());
         }
     }
 

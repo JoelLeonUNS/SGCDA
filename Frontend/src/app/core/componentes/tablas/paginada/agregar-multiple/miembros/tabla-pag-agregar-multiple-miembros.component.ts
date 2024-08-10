@@ -19,6 +19,8 @@ import { TablaPagAgregarMultipleComponent } from '../tabla-pag-agregar-multiple.
 import { BuscadorTablaComponent } from "../../../../buscador-tabla/buscador-tabla.component";
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { MiembroCargoService } from '../../../../../servicios/rest/miembro-cargo/miembro-cargo.service';
+import { catchError, map, of, tap } from 'rxjs';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
     selector: 'app-tabla-pag-agregar-multiple-miembros',
@@ -96,10 +98,26 @@ export class TablaPagAgregarMultipleMiembrosComponent extends TablaPagAgregarMul
   constructor(
     msgService: NzMessageService,
     pipeService: PipeService,
-    servicio: MiembroCargoService,
-    modalService:ModalService
+    override servicio: MiembroCargoService,
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService)
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
+  }
+
+  override cargarDatosServidor(): void {
+    this.loading = true;
+    this.datos$ = this.servicio?.obtenerSegunAsignacionPag(this.parametrosPag).pipe(
+      tap(d => {
+        this.manejarRespuesta(d);
+      }),
+      catchError(error => {
+        this.manejarError(error);
+        return of(null);
+      }),
+      map(d => d.data)
+    );
   }
   
 }

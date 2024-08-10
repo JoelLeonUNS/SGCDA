@@ -53,7 +53,7 @@ class MiembroCargoController extends Controller
             $miembroCargo = $this->miembroCargoService->getById($id);
             return $this->responseService->success($miembroCargo);
         } catch (Exception $e) {
-            return $this->responseService->error('Error al obtener el miembro: ' . $e->getMessage());
+            return $this->responseService->error('Error al obtener el miembro cargo: ' . $e->getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ class MiembroCargoController extends Controller
             $miembroCargo = $this->miembroCargoService->create($request->validate($request->rules()));
             return $this->responseService->success($miembroCargo, ResponseAlias::HTTP_CREATED);
         } catch (Exception $e) {
-            return $this->responseService->error('Error al crear el miembro: ' . $e->getMessage());
+            return $this->responseService->error('Error al crear el miembro cargo: ' . $e->getMessage());
         }
     }
 
@@ -89,7 +89,7 @@ class MiembroCargoController extends Controller
             $this->miembroCargoService->update($id, $request->validate($request->rules()));
             return $this->responseService->success("Miembro actualizado correctamente");
         } catch (Exception $e) {
-            return $this->responseService->error('Error al actualizar el miembro: ' . $e->getMessage());
+            return $this->responseService->error('Error al actualizar el miembro cargo: ' . $e->getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ class MiembroCargoController extends Controller
             $this->miembroCargoService->delete($id);
             return $this->responseService->success("Miembro eliminado correctamente");
         } catch (Exception $e) {
-            return $this->responseService->error('Error al eliminar el miembro: ' . $e->getMessage());
+            return $this->responseService->error('Error al eliminar el miembro cargo: ' . $e->getMessage());
         }
     }
 
@@ -133,9 +133,9 @@ class MiembroCargoController extends Controller
     {
         try {
             $this->miembroCargoService->cambiarEstado($id, $request->validated()['estado']);
-            return $this->responseService->success("Estado del miembro actualizado correctamente");
+            return $this->responseService->success("Estado del miembro cargo actualizado correctamente");
         } catch (Exception $e) {
-            return $this->responseService->error('Error al cambiar el estado del miembro: ' . $e->getMessage());
+            return $this->responseService->error('Error al cambiar el estado del miembro cargo: ' . $e->getMessage());
         }
     }
 
@@ -186,6 +186,20 @@ class MiembroCargoController extends Controller
         try {
             $criteria = $this->obtenerCriterios($request);
             $miembroCargos = $this->miembroCargoService->obtenerPaginado($criteria);
+            return $this->responseService->success(([
+                'data' => $miembroCargos->items(),
+                'total' => $miembroCargos->total(),
+            ]));
+        } catch (InvalidArgumentException $e) {
+            return $this->responseService->error($e->getMessage(), ResponseAlias::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function obtenerParticipacionMiembrosPag(Request $request): JsonResponse
+    {
+        try {
+            $criteria = $this->obtenerCriterios($request);
+            $miembroCargos = $this->miembroCargoService->obtenerParticipacionMiembrosPag($criteria);
             return $this->responseService->success(([
                 'data' => $miembroCargos->items(),
                 'total' => $miembroCargos->total(),

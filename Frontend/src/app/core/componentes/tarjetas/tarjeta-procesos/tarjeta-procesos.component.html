@@ -1,0 +1,58 @@
+<div (contextmenu)="contextMenu($event, menu)">
+    <nz-card class="tarjeta" (click)="verDetalles()">
+        <div class="encabezado">
+            <span class="titulo">
+                {{ titulo }}
+            </span>
+            <ng-container *ngTemplateOutlet="estadosTemplate"></ng-container>
+        </div>
+        <div class="contenido">
+            <span>El proceso tiene una duración de {{ calcularDuracion() }}</span><br>
+            <span>Inicia: {{ fechaInicial }}</span><br>
+            <span>Finaliza: {{ fechaFinal }}</span>
+        </div>
+        <div class="footer">
+            <ng-container *ngTemplateOutlet="periodoTemplate"></ng-container>
+            <div class="controles">
+                <button nz-button nzType="link" (click)="editar($event)" [disabled]="estado == 'CERRADO'">Editar</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzDanger nzType="link"
+                nz-popconfirm="¿Está seguro de cerrar este periodo?" 
+                (nzOnConfirm)="cerrar()">Cerrar</button>
+            </div>
+        </div>
+    </nz-card>
+</div>
+<ng-template #estadosTemplate>
+    @if(estado === 'ABIERTO') {
+        <nz-tag nzColor="success">
+            <span nz-icon nzType="check-circle"></span>
+            <span>ABIERTO</span>
+        </nz-tag>
+    } @else {
+        <nz-tag nzColor="error">
+            <span nz-icon nzType="close-circle"></span>
+            <span>CERRADO</span>
+        </nz-tag>
+    }
+</ng-template>
+<ng-template #periodoTemplate>
+    <nz-tag nzColor="orange">
+        <span nz-icon nzType="calendar"></span>
+        <span>{{ periodo }}</span>
+    </nz-tag>
+</ng-template>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+        <li nz-menu-item (click)="verDetalles()">
+            <span nz-icon nzType="bars" nzTheme="outline"></span>
+            <span style="margin-left: .75em;">Ver detalles</span>
+        </li>
+        <li nz-menu-item nzDanger (click)="eliminar()">
+            <span nz-icon nzType="delete" nzTheme="outline"></span>
+            <span style="margin-left: .75em;">Eliminar</span>
+        </li>
+    </ul>
+</nz-dropdown-menu>
+
+<ng-container #vcrModal></ng-container>

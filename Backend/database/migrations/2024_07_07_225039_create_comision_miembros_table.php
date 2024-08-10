@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $this->createComisionMiembrosTable();
+        $this->createTable();
         $this->addEstadoColumn();
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::dropIfExists('comision_miembros');
     }
 
-    private function createComisionMiembrosTable(): void
+    private function createTable(): void
     {
         Schema::create('comision_miembros', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador de la comisión miembros');

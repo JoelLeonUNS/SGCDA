@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { TablaPagComponent } from '../tabla-pag.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { ModalService } from '../../../../servicios/modal/modal.service';
 import { PipeService } from '../../../../servicios/utilidades/pipe/pipe.service';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { BuscadorTablaComponent } from '../../../buscador-tabla/buscador-tabla.component';
+import { CargadorDatosService } from '../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-mostrar',
@@ -44,14 +45,21 @@ import { BuscadorTablaComponent } from '../../../buscador-tabla/buscador-tabla.c
   styleUrl: './tabla-pag-mostrar.component.css',
 })
 export class TablaPagMostrarComponent extends TablaPagComponent {
+  @Output() itemChange = new EventEmitter<any>();
+
   @ViewChild('vcrModal', { read: ViewContainerRef }) vcr!: ViewContainerRef;
 
   constructor(
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio:ServicioCrud<any>,
+    cdService: CargadorDatosService
   ) {
-    super(msgService, pipeService,servicio);
+    super(msgService, pipeService,servicio, cdService);
+  }
+
+  mostrar(item:any) {
+    this.itemChange.emit(item);
   }
 
 }

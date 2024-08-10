@@ -13,7 +13,7 @@ class Cargo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'descripcion',
+        'nombre',
         'estado',
     ];
 

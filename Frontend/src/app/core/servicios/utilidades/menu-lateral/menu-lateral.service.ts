@@ -24,15 +24,33 @@ export class MenuLateralService {
       children: [
         {
           level: 2,
-          title: 'Credenciales',
-          icon: 'idcard',
-          routerLink: '/servicios/credenciales',
+          title: 'Periodos',
+          icon: 'calendar',
+          routerLink: '/servicios/periodos',
         },
+        {
+          level: 2,
+          title: 'Procesos',
+          icon: 'control',
+          routerLink: '/servicios/procesos',
+        },
+        // {
+        //   level: 2,
+        //   title: 'Miembros',
+        //   icon: 'user',
+        //   routerLink: '/servicios/miembros',
+        // },
         {
           level: 2,
           title: 'Comisiones',
           icon: 'team',
           routerLink: '/servicios/comisiones',
+        },
+        {
+          level: 2,
+          title: 'Credenciales',
+          icon: 'idcard',
+          routerLink: '/servicios/credenciales',
         },
       ]
     },
@@ -55,9 +73,27 @@ export class MenuLateralService {
         },
         {
           level: 2,
+          title: 'Aulas',
+          icon: 'appstore',
+          routerLink: '/configuracion/aulas',
+        },
+        {
+          level: 2,
+          title: 'Pabellones',
+          icon: 'bank',
+          routerLink: '/configuracion/pabellones',
+        },
+        {
+          level: 2,
           title: 'Cargos',
           icon: 'apartment',
           routerLink: '/configuracion/cargos',
+        },
+        {
+          level: 2,
+          title: 'Especialidades',
+          icon: 'aim',
+          routerLink: '/configuracion/especialidades',
         },
         {
           level: 2,

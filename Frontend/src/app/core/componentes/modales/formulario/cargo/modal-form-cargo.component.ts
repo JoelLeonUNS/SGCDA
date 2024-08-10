@@ -34,7 +34,7 @@ import { CargoService } from '../../../../servicios/rest/cargo/cargo.service';
 export class ModalFormCargoComponent extends ModalFormComponent {
   
   protected override modalForm = this.fb.group({
-    descripcion: ['', [Validators.required]],
+    nombre: ['', [Validators.required]],
   });
 
   constructor(

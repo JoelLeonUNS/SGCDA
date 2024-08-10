@@ -16,7 +16,8 @@ class Periodo extends Model
         'fecha_inicial',
         'fecha_final',
         'anio',
-        'correlativo_romano',
+        'correlat_romano',
+        'periodo_numerico',
         'estado',
     ];
 

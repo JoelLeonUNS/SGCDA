@@ -3,7 +3,7 @@ import { ParametrosPdf } from '../../../../interfaces/utilidades/parametros-pdf.
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { ColumnaTabla } from '../../../../interfaces/utilidades/columna-tabla.interface';
-import { PipeService } from '../../../pipe/pipe.service';
+import { PipeService } from '../../../utilidades/pipe/pipe.service';
 
 export class GenerarReportePdfStrategy implements GenerarPdfStrategy {
   doc = new jsPDF();

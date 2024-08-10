@@ -3,13 +3,16 @@
 namespace App\Services;
 
 use App\Repositories\ProcesoPeriodoRepository;
+use App\Traits\General\FechaFormatoABarraTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Js;
 
 class ProcesoPeriodoService
 {
-
+    use FechaFormatoABarraTrait;
     protected ProcesoPeriodoRepository $procesoPeriodoRepository;
 
     public function __construct(ProcesoPeriodoRepository $procesoPeriodoRepository)
@@ -35,7 +38,10 @@ class ProcesoPeriodoService
      */
     public function getById(int $id): Model
     {
-        return $this->procesoPeriodoRepository->obtenerPorId($id);
+        $procesoPeriodo = $this->procesoPeriodoRepository->obtenerPorId($id);
+        $procesoPeriodo->fecha_inicial = $this->convertirFecha($procesoPeriodo->fecha_inicial);
+        $procesoPeriodo->fecha_final = $this->convertirFecha($procesoPeriodo->fecha_final);
+        return $procesoPeriodo;
     }
 
     /**
@@ -76,10 +82,10 @@ class ProcesoPeriodoService
      * Cambia el estado de un proceso periodo.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->procesoPeriodoRepository->cambiarEstado($id, $estado);
     }
@@ -92,6 +98,28 @@ class ProcesoPeriodoService
     public function obtenerUltimoId(): int
     {
         return $this->procesoPeriodoRepository->obtenerUltimoId();
+    }
+
+    /**
+     * Obtiene el periodo actual que esté abierto.
+     *
+     * @return array
+     */
+    public function obtenerActual(): array
+    {
+        $procesoPeriodo = $this->procesoPeriodoRepository->obtenerProcesoPeriodoActual();
+        $procesoPeriodoParse = [
+            'id' => $procesoPeriodo->id,
+            'proceso_id' => $procesoPeriodo->proceso_id,
+            'proceso' => $procesoPeriodo->proceso->descripcion,
+            'periodo_id' => $procesoPeriodo->periodo_id,
+            'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlativo_romano,
+            'fecha_inicial' => $this->convertirFecha($procesoPeriodo->fecha_inicial),
+            'fecha_final' => $this->convertirFecha($procesoPeriodo->fecha_final),
+            'estado' => $procesoPeriodo->estado
+        ];
+        
+        return $procesoPeriodoParse;
     }
 
     /**
@@ -116,7 +144,23 @@ class ProcesoPeriodoService
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
-        return  $this->procesoPeriodoRepository->obtenerPaginado($criteria);
+        $procesoPeriodoPag =   $this->procesoPeriodoRepository->obtenerPaginado($criteria);
+        $procesoPeriodoParse = $procesoPeriodoPag->getCollection()->map(function ($procesoPeriodo) {
+            return [
+                'id' => $procesoPeriodo->id,
+                'proceso_id' => $procesoPeriodo->proceso_id,
+                'proceso' => $procesoPeriodo->proceso->descripcion,
+                'periodo_id' => $procesoPeriodo->periodo_id,
+                'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlativo_romano,
+                'fecha_inicial' => $this->convertirFecha($procesoPeriodo->fecha_inicial),
+                'fecha_final' => $this->convertirFecha($procesoPeriodo->fecha_final),
+                'estado' => $procesoPeriodo->estado,
+            ];
+        });
+
+        $procesoPeriodoPag->setCollection($procesoPeriodoParse);
+        
+        return $procesoPeriodoPag;
     }
 
     public function obtenerConNombres(): Collection

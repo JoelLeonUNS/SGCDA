@@ -29,6 +29,13 @@ class ProcesoRepository extends EstadoRepository
         return $this->modelo->insertGetId($comision);
     }
 
+    protected function aplicarRango(Builder $consulta, ?array $range): void
+    {
+        if ($range['field'] && $range['values']) {
+            $consulta->whereBetween($range['field'], [$range['values']['start'], $range['values']['end']]);
+        }
+    }
+
     protected function aplicarFiltros(Builder $consulta, array $filtros): void
     {
         foreach ($filtros as $key => $value) {

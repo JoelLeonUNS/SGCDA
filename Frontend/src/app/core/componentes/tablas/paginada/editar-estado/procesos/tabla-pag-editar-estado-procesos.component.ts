@@ -21,6 +21,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ProcesoService } from '../../../../../servicios/rest/proceso/proceso.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-procesos',
@@ -101,11 +102,10 @@ export class TablaPagEditarEstadoProcesosComponent extends TablaPagEditarEstadoC
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: ProcesoService,
-    modalService:ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

@@ -20,8 +20,24 @@ export class DateComponent {
   @Input() label?:string;
   @Input() atributte:string[] = ['id', 'name'];
   @Input() gender?:string;
+  @Input() type:string = 'date';
+
+  constructor() { }
 
   get prefijo() {
     return this.gender == 'F' ? 'a' : ''
+  }
+
+  get formato() {
+    switch (this.type) {
+      case 'date':
+        return 'dd/MM/yyyy';
+      case 'mouth':
+        return 'MM';
+      case 'year':
+        return 'yyyy';
+      default:
+        return 'dd/MM/yyyy';
+    }
   }
 }

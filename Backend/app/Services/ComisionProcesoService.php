@@ -5,12 +5,14 @@ namespace App\Services;
 use App\Repositories\ComisionMiembroRepository;
 use App\Repositories\ComisionProcesoRepository;
 use App\Repositories\ProcesoPeriodoRepository;
+use App\Traits\General\FechaFormatoABarraTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ComisionProcesoService
 {
+    use FechaFormatoABarraTrait;
     protected ProcesoPeriodoRepository $procesoPeriodoRepository;
     protected ComisionMiembroRepository $comisionMiembroRepository;
     protected ComisionProcesoRepository $comisionProcesoRepository;
@@ -40,7 +42,22 @@ class ComisionProcesoService
      */
     public function getById(int $id): Model
     {
-        return $this->comisionProcesoRepository->obtenerPorId($id);
+        $comisionProceso = $this->comisionProcesoRepository->obtenerPorId($id);
+        $comisionProceso->fecha = $this->convertirFecha($comisionProceso->fecha);
+    
+        $comisionMiembros = $this->comisionMiembroRepository->obtenerMiembros($comisionProceso->id);
+         // Inicializa los arrays para nombres completos e IDs
+        $miembrosNombres = [];
+        $miembrosIds = [];
+        // Recorre los miembros para obtener los nombres completos e IDs
+        foreach ($comisionMiembros as $cm) {
+            $miembrosNombres[] = $cm->miembroCargo->miembro->nombres . ' ' . $cm->miembroCargo->miembro->apellidos;
+            $miembrosIds[] = $cm->miembroCargo->id;
+        }
+        // Asigna los valores procesados al objeto comisionProceso
+        $comisionProceso->miembros = $miembrosNombres;
+        $comisionProceso->miembros_ids = $miembrosIds;
+        return $comisionProceso;
     }
 
     /**
@@ -54,20 +71,6 @@ class ComisionProcesoService
         // Desacoplar cada id de miembros_ids
         $miembros_ids = $data['miembros_ids'];
         unset($data['miembros_ids']);
-        $proceso_id = $data['proceso_id'];
-        unset($data['proceso_id']);
-        $periodo_id = $data['periodo_id'];
-        unset($data['periodo_id']);
-
-        // Buscar o crear el registro en ProcesoPeriodo
-        $procesoPeriodo = $this->procesoPeriodoRepository->buscarOCrear([
-            'proceso_id' => $proceso_id,
-            'periodo_id' => $periodo_id
-        ]);
-
-        // Agregar el proceso_periodo_id a los datos de la comisión proceso
-        $data['proceso_periodo_id'] = $procesoPeriodo->id;
-
         // Crear la comisión proceso
         $comisionProceso = $this->comisionProcesoRepository->crear($data);
         // Asignar los miembros a la comisión
@@ -89,12 +92,40 @@ class ComisionProcesoService
      */
     public function update(int $id, array $data): bool
     {
-        // Desacoplar cada id de miembros_ids
+        // Extraer miembros_ids del array de datos
         $miembros_ids = $data['miembros_ids'];
         unset($data['miembros_ids']);
-        // Actualizar la comisión proceso ...
+        
+        // Actualizar la comisión
+        $comisionProceso = $this->comisionProcesoRepository->actualizar($id, $data);
 
-        return $this->comisionProcesoRepository->actualizar($id, $data);
+        // Obtener los miembros actuales de la comisión
+        $comisionMiembros = $this->comisionMiembroRepository->obtenerMiembros($id);
+
+        // Crear colecciones para comparación
+        $miembrosActuales = collect($comisionMiembros)->pluck('miembro_cargo_id')->toArray();
+        $nuevosmiembros = collect($miembros_ids);
+
+        // Encontrar miembros a eliminar
+        $miembrosAEliminar = array_diff($miembrosActuales, $nuevosmiembros->toArray());
+
+        // Encontrar miembros a agregar
+        $miembrosAAgregar = $nuevosmiembros->diff($miembrosActuales);
+
+        // Eliminar miembros que ya no están en la lista
+        foreach ($miembrosAEliminar as $miembroId) {
+            $this->comisionMiembroRepository->eliminarPorComisionYMiembro($id, $miembroId);
+        }
+
+        // Agregar nuevos miembros
+        foreach ($miembrosAAgregar as $miembroId) {
+            $this->comisionMiembroRepository->crear([
+                'comision_proceso_id' => $id,
+                'miembro_cargo_id' => $miembroId,
+            ]);
+        }
+
+        return $comisionProceso;
     }
 
     /**
@@ -112,10 +143,10 @@ class ComisionProcesoService
      * Cambia el estado de un comision.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->comisionProcesoRepository->cambiarEstado($id, $estado);
     }
@@ -154,17 +185,22 @@ class ComisionProcesoService
     {
         $comisionProcesoPag = $this->comisionProcesoRepository->obtenerPaginado($criteria);
         $comisionProcesoParse = $comisionProcesoPag->getCollection()->map(function ($comisionProceso) {
-            $nroMiembros = $this->comisionMiembroRepository->obtenerNroMiembros($comisionProceso->id);
+            $comisionMiembros = $this->comisionMiembroRepository->obtenerMiembros($comisionProceso->id);
+            // Inicializa los arrays para nombres completos e IDs
+            $miembrosNombres = [];
+            // Recorre los miembros para obtener los nombres completos e IDs
+            foreach ($comisionMiembros as $cm) {
+                $miembrosNombres[] = $cm->miembroCargo->miembro->nombres . ' ' . $cm->miembroCargo->miembro->apellidos;
+            }
+            $nroMiembros = $comisionMiembros->count();
             return [
                 'id' => $comisionProceso->id,
                 'comision_id' => $comisionProceso->comision_id,
                 'comision' => $comisionProceso->comision->descripcion,
                 'nro_miembros' => $nroMiembros,
-                'fecha' => $comisionProceso->fecha,
+                'miembros' => $miembrosNombres,
+                'fecha' => $this->convertirFecha($comisionProceso->fecha),
                 'hora' => $comisionProceso->hora,
-                'paga' => $comisionProceso->paga,
-                'proceso_id' => $comisionProceso->procesoPeriodo->proceso->id,
-                'proceso' => $comisionProceso->procesoPeriodo->proceso->descripcion,
                 'periodo_id' => $comisionProceso->procesoPeriodo->periodo->id,
                 'periodo' => $comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionProceso->procesoPeriodo->periodo->correlativo_romano,
                 'estado' => $comisionProceso->estado,

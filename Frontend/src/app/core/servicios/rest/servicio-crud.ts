@@ -33,7 +33,7 @@ export abstract class ServicioCrud<T> {
   }
 
   cambiarEstado(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}/cambiar-estado`, data);
+    return this.http.patch(`${this.API_URL}/${id}/cambiar-estado`, data);
   }
 
   obtenerUltimo(): Observable<T> {
@@ -63,7 +63,14 @@ export abstract class ServicioCrud<T> {
       .append('sortField', `${p.sortField}`)
       .append('sortOrder', `${p.sortOrder}`)
       .append('searchTerm', `${p.searchTerm}`)
-      .append('searchColumn', `${p.searchColumn}`);
+      .append('searchColumn', `${p.searchColumn}`)
+    if (p.range) {
+      const start = p.range.bounds[0];
+      const end = p.range.bounds[1];
+      params = params.append(`rangeField`, `${p.range.key}`)
+        .append(`rangeValues[start]`, `${start}`)
+        .append(`rangeValues[end]`, `${end}`);
+    }
     if (Array.isArray(p.filter) && p.filter.length > 0) {
       p.filter.forEach((f) => {
         if (Array.isArray(f.value) && f.value.length > 0) { // multiple

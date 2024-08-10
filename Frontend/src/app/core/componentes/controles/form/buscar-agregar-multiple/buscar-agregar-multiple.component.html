@@ -13,7 +13,7 @@
       [disabled]="isDisabled"
       [placeholder]="'Buscar para seleccionar un' + prefijo + ' ' + label + ''"
       [nzAutosize]="{ minRows: 5, maxRows: 10 }"
-      (click)="buscar()"
+      (dblclick)="buscar()"
       [(ngModel)]="inputValores"
     ></textarea>
     </nz-form-control>

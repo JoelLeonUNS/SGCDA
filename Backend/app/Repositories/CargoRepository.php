@@ -14,19 +14,16 @@ class CargoRepository extends EstadoRepository
         parent::__construct($modelo);
     }
 
-    /**
-     * Obtiene todos los miembros con selección de columnas específicas.
-     *
-     * @return Collection
-     */
-    public function obtenerTodosConColumnasEspecificas(): Collection
-    {
-        return $this->modelo::select('id', 'descripcion', 'estado')->get();
-    }
-
     public function crearYObtenerId(array $cargo): int|null
     {
         return $this->modelo->insertGetId($cargo);
+    }
+
+    protected function aplicarRango(Builder $consulta, ?array $range): void
+    {
+        if ($range['field'] && $range['values']) {
+            $consulta->whereBetween($range['field'], [$range['values']['start'], $range['values']['end']]);
+        }
     }
 
     protected function aplicarFiltros(Builder $consulta, array $filtros): void

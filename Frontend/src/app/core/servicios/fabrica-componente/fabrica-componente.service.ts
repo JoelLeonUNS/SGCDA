@@ -6,6 +6,10 @@ import { ModalFormProcesoComponent } from '../../componentes/modales/formulario/
 import { ModalFormPeriodoComponent } from '../../componentes/modales/formulario/periodo/modal-form-periodo.component';
 import { ModalTablaMiembroComponent } from '../../componentes/modales/tabla/miembro/modal-tabla-miembro.component';
 import { ModalFormComisionProcesoComponent } from '../../componentes/modales/formulario/comision-proceso/modal-form-comision-proceso.component';
+import { ModalFormProcesoPeriodoComponent } from '../../componentes/modales/formulario/proceso-periodo/modal-form-proceso-periodo.component';
+import { ModalFormEspecialidadComponent } from '../../componentes/modales/formulario/especialidad/modal-form-especialidad.component';
+import { ModalFormAulaComponent } from '../../componentes/modales/formulario/aula/modal-form-aula.component';
+import { ModalFormPabellonComponent } from '../../componentes/modales/formulario/pabellon/modal-form-pabellon.component';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +17,12 @@ import { ModalFormComisionProcesoComponent } from '../../componentes/modales/for
 export class FabricaComponenteService {
   private componentes: { [key: string]: Type<any> } = {
     // Modales
+    // Pabellon
+    modalFormPabellon: ModalFormPabellonComponent,
+    // Aula
+    modalFormAula: ModalFormAulaComponent,
+    // Especialidad
+    modalFormEspecialidad: ModalFormEspecialidadComponent,
     // Cargo
     modalFormCargo: ModalFormCargoComponent,
     // Miembro
@@ -23,6 +33,7 @@ export class FabricaComponenteService {
     modalFormComisionProceso: ModalFormComisionProcesoComponent,
     // Proceso
     modalFormProceso: ModalFormProcesoComponent,
+    modalFormProcesoPeriodo: ModalFormProcesoPeriodoComponent,
     // Periodo
     modalFormPeriodo: ModalFormPeriodoComponent,
   };

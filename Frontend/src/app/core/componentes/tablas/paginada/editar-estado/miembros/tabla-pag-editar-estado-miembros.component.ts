@@ -21,6 +21,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { MiembroCargoService } from '../../../../../servicios/rest/miembro-cargo/miembro-cargo.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-miembros',
@@ -96,6 +97,14 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
       sortFn: true,
     },
     {
+      name: 'Asignación',
+      attribute: 'fecha_asignacion',
+      showSort: true,
+      sortFn: true,
+      width: '100px',
+      pipe: { nombre: 'date' , datos: ['dd/MM/yyyy'] },
+    },
+    {
       name: 'Estado',
       attribute: 'estado',
       width: '100px',
@@ -122,11 +131,10 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: MiembroCargoService,
-    modalService:ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

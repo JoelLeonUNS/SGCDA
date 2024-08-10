@@ -8,6 +8,7 @@ import { Component, ElementRef, HostListener, Input } from '@angular/core';
   styleUrl: './vista-previa-credencial.component.css'
 })
 export class VistaPreviaCredencialComponent {
+  @Input() comision: string = '';
   @Input() miembro: string = '';
   @Input() cargo: string = '';
   @Input() procesoPeriodo: string = '';

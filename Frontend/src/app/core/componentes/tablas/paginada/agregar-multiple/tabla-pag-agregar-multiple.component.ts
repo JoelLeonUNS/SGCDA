@@ -17,6 +17,7 @@ import { TablaPagComponent } from '../tabla-pag.component';
 import { PipeService } from '../../../../servicios/utilidades/pipe/pipe.service';
 import { ModalService } from '../../../../servicios/modal/modal.service';
 import { BuscadorTablaComponent } from '../../../buscador-tabla/buscador-tabla.component';
+import { CargadorDatosService } from '../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-agregar-multiple',
@@ -54,11 +55,10 @@ export class TablaPagAgregarMultipleComponent extends TablaPagComponent implemen
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: ServicioCrud<any>,
+    cdService: CargadorDatosService,
     private modalService: ModalService
   ) {
-    super(msgService, pipeService, servicio);
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -106,6 +106,7 @@ export class TablaPagAgregarMultipleComponent extends TablaPagComponent implemen
     // Deja solo los items actuales, los demás los elimina de la lista de items seleccionados
     this.itemsInput = new Map([...this.itemsInput].filter(([id, _]) => itemsActuales.includes(id)));
     this.refreshCheckedStatus();
+    this.itemsInputChange.emit(this.itemsInput);
   }
 
   onItemSeleccionado(data: any, checked: boolean): void {

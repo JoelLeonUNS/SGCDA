@@ -21,6 +21,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { CargoService } from '../../../../../servicios/rest/cargo/cargo.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-cargos',
@@ -101,11 +102,10 @@ export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoCom
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: CargoService,
-    modalService:ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

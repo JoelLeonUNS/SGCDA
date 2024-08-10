@@ -21,6 +21,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { BuscadorTablaComponent } from '../../../buscador-tabla/buscador-tabla.component';
 import { FiltroItem } from '../../../../interfaces/utilidades/filtro-item.interface';
 import { TagsEstados } from '../../../../interfaces/utilidades/tags.interface';
+import { CargadorDatosService } from '../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado',
@@ -70,9 +71,10 @@ export class TablaPagEditarEstadoComponent extends TablaPagComponent {
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio:ServicioCrud<any>,
-    protected modalService:ModalService
+    cdServicio: CargadorDatosService,
+    protected modalService:ModalService,
   ) {
-    super(msgService, pipeService,servicio);
+    super(msgService, pipeService,servicio,cdServicio);
   }
 
   abrirModal(item:any) {

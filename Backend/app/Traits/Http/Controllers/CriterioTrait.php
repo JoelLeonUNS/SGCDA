@@ -15,6 +15,8 @@ trait CriterioTrait
             'pageSize' => 'nullable|integer|min:1',
             'sortField' => 'nullable|string',
             'sortOrder' => 'nullable|string|in:asc,desc,null',
+            'rangeField' => 'nullable|string',
+            'rangeValues' => 'nullable|array',
             'filters' => 'nullable|array',
             'searchTerm' => 'nullable|string',
             'searchColumn' => 'nullable|string',
@@ -47,6 +49,10 @@ trait CriterioTrait
                 'sortOrder' => $sortOrder,
                 'searchTerm' => $validatedData['searchTerm'] ?? null,
                 'searchColumn' => $validatedData['searchColumn'] ?? null,
+                'range' => [
+                    'field' => $validatedData['rangeField'] ?? null,
+                    'values' => $validatedData['rangeValues'] ?? null,
+                ],
                 'filters' => $validatedData['filters'] ?? [],
             ];
         } catch (ValidationException $e) {

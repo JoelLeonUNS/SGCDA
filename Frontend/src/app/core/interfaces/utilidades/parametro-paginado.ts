@@ -1,3 +1,5 @@
+import { Range } from "./range.interface";
+
 export interface ParametroPaginado {
     pageIndex: number,
     pageSize: number,
@@ -5,5 +7,6 @@ export interface ParametroPaginado {
     sortOrder: string | null,
     searchTerm: string | null,
     searchColumn: string | null,
+    range?: Range | null,
     filter: Array<{ key: string; value: any }>
 }

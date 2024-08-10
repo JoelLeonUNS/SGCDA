@@ -12,3 +12,8 @@ nz-time-picker {
   max-height: 70vh;
   overflow-y: auto;
 }
+
+.mensaje {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 1.5em;
+}

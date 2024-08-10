@@ -12,7 +12,7 @@ class StoreUpdatePeriodoRequest extends ValidacionRequest
             'fecha_inicial' => 'required|date',
             'fecha_final' => 'required|date',
             'anio' => 'required|numeric|digits:4',
-            'correlativo_romano' => 'required|string|max:5',
+            'correlat_romano' => 'required|string|max:5',
         ];
     }
 }

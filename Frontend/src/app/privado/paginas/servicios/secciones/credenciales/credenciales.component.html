@@ -17,31 +17,83 @@
   </nz-page-header-extra>
 </nz-page-header>
 <div class="panel-filtro">
-  <app-select-item [servicio]="comisionService" [atributos]="['descripcion']" label="Comisión"/>
+  <span style="margin-left: 1em">Filtros:</span>
+  <app-select-item
+    [servicio]="comisionService"
+    [atributos]="['descripcion']"
+    label="Comisión"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrar('comision', $event)"
+  />
   <nz-divider nzType="vertical"></nz-divider>
-  <app-select-item [servicio]="procesoService" [atributos]="['descripcion']" label="Proceso"/>
+  <app-select-item
+    [servicio]="procesoService"
+    [atributos]="['descripcion']"
+    label="Proceso"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrar('proceso', $event)"
+  />
   <nz-divider nzType="vertical"></nz-divider>
-  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
-  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+  <span style="margin-left: 1em">Rango:</span>
+  <app-select-item
+    [servicio]="periodoService"
+    [atributos]="['anio', 'correlativo_romano']"
+    label="Periodo"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrarRango('periodo_numerico', $event, null)"
+  />
+  <span>-</span>
+  <app-select-item
+    [servicio]="periodoService"
+    [atributos]="['anio', 'correlativo_romano']"
+    label="Periodo"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrarRango('periodo_numerico', null, $event)"
+  />
 </div>
 <div class="panel-mosaico">
   <div class="panel">
     <app-vista-previa-credencial
-    [miembro]="'ALBERTO BOCANEGRA RAMOS'"
-    [cargo]="'DOCENTE UNS'"
-    [procesoPeriodo]="'II SUMATIVO CEPUNS 2024 - III'"
-    [fecha]="'10/03/2024'"
-    [hora]="'06:00 Hrs'"
+      [comision]="miembroCargo.comision"
+      [miembro]="miembroCargo.miembro"
+      [cargo]="miembroCargo.cargo"
+      [procesoPeriodo]="miembroCargo.proceso_periodo"
+      [fecha]="miembroCargo.fecha"
+      [hora]="miembroCargo.hora"
     />
+    <div class="controles">
+      <button
+        nz-button
+        nzType="default"
+        (click)="generarCredencial('descargar')"
+      >
+        <span
+          nz-icon
+          nzType="download"
+          nzTheme="outline"
+          style="margin-right: 0.5em"
+        ></span>
+        <span>Descargar</span>
+      </button>
+      <button nz-button nzType="default" (click)="generarCredencial('abrir')">
+        <span
+          nz-icon
+          nzType="export"
+          nzTheme="outline"
+          style="margin-right: 0.5em"
+        ></span>
+        <span>Abrir en una ventana</span>
+      </button>
+    </div>
   </div>
   <div class="panel">
     <app-tabla-pag-mostrar-miembros
       ngSkipHydration
-      #tablaComisiones
-      [scroll]="{ x: '650px', y: '400px' }"
+      #tablaMiembros
+      [scroll]="{ x: '575px', y: '400px' }"
+      (itemChange)="mostrar($event)"
     />
   </div>
 </div>
 
 <ng-container #vcrModal></ng-container>
-  

@@ -9,6 +9,7 @@ import { PipeService } from '../../../servicios/utilidades/pipe/pipe.service';
 import { FiltroItem } from '../../../interfaces/utilidades/filtro-item.interface';
 import { TagsEstados } from '../../../interfaces/utilidades/tags.interface';
 import { ColumnaBusqueda } from '../../../interfaces/utilidades/columna-busqueda.interface';
+import { CargadorDatosService } from '../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag',
@@ -26,7 +27,7 @@ export class TablaPagComponent {
   datos: any[] = []; // datos locales de la tabla
   parametrosPag: ParametroPaginado = {
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: 10,
     sortField: null,
     sortOrder: null,
     searchTerm: '',
@@ -37,32 +38,24 @@ export class TablaPagComponent {
   loading = true;
   busqueda = new Subject<string>();
   filtros: FiltroItem[] = [];
-  filtrosInternos = new Subject<boolean>();
-  filtrosExternos = new Subject<boolean>();
   filtrosCargados = false;
 
   constructor(
     protected msgService: NzMessageService,
     protected pipeService: PipeService,
-    protected servicio: ServicioCrud<any>
+    protected servicio: ServicioCrud<any>,
+    protected cdService: CargadorDatosService
   ) {
     this.busqueda.pipe(debounceTime(500)).subscribe((termino) => {
       this.parametrosPag.pageIndex = 1;
       this.parametrosPag.searchTerm = termino;
       this.cargarDatosServidor();
     });
-    
-    const filtrosInternos$ = this.filtrosInternos.asObservable();
-    const filtrosExternos$ = this.filtrosExternos.asObservable();
 
-    combineLatest([filtrosInternos$, filtrosExternos$]).subscribe(
-      ([internos, externos]) => {
-        if (internos && externos) {
-          this.filtrosCargados = true;
-          this.reiniciarFiltros()
-        }
-      }
-    );
+    this.cdService.cargarDatos$.subscribe(() => {
+      this.cargarDatosServidor();
+      this.filtrosCargados = true;
+    });
 
   }
 
@@ -111,15 +104,8 @@ export class TablaPagComponent {
       filter: filter
     };
   }
-
-  // verificarFiltrosVacios(): boolean {
-  //   return this.columnas!.filter((columna) => columna.showFilter).every(
-  //     (columna) => columna.listOfFilter!.length > 0
-  //   );
-  // }
-
+  
   reiniciarFiltros() {
-    console.log('reiniciar filtros');
     this.filtros.forEach((filtro) => {
       let index =
         this.columnas?.findIndex(
@@ -132,7 +118,6 @@ export class TablaPagComponent {
   }
 
   reiniciarOrden() {
-    console.log('reiniciar orden');
     this.columnas = this.columnas?.map((columna) => ({
       ...columna,
       sortOrder: null,

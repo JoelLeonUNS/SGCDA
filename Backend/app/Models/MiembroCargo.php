@@ -15,11 +15,8 @@ class MiembroCargo extends Model
     protected $fillable = [
         'miembro_id',
         'cargo_id',
-        'fecha_asignacion',
         'estado',
     ];
-
-    public $timestamps = false;
 
     public function miembro(): BelongsTo
     {

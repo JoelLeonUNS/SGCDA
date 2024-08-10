@@ -17,14 +17,14 @@
   </button>
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu>
-      <li nz-menu-item (click)="exportarPdf()">
-         <span nz-icon nzType="download" nzTheme="outline" style="margin-right: .5em;"></span>
-         <span>Descargar</span>
-      </li>
-      <li nz-menu-item>
-        <span nz-icon nzType="export" nzTheme="outline" style="margin-right: .5em;"></span>
-        <span>Abrir en una ventana</span>
-      </li>
+      <li nz-menu-item (click)="exportarPdf('descargar')">
+        <span nz-icon nzType="download" nzTheme="outline" style="margin-right: .5em;"></span>
+        <span>Descargar</span>
+     </li>
+     <li nz-menu-item (click)="exportarPdf('abrir')">
+       <span nz-icon nzType="export" nzTheme="outline" style="margin-right: .5em;"></span>
+       <span>Abrir en una ventana</span>
+     </li>
       <!-- <li nz-menu-item>
         <span nz-icon nzType="edit" nzTheme="outline" style="margin-right: .5em;"></span>
         <span>Personalizado</span>

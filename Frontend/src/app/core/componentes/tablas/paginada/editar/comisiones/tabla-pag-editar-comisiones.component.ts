@@ -21,6 +21,7 @@ import { TablaPagEditarComponent } from '../tabla-pag-editar.component';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ComisionProcesoService } from '../../../../../servicios/rest/comision-proceso/comision-proceso.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-comisiones',
@@ -57,6 +58,10 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
       name: 'Comisión',
       columnKey: 'comision',
       default: true,
+    },
+    {
+      name: 'Periodo',
+      columnKey: 'periodo',
     },
   ];
   override columnas: ColumnItem[] = [
@@ -107,6 +112,7 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
       showSort: true,
       sortFn: true,
       align: 'right',
+      pipe: {nombre: 'moneda', datos: []},
     },
     {
       name: 'Acción',
@@ -119,10 +125,10 @@ export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: ComisionProcesoService,
-    modalService: ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

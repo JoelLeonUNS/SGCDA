@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $this->createComisionProcesosTable();
+        $this->createTable();
         $this->addEstadoColumn();
     }
 
@@ -22,15 +22,12 @@ return new class extends Migration {
         Schema::dropIfExists('comision_procesos');
     }
 
-    private function createComisionProcesosTable(): void
+    private function createTable(): void
     {
         Schema::create('comision_procesos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador de la comisión proceso');
             $table->unsignedBigInteger('proceso_periodo_id')->nullable()->comment('Identificador del proceso periodo');
             $table->unsignedBigInteger('comision_id')->nullable()->comment('Identificador de la comisión');
-            $table->date('fecha')->nullable()->comment('Fecha de la comisión');
-            $table->time('hora')->nullable()->comment('Hora de la comisión');
-            $table->double('paga', 8, 2)->nullable()->comment('Paga del miembro cargo');
             $table->foreign('proceso_periodo_id')->references('id')->on('proceso_periodos');
             $table->foreign('comision_id')->references('id')->on('comisiones');
         });
@@ -39,7 +36,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('comision_procesos', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado de la comisión proceso');
+            $table->enum('estado', ['ABIERTO', 'CERRADO', 'ELIMINADO'])
+                  ->default('ABIERTO')->comment('Estado de la comisión proceso: ABIERTO, CERRADO o ELIMINADO');
         });
     }
 };

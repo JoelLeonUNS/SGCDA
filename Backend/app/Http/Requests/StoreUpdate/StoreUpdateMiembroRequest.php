@@ -11,6 +11,7 @@ class StoreUpdateMiembroRequest extends ValidacionRequest
         return [
             'nombres' => 'required|string|max:100',
             'apellidos' => 'required|string|max:100',
+            'dni' => 'required|string|max:8',
         ];
     }
 }

@@ -16,6 +16,7 @@ class ComisionMiembro extends Model
     protected $fillable = [
         'comision_proceso_id',
         'miembro_cargo_id',
+        'horario_id',
     ];
 
     public function comisionProceso(): BelongsTo

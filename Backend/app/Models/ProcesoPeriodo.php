@@ -16,6 +16,8 @@ class ProcesoPeriodo extends Model
     protected $fillable = [
         'periodo_id',
         'proceso_id',
+        'fecha_inicial',
+        'fecha_final',
         'estado',
     ];
 

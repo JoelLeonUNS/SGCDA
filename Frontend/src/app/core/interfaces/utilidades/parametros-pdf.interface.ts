@@ -4,6 +4,7 @@ export interface ParametrosPdf {
     titulo: string;
     mostrarTitulo?: boolean;
     datosTabla?: any[] | any;
+    datos?: any;
     montoTotal?: number;
     columnasTabla?: ColumnaTabla[];
     orientacion?: 'portrait' | 'landscape';

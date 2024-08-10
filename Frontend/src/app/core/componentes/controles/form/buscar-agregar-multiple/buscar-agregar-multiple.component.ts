@@ -68,6 +68,7 @@ export class BuscarAgregarMultipleComponent implements ControlValueAccessor {
 
   writeValue(obj: any): void {
     this.inputIds = obj;
+    this.inputValores = this.valores?.join('.\n');
   }
 
   registerOnChange(fn: any): void {

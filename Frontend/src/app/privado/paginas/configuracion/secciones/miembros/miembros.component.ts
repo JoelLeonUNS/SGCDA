@@ -10,9 +10,9 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTagModule } from 'ng-zorro-antd/tag';
-import { ControlExportacionCargoComponent } from '../../../../../core/componentes/control-exportacion/cargo/control-exportacion-cargo.component';
 import { ModalService } from '../../../../../core/servicios/modal/modal.service';
 import { TablaPagEditarEstadoMiembrosComponent } from "../../../../../core/componentes/tablas/paginada/editar-estado/miembros/tabla-pag-editar-estado-miembros.component";
+import { ControlExportacionMiembroComponent } from "../../../../../core/componentes/control-exportacion/miembro/control-exportacion-miembro.component";
 
 @Component({
     selector: 'app-miembros',
@@ -21,21 +21,21 @@ import { TablaPagEditarEstadoMiembrosComponent } from "../../../../../core/compo
     styleUrl: './miembros.component.css',
     providers: [ModalService],
     imports: [
-        CommonModule,
-        NzButtonComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        NzGridModule,
-        NzFlexModule,
-        NzDividerModule,
-        NzIconModule,
-        NzStatisticModule,
-        NzTagModule,
-        NzSpaceModule,
-        NzPageHeaderModule,
-        ControlExportacionCargoComponent,
-        TablaPagEditarEstadoMiembrosComponent
-    ]
+    CommonModule,
+    NzButtonComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NzGridModule,
+    NzFlexModule,
+    NzDividerModule,
+    NzIconModule,
+    NzStatisticModule,
+    NzTagModule,
+    NzSpaceModule,
+    NzPageHeaderModule,
+    TablaPagEditarEstadoMiembrosComponent,
+    ControlExportacionMiembroComponent
+]
 })
 export class MiembrosComponent {
   @ViewChild('vcrModal', { read: ViewContainerRef }) vcr!: ViewContainerRef;

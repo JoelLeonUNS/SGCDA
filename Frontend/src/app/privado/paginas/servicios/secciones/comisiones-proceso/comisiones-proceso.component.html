@@ -22,16 +22,33 @@
   </nz-page-header-extra>
 </nz-page-header>
 <div class="panel-filtro">
-  <app-select-item [servicio]="procesoService" [atributos]="['descripcion']" label="Proceso"/>
+  <span style="margin-left: 1em">Filtros:</span>
+  <app-select-item
+    [servicio]="procesoService"
+    [atributos]="['descripcion']"
+    label="Proceso"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrar('proceso', $event)"
+  />
   <nz-divider nzType="vertical"></nz-divider>
-  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
-  <app-select-item [servicio]="periodoService" [atributos]="['anio','correlativo_romano']" label="Periodo"/>
+  <span style="margin-left: 1em">Rango:</span>
+  <app-select-item
+    [servicio]="periodoService"
+    [atributos]="['anio', 'correlativo_romano']"
+    label="Periodo"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrarRango('periodo_numerico', $event, null)"
+  />
+  <span>-</span>
+  <app-select-item
+    [servicio]="periodoService"
+    [atributos]="['anio', 'correlativo_romano']"
+    label="Periodo"
+    (cargadoChange)="filtroCargado()"
+    (itemChange)="filtrarRango('periodo_numerico', null, $event)"
+  />
 </div>
 <div class="panel">
-  <app-tabla-pag-editar-comisiones
-    ngSkipHydration
-    #tablaComisiones
-    [scroll]="{ x: '1000px', y: '400px' }"
-  />
+  <app-fichero-comisiones #ficheroComisiones />
 </div>
 <ng-container #vcrModal></ng-container>

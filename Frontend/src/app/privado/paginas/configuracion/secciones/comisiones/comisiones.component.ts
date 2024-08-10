@@ -10,10 +10,9 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTagModule } from 'ng-zorro-antd/tag';
-import { ControlExportacionCargoComponent } from '../../../../../core/componentes/control-exportacion/cargo/control-exportacion-cargo.component';
 import { ModalService } from '../../../../../core/servicios/modal/modal.service';
 import { TablaPagEditarEstadoComisionesComponent } from '../../../../../core/componentes/tablas/paginada/editar-estado/comisiones/tabla-pag-editar-estado-comisiones.component';
-import { TablaPagEditarComisionesComponent } from "../../../../../core/componentes/tablas/paginada/editar/comisiones/tabla-pag-editar-comisiones.component";
+import { ControlExportacionProcesoComponent } from "../../../../../core/componentes/control-exportacion/comision/control-exportacion-comision.component";
 
 @Component({
     selector: 'app-comisiones',
@@ -22,21 +21,21 @@ import { TablaPagEditarComisionesComponent } from "../../../../../core/component
     styleUrl: './comisiones.component.css',
     providers: [ModalService],
     imports: [
-        CommonModule,
-        NzButtonComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        NzGridModule,
-        NzFlexModule,
-        NzDividerModule,
-        NzIconModule,
-        NzStatisticModule,
-        NzTagModule,
-        NzSpaceModule,
-        NzPageHeaderModule,
-        ControlExportacionCargoComponent,
-        TablaPagEditarEstadoComisionesComponent
-    ]
+    CommonModule,
+    NzButtonComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NzGridModule,
+    NzFlexModule,
+    NzDividerModule,
+    NzIconModule,
+    NzStatisticModule,
+    NzTagModule,
+    NzSpaceModule,
+    NzPageHeaderModule,
+    TablaPagEditarEstadoComisionesComponent,
+    ControlExportacionProcesoComponent
+]
 })
 export class ComisionesComponent {
   

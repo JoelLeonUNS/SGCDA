@@ -5,7 +5,7 @@ import { provideNzIcons } from './icons-provider';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { es_ES, provideNzI18n } from 'ng-zorro-antd/i18n';
-import { DatePipe, registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData, UpperCasePipe } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient, withFetch } from '@angular/common/http';
@@ -20,6 +20,7 @@ registerLocaleData(es);
 export const appConfig: ApplicationConfig = {
   providers: [
     MonedaPipe,
+    UpperCasePipe,
     DatePipe,
     MesPipe,
     PeriodoPipe,

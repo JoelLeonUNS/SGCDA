@@ -16,9 +16,6 @@ class ComisionProceso extends Model
     protected $fillable = [
         'proceso_periodo_id',
         'comision_id',
-        'fecha',
-        'hora',
-        'paga',
         'estado',
     ];
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -10,8 +11,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $this->createProcesosTable();
+        $this->createTable();
         $this->addEstadoColumn();
+        $this->insertDefaultRows();
     }
 
     /**
@@ -22,18 +24,30 @@ return new class extends Migration {
         Schema::dropIfExists('procesos');
     }
 
-    private function createProcesosTable(): void
+    private function createTable(): void
     {
         Schema::create('procesos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador del proceso');
-            $table->string('descripcion', 255)->nullable()->comment('Descripción del proceso');
+            $table->string('nombre', 255)->nullable()->comment('Nombre del proceso');
         });
+    }
+
+    private function insertDefaultRows(): void
+    {
+        DB::table('procesos')->insert([
+            ['nombre' => 'Examen Excelente'],
+            ['nombre' => 'Examen Preferente'],
+            ['nombre' => 'Examen Ordinario'],
+            ['nombre' => 'I Sumativo Cepuns'],
+            ['nombre' => 'II Sumativo Cepuns']
+        ]);
     }
 
     private function addEstadoColumn(): void
     {
         Schema::table('procesos', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado del proceso');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
+                  ->default('ACTIVO')->comment('Estado del proceso: ACTIVO, INACTIVO o ELIMINADO');
         });
     }
 };

@@ -22,6 +22,7 @@ import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabl
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ProcesoService } from '../../../../../servicios/rest/proceso/proceso.service';
 import { PeriodoService } from '../../../../../servicios/rest/periodo/periodo.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-periodos',
@@ -132,11 +133,10 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: PeriodoService,
-    modalService:ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

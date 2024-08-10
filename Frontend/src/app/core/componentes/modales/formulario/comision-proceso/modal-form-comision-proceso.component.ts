@@ -21,6 +21,7 @@ import { InputNumberComponent } from "../../../controles/form/input-number/input
 import { BuscarAgregarMultipleComponent } from '../../../controles/form/buscar-agregar-multiple/buscar-agregar-multiple.component';
 import { TimeComponent } from "../../../controles/form/time/time.component";
 import { ProcesoService } from '../../../../servicios/rest/proceso/proceso.service';
+import { MostrarProcesoPeriodoComponent } from "../../../mostrar-proceso-periodo/mostrar-proceso-periodo.component";
 
 @Component({
     selector: 'app-modal-form-comision-proceso',
@@ -43,7 +44,8 @@ import { ProcesoService } from '../../../../servicios/rest/proceso/proceso.servi
     DateComponent,
     InputNumberComponent,
     BuscarAgregarMultipleComponent,
-    TimeComponent
+    TimeComponent,
+    MostrarProcesoPeriodoComponent
 ]
 })
 export class ModalFormComisionProcesoComponent extends ModalFormComponent {
@@ -51,11 +53,8 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
   protected override modalForm = this.fb.group({
     comision_id: [null, [Validators.required]],
     miembros_ids: [null, [Validators.required]],
-    proceso_id: [null, [Validators.required]],
-    periodo_id: [null, [Validators.required]],
-    fecha: [null, [Validators.required]],
-    hora: [null, [Validators.required]],
-    paga: [0, [Validators.required]],
+    proceso_periodo_id: [null, [Validators.required]],
+    horario_id: [null,  [Validators.required]],
   });
 
   constructor(
@@ -68,6 +67,37 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     private datePipe: DatePipe
   ) {
     super(msgService, servicio, fb);
+  }
+
+  override mostrarValores(data: any) {
+    this.item = data;
+    Object.keys(this.modalForm.value).forEach((key) => {
+      const control = this.modalForm.get(key);
+      let valor = data[key];
+      if (control && valor) {
+        if (key == 'hora') {
+          valor = this.convertirHora(valor);
+          console.log(valor);
+        }
+        control.setValue(valor);
+      }
+    });
+  }
+
+  override llenarFormPorId(data: any) {
+    Object.entries(data).forEach(([key, value]) => {
+      const control = this.modalForm.get(key);
+      if (control) { 
+        if (key == 'hora') {
+          value = this.convertirHora(value);
+        }
+        control.setValue(value) 
+      }
+    });
+  }
+
+  setProcesoPeriodoId(proceso_periodo: any) {
+    this.modalForm.get('proceso_periodo_id')?.setValue(proceso_periodo.id);
   }
 
   override enviarNuevo() {
@@ -84,11 +114,9 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     let formParseado: FormGroup = this.fb.group({
       comision_id: [null],
       miembros_ids: [null],
-      proceso: [null],
-      periodo: [null],
+      proceso_periodo_id: [null],
       fecha: [null],
       hora: [null],
-      paga: [null],
     });
 
     formParseado.setValue(this.modalForm.getRawValue());
@@ -101,5 +129,22 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
   
     return formParseado;
   }
+
+  convertirHora(hora:any):Date {
+    // Asegúrate de que la hora esté en el formato correcto "HH:mm:ss"
+    if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/.test(hora)) {
+        throw new Error("Formato de hora inválido");
+    }
+
+    // Crear una fecha actual y ajustar la hora
+    const fechaActual = new Date();
+    const [horas, minutos, segundos] = hora.split(':');
+    fechaActual.setHours(horas);
+    fechaActual.setMinutes(minutos);
+    fechaActual.setSeconds(segundos);
+    fechaActual.setMilliseconds(0); // Si no quieres incluir milisegundos
+
+    return fechaActual;
+}
 
 }

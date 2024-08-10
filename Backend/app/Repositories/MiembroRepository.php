@@ -24,6 +24,13 @@ class MiembroRepository extends EstadoRepository
         return $this->modelo::select('id', 'descripcion', 'estado')->get();
     }
 
+    protected function aplicarRango(Builder $consulta, ?array $range): void
+    {
+        if ($range['field'] && $range['values']) {
+            $consulta->whereBetween($range['field'], [$range['values']['start'], $range['values']['end']]);
+        }
+    }
+
     protected function aplicarFiltros(Builder $consulta, array $filtros): void
     {
         foreach ($filtros as $key => $value) {

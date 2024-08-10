@@ -54,7 +54,7 @@
   </thead>
   <tbody>
     @for (data of tabla.data; track data) {
-    <tr>
+    <tr (click)="mostrar(data)">
       @for (c of columnas; track c) { @if(c.attribute != undefined) {
       <td [nzLeft]="c.left == undefined ? false : c.left"
           [nzAlign]="c.align == undefined ? 'left' : c.align">

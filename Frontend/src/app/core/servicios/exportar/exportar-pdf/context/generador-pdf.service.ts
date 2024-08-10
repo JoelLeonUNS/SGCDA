@@ -24,4 +24,8 @@ export class GeneradorPdfService {
     doc.save(`${fileName}.pdf`);
   }
 
+  abrirPdf(doc: jsPDF) {
+    doc.output('dataurlnewwindow');
+  }
+
 }

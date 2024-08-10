@@ -1,0 +1,8 @@
+<nz-tag style="margin: 0 1.5px" nzColor="purple">
+  @if(cargando) {
+  <span nz-icon nzType="loading" nzTheme="outline"></span>
+  } @else {
+  <span nz-icon nzType="control" nzTheme="outline"></span>
+  <span>{{ proceso }}</span>
+  }
+</nz-tag>

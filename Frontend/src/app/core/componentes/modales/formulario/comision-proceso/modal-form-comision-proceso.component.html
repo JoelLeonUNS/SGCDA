@@ -14,21 +14,22 @@
   <ng-template #modalContent>
     <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
       <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
-          <app-select [controlName]="'comision'" [label]="'Comisión'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.comision_id, item.comision]" [servicio]="comisionService"/>
-        </div>
-      </div>
-      <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="14">
-          <app-select [controlName]="'proceso'" [label]="'Proceso'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.proceso_id, item.proceso]" [servicio]="procesoService"/>
-        </div>
-        <div nz-col [nzSpan]="10">
-          <app-select [controlName]="'periodo'" [label]="'Periodo'" [atributte]="['id', 'anio', 'estado']" [option]="[item.periodo_id, item.periodo]" [servicio]="periodoService"/>
+        <div class="mensaje">
+          @if (accion == 'CREAR') {
+            Tenga en cuenta que al crear una comisión, esta pertenecerá al proceso <app-mostrar-proceso-periodo (procesoChange)="setProcesoPeriodoId($event)" />. No se podrán crear comisiones con procesos cerrados.
+          } @else {
+            Tenga en cuenta que al modificar una comisión, esta pertenecerá al proceso <app-mostrar-proceso-periodo (procesoChange)="setProcesoPeriodoId($event)" />.
+          }
         </div>
       </div>
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="24">
-          <app-buscar-agregar-multiple formControlName="miembros_ids" [label]="'Miembro'" [entidad]="'Miembro'" [valores]="item.id" [control]="modalForm.get('miembros_ids')"/>
+          <app-select [controlName]="'comision_id'" [label]="'Comisión'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.comision_id, item.comision]" [servicio]="comisionService"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-buscar-agregar-multiple formControlName="miembros_ids" [label]="'Miembro'" [entidad]="'Miembro'" [valores]="item.miembros" [control]="modalForm.get('miembros_ids')"/>
         </div>
       </div>
       <div nz-row [nzGutter]="8">
@@ -37,11 +38,6 @@
         </div>
         <div nz-col [nzSpan]="12">
           <app-time [label]="'Hora de Ingreso'" [controlName]="'hora'" [gender]="'F'"/>
-        </div>
-      </div>
-      <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
-          <app-input-number [label]="'Paga'" [controlName]="'paga'" [type]="'soles'" [gender]="'F'"/>
         </div>
       </div>
     </Form>

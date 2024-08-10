@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Enums\Estados;
 use App\Models\Periodo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +16,16 @@ class PeriodoRepository extends EstadoRepository
     }
 
     /**
+     * Obtiene el periodo actual que esté abierto.
+     * 
+     * @return Periodo|null
+     */
+    public function obtenerPeriodoActual(): Periodo|null
+    {
+        return $this->modelo->where('estado', Estados::ABIERTO)->first();
+    }
+    
+    /**
      * Obtiene todos los periodos con selección de columnas específicas.
      *
      * @return Collection
@@ -27,6 +38,13 @@ class PeriodoRepository extends EstadoRepository
     public function crearYObtenerId(array $periodo): int|null
     {
         return $this->modelo->insertGetId($periodo);
+    }
+
+    protected function aplicarRango(Builder $consulta, ?array $range): void
+    {
+        if ($range['field'] && $range['values']) {
+            $consulta->whereBetween($range['field'], [$range['values']['start'], $range['values']['end']]);
+        }
     }
 
     protected function aplicarFiltros(Builder $consulta, array $filtros): void

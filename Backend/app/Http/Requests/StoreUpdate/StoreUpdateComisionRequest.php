@@ -9,7 +9,7 @@ class StoreUpdateComisionRequest extends ValidacionRequest
     public function rules(): array
     {
         return [
-            'descripcion' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
         ];
     }
 }

@@ -19,6 +19,7 @@ import { ModalService } from '../../../../servicios/modal/modal.service';
 import { PipeService } from '../../../../servicios/utilidades/pipe/pipe.service';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { BuscadorTablaComponent } from '../../../buscador-tabla/buscador-tabla.component';
+import { CargadorDatosService } from '../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar',
@@ -52,9 +53,10 @@ export class TablaPagEditarComponent extends TablaPagComponent {
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio:ServicioCrud<any>,
+    cdServicio: CargadorDatosService,
     protected modalService:ModalService
   ) {
-    super(msgService, pipeService,servicio);
+    super(msgService, pipeService,servicio, cdServicio);
   }
 
   abrirModal(item:any) {

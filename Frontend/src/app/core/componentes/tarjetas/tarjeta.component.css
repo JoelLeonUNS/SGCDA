@@ -1,0 +1,44 @@
+.tarjeta {
+    min-width: 375px;
+    max-width: 475px;
+    border-color: #6c757d6c;
+    transition: box-shadow 0.3s, scale 0.3s;
+}
+
+.tarjeta:hover {
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.1);
+    scale: 1.015;
+    transition: box-shadow 0.3s, scale 0.3s;
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titulo {
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+.contenido {
+    color: #6c757d;
+    margin: 1em 0 1.5em;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.controles {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+nz-divider {
+    margin: 0;
+}

@@ -1,0 +1,58 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzDraggable
+  nzCentered
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="cerrar()"
+  [nzWidth]="ancho"
+>
+  <ng-template #modalTitle>
+    {{ titulo }}
+  </ng-template>
+  <ng-template #modalContent>
+    <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
+      <div nz-row [nzGutter]="8">
+        <div class="mensaje">
+          @if (accion == 'CREAR') {
+            Tenga en cuenta que al tipo de proceso que cree, se le asignará el periodo <app-mostrar-periodo (periodoChange)="setPeriodoId($event)" />. No se podrán crear procesos con periodos cerrados.
+          } @else {
+            Tenga en cuenta que al tipo de proceso que modifique, se le asignará el periodo <app-mostrar-periodo (periodoChange)="setPeriodoId($event)" />.
+          }
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-select [controlName]="'proceso_id'" [label]="'Tipo de Proceso'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.proceso_id, item.proceso]" [servicio]="procesoService"/>
+        </div>
+      </div>
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="24">
+          <app-date-range [inicio]="modalForm.get('fecha_inicial')?.value" [fin]="modalForm.get('fecha_finanl')?.value" />
+        </div>
+      </div>
+    </Form>
+  </ng-template>
+  <ng-template #modalFooter>
+    <button
+      nz-button
+      nzType="default"
+      [disabled]="disabledCancelar"
+      [nzLoading]="cancelando"
+      (click)="cerrar()"
+    >
+      {{ btnSecundario }}
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      [disabled]="disabledConfirmar"
+      [nzLoading]="confirmando"
+      (click)="enviarForm()"
+    >
+      {{ btnPrimario }}
+    </button>
+  </ng-template>
+</nz-modal>
+ 

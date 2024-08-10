@@ -9,13 +9,9 @@ class StoreUpdateComisionProcesoRequest extends ValidacionRequest
     public function rules(): array
     {
         return [
-            'comision' => 'required|integer',
+            'comision_id' => 'required|integer',
             'miembros_ids' => 'required|array',
-            'proceso' => 'required|integer',
-            'periodo' => 'required|integer',
-            'fecha' => 'required|date',
-            'hora' => 'required|date_format:H:i',
-            'paga' => 'required|numeric',
+            'proceso_periodo_id' => 'required|integer',
         ];
     }
 }

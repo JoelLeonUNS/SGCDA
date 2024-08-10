@@ -13,7 +13,7 @@ import { ModalFormComponent } from '../modal-form.component';
 import { InputComponent } from '../../../controles/form/input/input.component';
 import { PeriodoService } from '../../../../servicios/rest/periodo/periodo.service';
 import { DateRangeComponent } from "../../../controles/form/date-range/date-range.component";
-import { InputNumberComponent } from "../../../controles/form/input-number/input-number.component";
+import { DateComponent } from "../../../controles/form/date/date.component";
 
 @Component({
     selector: 'app-modal-form-periodo',
@@ -21,23 +21,24 @@ import { InputNumberComponent } from "../../../controles/form/input-number/input
     templateUrl: './modal-form-periodo.component.html',
     styleUrl: '../modal-form.component.css',
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        NzFormModule,
-        InputComponent,
-        NzModalModule,
-        NzButtonModule,
-        NzRadioModule,
-        NzSelectModule,
-        NzDatePickerModule,
-        NzGridModule,
-        DateRangeComponent,
-    ]
+    CommonModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    InputComponent,
+    NzModalModule,
+    NzButtonModule,
+    NzRadioModule,
+    NzSelectModule,
+    NzDatePickerModule,
+    NzGridModule,
+    DateRangeComponent,
+    DateComponent
+]
 })
 export class ModalFormPeriodoComponent extends ModalFormComponent {
   
   protected override modalForm = this.fb.group({
-    anio: [new Date().getFullYear(), [Validators.required]],
+    anio: [new Date(), [Validators.required]],
     correlativo_romano: ['I', [Validators.required]],
     fecha_inicial: [null, [Validators.required]],
     fecha_final: [null, [Validators.required]],
@@ -77,6 +78,8 @@ export class ModalFormPeriodoComponent extends ModalFormComponent {
     formParseado.get('fecha_inicial')?.setValue(nuevaFecha!);
     nuevaFecha = this.datePipe.transform(formParseado.get('fecha_final')?.value, 'yyyy-MM-dd');
     formParseado.get('fecha_final')?.setValue(nuevaFecha!);
+    let nuevoAnio = this.datePipe.transform(formParseado.get('anio')?.value, 'yyyy');
+    formParseado.get('anio')?.setValue(nuevoAnio!);
   
     return formParseado;
   }

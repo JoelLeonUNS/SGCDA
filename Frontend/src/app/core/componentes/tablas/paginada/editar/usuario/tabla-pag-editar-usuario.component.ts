@@ -21,6 +21,7 @@ import { TablaPagEditarComponent } from '../tabla-pag-editar.component';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { UsuarioService } from '../../../../../servicios/rest/usuario/usuario.service';
+import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-usuario',
@@ -94,10 +95,10 @@ export class TablaPagEditarUsuarioComponent extends TablaPagEditarComponent {
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: UsuarioService,
-    modalService:ModalService
+    cdService: CargadorDatosService,
+    modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, modalService);
-    this.filtrosExternos.next(true);
-    this.filtrosInternos.next(true);
+    super(msgService, pipeService, servicio, cdService, modalService);
+    this.cdService.cargarFiltros();
   }
 }

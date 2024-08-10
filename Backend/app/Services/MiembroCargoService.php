@@ -2,19 +2,22 @@
 
 namespace App\Services;
 
+use App\Repositories\ComisionMiembroRepository;
 use App\Repositories\MiembroCargoRepository;
 use App\Repositories\MiembroRepository;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class MiembroCargoService
 {
+    protected ComisionMiembroRepository $comisionMiembroRepository;
     protected MiembroRepository $miembroRepository;
     protected MiembroCargoRepository $miembroCargoRepository;
 
-    public function __construct(MiembroCargoRepository $miembroCargoRepository, MiembroRepository $miembroRepository)
+    public function __construct(MiembroCargoRepository $miembroCargoRepository, MiembroRepository $miembroRepository, ComisionMiembroRepository $comisionMiembroRepository)
     {
+        $this->comisionMiembroRepository = $comisionMiembroRepository;
         $this->miembroCargoRepository = $miembroCargoRepository;
         $this->miembroRepository = $miembroRepository;
     }
@@ -73,7 +76,18 @@ class MiembroCargoService
             'nombres' => $data['nombres'],
             'apellidos' => $data['apellidos'],
         ]);
-        return $this->miembroCargoRepository->actualizar($id, $data);
+        unset($data['nombres'], $data['apellidos']);
+        /**
+         * Si el cargo es diferente al actual, se actualiza la fecha de asignación y se crea un nuevo miembro cargo.
+         * De lo contrario, se actualiza el miembro cargo.
+         * Esto se hace para llevar un registro de la fecha de asignación de un cargo.
+         */
+        if ($data['cargo_id'] != $this->miembroCargoRepository->obtenerPorId($id)->cargo_id) {
+            $data['fecha_asignacion'] = now();
+            return $this->miembroCargoRepository->crear($data) ? true : false;
+        } else {
+            return $this->miembroCargoRepository->actualizar($id, $data);
+        }
     }
 
     /**
@@ -131,7 +145,37 @@ class MiembroCargoService
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
+        // Obtener los datos paginados desde el repositorio
         $miembroCargoPag = $this->miembroCargoRepository->obtenerPaginado($criteria);
+       
+        // Transformar los datos agrupados para la salida deseada
+        $miembroCargoParse = $miembroCargoPag->getCollection()->map(function ($miembroCargo) {
+            
+            return [
+                'id' => $miembroCargo->id,
+                'miembro_id' => $miembroCargo->miembro_id,
+                'nombres' => $miembroCargo->miembro->nombres,
+                'apellidos' => $miembroCargo->miembro->apellidos,
+                'cargo_id' => $miembroCargo->cargo_id,
+                'cargo' => $miembroCargo->cargo->descripcion ?? 'Sin cargo asignado',
+                'fecha_asignacion' => $miembroCargo->fecha_asignacion,
+                'estado' => $miembroCargo->estado,
+            ];
+        });
+
+        // Establecer la colección transformada en el paginador
+        $miembroCargoPag->setCollection($miembroCargoParse);
+
+        return $miembroCargoPag;
+    }
+
+    public function obtenerParticipacionMiembrosPag(array $criteria): LengthAwarePaginator
+    {
+        // Obtener los datos paginados desde el repositorio
+        $consultaPrevia = $this->miembroCargoRepository->obtenerMiembrosSinComision();
+        $miembroCargoPag = $this->miembroCargoRepository->obtenerPaginado($criteria, $consultaPrevia);
+       
+        // Transformar los datos agrupados para la salida deseada
         $miembroCargoParse = $miembroCargoPag->getCollection()->map(function ($miembroCargo) {
             return [
                 'id' => $miembroCargo->id,
@@ -140,10 +184,12 @@ class MiembroCargoService
                 'apellidos' => $miembroCargo->miembro->apellidos,
                 'cargo_id' => $miembroCargo->cargo_id,
                 'cargo' => $miembroCargo->cargo->descripcion ?? 'Sin cargo asignado',
-                'estado' => $miembroCargo->estado,
             ];
         });
+
+        // Establecer la colección transformada en el paginador
         $miembroCargoPag->setCollection($miembroCargoParse);
+
         return $miembroCargoPag;
     }
 
