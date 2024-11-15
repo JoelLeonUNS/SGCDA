@@ -48,7 +48,7 @@ export class EspecialidadesComponent {
   }
 
   abrirModal() {
-    this.modalService.insertarModalCrear(this.vcr, 'modalFormAula');
+    this.modalService.insertarModalCrear(this.vcr, 'modalFormEspecialidad');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
       this.tablaEspecialidades.cargarDatosServidor();
     });

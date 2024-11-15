@@ -189,7 +189,7 @@ class PeriodoService
                 'fecha_inicial' => $periodo->fecha_inicial,
                 'fecha_final' => $periodo->fecha_final,
                 'anio' => $periodo->anio,
-                'correlativo_romano' => $periodo->correlativo_romano,  
+                'correlativo_romano' => $periodo->correlat_romano,  
             ];
         });
     }

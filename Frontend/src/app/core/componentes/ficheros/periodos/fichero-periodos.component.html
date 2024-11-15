@@ -16,7 +16,7 @@
     <nz-flex nzGap="large" nzWrap="wrap">
       @for (item of datos$ | async; track $index) {
           <app-tarjeta-periodo 
-          [titulo]="item.anio + ' - ' + item.correlativo_romano" 
+          [titulo]="item.anio + ' - ' + item.correlat_romano" 
           [fechaInicial]="item.fecha_inicial"
           [fechaFinal]="item.fecha_final"
           [estado]="item.estado"

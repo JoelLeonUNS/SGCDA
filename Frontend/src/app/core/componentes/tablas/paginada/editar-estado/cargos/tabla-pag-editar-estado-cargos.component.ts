@@ -55,8 +55,8 @@ export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoCom
       type: 'NUMBER',
     },
     {
-      name: 'Descripción',
-      columnKey: 'descripcion',
+      name: 'Nombre',
+      columnKey: 'nombre',
       default: true,
     },
 
@@ -70,8 +70,8 @@ export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoCom
       sortFn: true,
     },
     {
-      name: 'Descripción',
-      attribute: 'descripcion',
+      name: 'Nombre',
+      attribute: 'nombre',
       showSort: true,
       sortFn: true,
     },

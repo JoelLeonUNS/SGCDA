@@ -121,7 +121,7 @@ abstract class BaseRepository
      * @param array $rango
      */
 
-     abstract protected function aplicarRango(Builder $consulta, array $range): void;
+    abstract protected function aplicarRango(Builder $consulta, array $range): void;
 
 
     /**

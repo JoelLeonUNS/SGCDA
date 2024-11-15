@@ -57,7 +57,8 @@ import {
   FilterOutline,
   SortAscendingOutline,
   AppstoreOutline,
-  UnorderedListOutline
+  UnorderedListOutline,
+  AimOutline,
 } from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -119,7 +120,8 @@ const icons = [
   FilterOutline,
   SortAscendingOutline,
   AppstoreOutline,
-  UnorderedListOutline
+  UnorderedListOutline,
+  AimOutline,
 ];
 
 export function provideNzIcons(): EnvironmentProviders {

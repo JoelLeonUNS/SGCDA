@@ -23,7 +23,7 @@ class ComisionProcesoRepository extends EstadoRepository
      */
     public function obtenerTodosConColumnasEspecificas(): Collection
     {
-        return $this->modelo::select('id', 'descripcion', 'estado')->get();
+        return $this->modelo::select('id', 'nombre', 'estado')->get();
     }
 
     public function crearYObtenerId(array $comision): int|null
@@ -56,12 +56,12 @@ class ComisionProcesoRepository extends EstadoRepository
                     break;
                 case 'comision':
                     $this->aplicarJoinCondicional($consulta, 'comisiones', 'comision_procesos.comision_id', '=', 'comisiones.id');
-                    $consulta->where('comisiones.descripcion', $value);
+                    $consulta->where('comisiones.nombre', $value);
                     break;
                 case 'proceso':
                     $this->aplicarJoinCondicional($consulta,'proceso_periodos', 'comision_procesos.proceso_periodo_id', '=', 'proceso_periodos.id');
                     $this->aplicarJoinCondicional($consulta, 'procesos', 'proceso_periodos.proceso_id', '=', 'procesos.id');
-                    $consulta->where('procesos.descripcion', $value);
+                    $consulta->where('procesos.nombre', $value);
                     break;
                 case 'periodo_numerico':
                     $this->aplicarJoinCondicional($consulta, 'proceso_periodos', 'comision_procesos.proceso_periodo_id', '=', 'proceso_periodos.id');
@@ -84,12 +84,12 @@ class ComisionProcesoRepository extends EstadoRepository
                     break;
                 case 'comision':
                     $this->aplicarJoinCondicional($consulta, 'comisiones', 'comision_procesos.comision_id', '=', 'comisiones.id');
-                    $consulta->where('comisiones.descripcion', 'like', '%' . $searchTerm . '%');
+                    $consulta->where('comisiones.nombre', 'like', '%' . $searchTerm . '%');
                     break;
                 case 'proceso':
                     $this->aplicarJoinCondicional($consulta, 'proceso_periodos', 'comision_procesos.proceso_periodo_id', '=', 'proceso_periodos.id');
                     $this->aplicarJoinCondicional($consulta, 'procesos', 'proceso_periodos.proceso_id', '=', 'procesos.id');
-                    $consulta->where('procesos.descripcion', 'like', '%' . $searchTerm . '%');
+                    $consulta->where('procesos.nombre', 'like', '%' . $searchTerm . '%');
                     break;
                 case 'periodo_numerico':
                     $this->aplicarJoinCondicional($consulta, 'proceso_periodos', 'comision_procesos.proceso_periodo_id', '=', 'proceso_periodos.id');

@@ -2,6 +2,7 @@ import { Subject, combineLatest } from "rxjs";
 import { ParametroPaginado } from "../../interfaces/utilidades/parametro-paginado";
 
 export abstract class ServicioConsultor {
+  
   parametrosPag: ParametroPaginado = {
     pageIndex: 1,
     pageSize: 10,
@@ -12,7 +13,9 @@ export abstract class ServicioConsultor {
     range: null,
     filter: [],
   };
+
   total = 1;
+
   private filtrosInternos = new Subject<boolean>();
   private filtrosExternos = new Subject<boolean>();
   private cargar = new Subject<boolean>();
@@ -49,7 +52,5 @@ export abstract class ServicioConsultor {
     this.filtrosInternos.next(true);
     this.filtrosExternos.next(true);
   }
-
-  
 
 }

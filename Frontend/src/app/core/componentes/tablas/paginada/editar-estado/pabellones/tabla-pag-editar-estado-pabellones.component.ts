@@ -55,11 +55,10 @@ export class TablaPagEditarEstadoPabellonesComponent extends TablaPagEditarEstad
       type: 'NUMBER',
     },
     {
-      name: 'Descripción',
-      columnKey: 'descripcion',
+      name: 'Nombre',
+      columnKey: 'nombre',
       default: true,
     },
-
   ];
   override columnas: ColumnItem[] = [
     {
@@ -70,8 +69,8 @@ export class TablaPagEditarEstadoPabellonesComponent extends TablaPagEditarEstad
       sortFn: true,
     },
     {
-      name: 'Descripción',
-      attribute: 'descripcion',
+      name: 'Nombre',
+      attribute: 'nombre',
       showSort: true,
       sortFn: true,
     },

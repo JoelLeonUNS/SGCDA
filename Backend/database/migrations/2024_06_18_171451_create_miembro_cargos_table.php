@@ -117,7 +117,6 @@ return new class extends Migration {
             ['miembro_id' => 76],//76
             ['miembro_id' => 77],//77
             ['miembro_id' => 78],//78
-            ['miembro_id' => 79],//79
         ]);
     }
 

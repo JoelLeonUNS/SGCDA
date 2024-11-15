@@ -65,10 +65,13 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
       default: true,
     },
     {
+      name: 'DNI',
+      columnKey: 'dni',
+    },
+    {
       name: 'Cargo',
       columnKey: 'cargo',
     },
-
   ];
   override columnas: ColumnItem[] = [
     {
@@ -87,6 +90,12 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
     {
       name: 'Apellidos',
       attribute: 'apellidos',
+      showSort: true,
+      sortFn: true,
+    },
+    {
+      name: 'DNI',
+      attribute: 'dni',
       showSort: true,
       sortFn: true,
     },

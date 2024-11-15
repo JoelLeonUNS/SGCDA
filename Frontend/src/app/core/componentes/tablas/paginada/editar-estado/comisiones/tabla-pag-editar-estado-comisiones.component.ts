@@ -20,7 +20,6 @@ import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.compon
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { ProcesoService } from '../../../../../servicios/rest/proceso/proceso.service';
 import { ComisionService } from '../../../../../servicios/rest/comision/comision.service';
 import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 
@@ -56,8 +55,8 @@ export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstad
       type: 'NUMBER',
     },
     {
-      name: 'Descripción',
-      columnKey: 'descripcion',
+      name: 'Nombre',
+      columnKey: 'nombre',
       default: true,
     },
 
@@ -71,8 +70,8 @@ export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstad
       sortFn: true,
     },
     {
-      name: 'Descripción',
-      attribute: 'descripcion',
+      name: 'Nombre',
+      attribute: 'nombre',
       showSort: true,
       sortFn: true,
     },

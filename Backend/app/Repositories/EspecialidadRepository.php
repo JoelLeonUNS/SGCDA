@@ -15,7 +15,7 @@ class EspecialidadRepository extends EstadoRepository
 
     protected function aplicarRango(Builder $consulta, ?array $range): void
     {
-        if ($range) {
+        if ($range['key'] && $range['bounds']) {
             $consulta->whereBetween($range['key'], $range['bounds']);
         }
     }

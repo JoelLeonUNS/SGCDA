@@ -14,17 +14,18 @@
   <ng-template #modalContent>
     <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
       <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
+        <div nz-col [nzSpan]="12">
           <app-input [label]="'Nombres'" [controlName]="'nombres'"></app-input>
         </div>
-      </div>
-      <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
+        <div nz-col [nzSpan]="12">
           <app-input [label]="'Apellidos'" [controlName]="'apellidos'"></app-input>
         </div>
       </div>
       <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="24">
+        <div nz-col [nzSpan]="12">
+          <app-input [label]="'DNI'" [controlName]="'dni'" [type]="'number'"></app-input>
+        </div>
+        <div nz-col [nzSpan]="12">
           <app-select [controlName]="'cargo_id'" [label]="'Cargo'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.cargo_id, item.cargo]" [servicio]="cargoService" [accion]="accion"/>
         </div>
       </div>        
