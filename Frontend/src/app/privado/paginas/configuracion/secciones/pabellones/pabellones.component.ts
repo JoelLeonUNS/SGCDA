@@ -50,7 +50,7 @@ export class PabellonesComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormPabellon');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaPabellones.cargarDatosServidor();
+      this.tablaPabellones.cargarData();
     });
   }
 }

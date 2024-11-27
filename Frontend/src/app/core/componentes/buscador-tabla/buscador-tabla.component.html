@@ -1,18 +1,13 @@
 <div nz-flex [nzVertical]="false" nzGap="small" nzAlign="start">
-  <nz-select
-    nzAllowClear
-    nzPlaceHolder="Buscar Por"
-    [(ngModel)]="columnaBusqueda"
-    (ngModelChange)="buscarPorColumna()"
-  >
+  <nz-select [(ngModel)]="columnaBusqueda" (ngModelChange)="buscarPorColumna()">
     @for (c of columnasBusqueda; track $index) {
-        <nz-option [nzValue]="c" [nzLabel]="c.name"></nz-option>
+        <nz-option [nzValue]="c.columnKey" [nzLabel]="c.name"></nz-option>
     } 
   </nz-select>
   <nz-form-item style="width: 100%">
     <nz-form-control [nzValidateStatus]="columnaBusqueda == null ? 'error' : 'success'">
       <nz-input-group nzPrefixIcon="search" style="height: 32px;">
-        @switch (columnaBusqueda?.type) {
+        @switch (tipo) {
           @case ("TEXT") {
             <input
               nz-input

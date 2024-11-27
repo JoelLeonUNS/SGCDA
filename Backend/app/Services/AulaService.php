@@ -130,7 +130,7 @@ class AulaService
             return [
                 'id' => $aula->id,
                 'pabellon_id' => $aula->pabellon_id,
-                'pabellon' => $aula->pabellon->descripcion,
+                'pabellon' => $aula->pabellon->nombre,
                 'piso' => $aula->piso,
                 'correlativo' => $aula->correlativo,
                 'aforo' => $aula->aforo,

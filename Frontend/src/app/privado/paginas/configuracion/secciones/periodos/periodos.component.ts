@@ -50,7 +50,7 @@ export class PeriodosComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormPeriodo');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaPeriodos.cargarDatosServidor();
+      this.tablaPeriodos.cargarData();
     });
   }
 }

@@ -19,38 +19,40 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 })
 export class BuscadorTablaComponent {
   @Input() columnasBusqueda?: ColumnaBusqueda[];
+  @Input() terminoBusqueda?: string;
+  @Input() columnaBusqueda?: string;
+
+  @Output() columnaBusquedaChange = new EventEmitter<string>();
+  @Output() terminoBusquedaChange = new EventEmitter<string>();
   
   fechaBusqueda?: Date;
   mesBusqueda?: string;
   anioBusqueda?: number;
   numeroBusqueda?: number;
-  terminoBusqueda?: string;
-  columnaBusqueda?: ColumnaBusqueda;
+  tipo: string = 'text';
   
-  @Output() columnaBusquedaChange = new EventEmitter<string>();
-  @Output() terminoBusquedaChange = new EventEmitter<string>();
-
   private datePipe = new DatePipe('en-US');
 
   constructor() {}
 
   ngOnInit() {
-    // la columnaBusqueda que tiene como default true es la que se selecciona por defecto
-    this.columnaBusqueda = this.columnasBusqueda?.find((columna) => columna.default);
-    this.columnaBusquedaChange.emit(this.columnaBusqueda?.columnKey);
-    // si no hay ninguna columna con default true, se selecciona la primera
     if (!this.columnaBusqueda) {
-      this.columnaBusqueda = this.columnasBusqueda?.[0];
-      this.columnaBusquedaChange.emit(this.columnaBusqueda?.columnKey);
+      // la columnaBusqueda que tiene como default true es la que se selecciona por defecto
+      // si no hay ninguna columna con default true, se selecciona la primera
+      const columna = this.columnasBusqueda?.find((columna) => columna.default) ?? this.columnasBusqueda?.[0];
+      this.columnaBusqueda = columna?.columnKey;
+      this.tipo = columna?.type ?? 'text';
+      this.buscarPorColumna();
     }
   }
 
   buscarPorColumna() {
-    this.columnaBusquedaChange.emit(this.columnaBusqueda?.columnKey);
+    this.tipo = this.columnasBusqueda?.find((columna) => columna.columnKey === this.columnaBusqueda)?.type ?? 'text';
+    this.columnaBusquedaChange.emit(this.columnaBusqueda);
   }
 
   buscarPorTermino() {
-    this.terminoBusquedaChange.emit(this.terminoBusqueda??'');
+    this.terminoBusquedaChange.emit(this.terminoBusqueda);
   }
 
   buscarPorNumero() {
@@ -58,17 +60,14 @@ export class BuscadorTablaComponent {
   }
 
   buscarPorDate() {
-    console.log(this.datePipe.transform(this.fechaBusqueda, 'yyyy-MM-dd')??'');
     this.terminoBusquedaChange.emit(this.datePipe.transform(this.fechaBusqueda, 'yyyy-MM-dd')??'');
   }
 
   buscarPorMonth() {
-    console.log(this.datePipe.transform(this.mesBusqueda, 'M')??'');
     this.terminoBusquedaChange.emit(this.datePipe.transform(this.mesBusqueda, 'M')??'');
   }
 
   buscarPorYear() {
-    console.log(this.datePipe.transform(this.anioBusqueda, 'yyyy')??'');
     this.terminoBusquedaChange.emit(this.datePipe.transform(this.anioBusqueda, 'yyyy')??'');
   }
 

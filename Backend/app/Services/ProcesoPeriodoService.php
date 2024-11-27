@@ -111,9 +111,9 @@ class ProcesoPeriodoService
         $procesoPeriodoParse = [
             'id' => $procesoPeriodo->id,
             'proceso_id' => $procesoPeriodo->proceso_id,
-            'proceso' => $procesoPeriodo->proceso->descripcion,
+            'proceso' => $procesoPeriodo->proceso->nombre,
             'periodo_id' => $procesoPeriodo->periodo_id,
-            'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlativo_romano,
+            'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlat_romano,
             'fecha_inicial' => $this->convertirFecha($procesoPeriodo->fecha_inicial),
             'fecha_final' => $this->convertirFecha($procesoPeriodo->fecha_final),
             'estado' => $procesoPeriodo->estado
@@ -149,9 +149,9 @@ class ProcesoPeriodoService
             return [
                 'id' => $procesoPeriodo->id,
                 'proceso_id' => $procesoPeriodo->proceso_id,
-                'proceso' => $procesoPeriodo->proceso->descripcion,
+                'proceso' => $procesoPeriodo->proceso->nombre,
                 'periodo_id' => $procesoPeriodo->periodo_id,
-                'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlativo_romano,
+                'periodo' => $procesoPeriodo->periodo->anio . ' - ' . $procesoPeriodo->periodo->correlat_romano,
                 'fecha_inicial' => $this->convertirFecha($procesoPeriodo->fecha_inicial),
                 'fecha_final' => $this->convertirFecha($procesoPeriodo->fecha_final),
                 'estado' => $procesoPeriodo->estado,

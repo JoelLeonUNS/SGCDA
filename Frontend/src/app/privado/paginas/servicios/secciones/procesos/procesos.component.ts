@@ -17,6 +17,7 @@ import { SelectItemComponent } from "../../../../../core/componentes/controles/n
 import { PeriodoService } from '../../../../../core/servicios/rest/periodo/periodo.service';
 import { CargadorDatosService } from '../../../../../core/servicios/utilidades/cargador-datos/cargador-datos.service';
 import { Range } from '../../../../../core/interfaces/utilidades/range.interface';
+import { ProcesoParamsService } from '../../../../../core/servicios/consultor/proceso/proceso-consultor.service';
 
 @Component({
     selector: 'app-procesos',
@@ -46,52 +47,29 @@ export class ProcesosComponent {
   @ViewChild('vcrModal', { read: ViewContainerRef }) vcr!: ViewContainerRef;
   @ViewChild('ficheroProcesoPeriodos') ficheroProcesoPeriodos!: FicheroProcesosComponent;
 
-  nroFiltros: number = 2;
-  rango: Range = {
-    key: '',
-    bounds: []
-  }
+  inicio:number | null = null;
+  fin:number | null = null;
 
   constructor(
-    private cdService: CargadorDatosService,
+    private paramsSrvc: ProcesoParamsService,
     private modalService: ModalService,
     public periodoService: PeriodoService,
   ) { 
   }
 
-  ngAfterViewInit(): void {
-    this.ficheroProcesoPeriodos.setRangos(this.rango.key, this.rango.bounds[0], this.rango.bounds[1]);
-    if (this.nroFiltros == 0) {
-    this.cdService.cargarDatosServidor();
-    }
-  }
-
-  filtroCargado() {
-    this.nroFiltros--;
-    if (this.nroFiltros == 0) {
-      this.ficheroProcesoPeriodos?.setRangos(this.rango.key, this.rango.bounds[0], this.rango.bounds[1]);
-      this.cdService.cargarFiltrosExternos();
-    }
-  }
-
-  filtrarRango(key:string, inicio:any, fin:any) {
-    if (this.nroFiltros == 0) {
-    this.ficheroProcesoPeriodos.filtrarRango(key, inicio?.periodo_numerico, fin?.periodo_numerico);
-    } else {
-      this.setRangos(key, inicio?.periodo_numerico, fin?.periodo_numerico);
-    }
-  }
-
-  setRangos(key:string, inicio:any, fin:any) {
-    this.rango.key = key;
-    if (inicio) this.rango.bounds[0] = inicio;
-    if (fin) this.rango.bounds[1] = fin;
+  ranguear(key:string, extremo:string, valor:any) {
+    this.inicio = extremo === 'inicial' ? valor.periodo_numerico : this.inicio;
+    this.fin = extremo === 'final' ? valor.periodo_numerico : this.fin;
+    this.paramsSrvc.updateParametro('range', {
+      key: key,
+      bounds: [this.inicio, this.fin]
+    });
   }
 
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormProcesoPeriodo');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.ficheroProcesoPeriodos.cargarDatosServidor();
+      this.ficheroProcesoPeriodos.cargarData();
     });
   }
 }

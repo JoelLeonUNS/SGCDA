@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { ServicioConsultor } from "../consultor";
+import { ServicioParams } from "../ServicioParams";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class CargoConsultorService extends ServicioConsultor {
+export class CargoParamsService extends ServicioParams<any> {
   constructor() {
     super();
   }

@@ -51,7 +51,7 @@ export class ComisionesComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormComision');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaComisiones.cargarDatosServidor();
+      this.tablaComisiones.cargarData();
     });
   }
 }

@@ -27,16 +27,14 @@
     [servicio]="periodoService"
     [atributos]="['anio', 'correlativo_romano']"
     label="Periodo"
-    (cargadoChange)="filtroCargado()"
-    (itemChange)="filtrarRango('periodo_numerico', $event, null)"
+    (itemChange)="ranguear('periodo_numerico', 'inicial', $event)"
   />
   <span>-</span>
   <app-select-item
     [servicio]="periodoService"
     [atributos]="['anio', 'correlativo_romano']"
     label="Periodo"
-    (cargadoChange)="filtroCargado()"
-    (itemChange)="filtrarRango('periodo_numerico', null, $event)"
+    (itemChange)="ranguear('periodo_numerico', 'final', $event)"
   />
 </div>
 <div class="panel">

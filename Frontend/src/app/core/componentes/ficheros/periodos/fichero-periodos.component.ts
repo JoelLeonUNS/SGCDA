@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BuscadorTablaComponent } from '../../buscador-tabla/buscador-tabla.component';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -12,13 +12,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { FormsModule } from '@angular/forms';
-import { FicheroComponent } from '../fichero.component';
 import { PeriodoService } from '../../../servicios/rest/periodo/periodo.service';
 import { OrganizadorFicheroComponent } from "../../organizador-fichero/organizador-fichero.component";
 import { ColumnaBusqueda } from '../../../interfaces/utilidades/columna-busqueda.interface';
 import { TarjetaPeriodoComponent } from "../../tarjetas/tarjeta-periodo/tarjeta-periodo.component";
-import { CargadorDatosService } from '../../../servicios/utilidades/cargador-datos/cargador-datos.service';
-import { PeriodoConsultorService } from '../../../servicios/consultor/periodo/periodo-consultor.service';
+import { PeriodoParamsService } from '../../../servicios/consultor/periodo/periodo-consultor.service';
+import { FicheroNewComponent } from '../fichero-new.component';
 
 @Component({
   selector: 'app-fichero-periodos',
@@ -42,7 +41,7 @@ import { PeriodoConsultorService } from '../../../servicios/consultor/periodo/pe
   templateUrl: './fichero-periodos.component.html',
   styleUrls: ['../fichero.component.css'],
 })
-export class FicheroPeriodosComponent extends FicheroComponent {
+export class FicheroPeriodosComponent extends FicheroNewComponent {
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
       name: 'Id',
@@ -70,10 +69,10 @@ export class FicheroPeriodosComponent extends FicheroComponent {
   constructor(
     message: NzMessageService,
     servicio: PeriodoService,
-    consultor: PeriodoConsultorService
+    paramsSrvc: PeriodoParamsService,
+    cdr: ChangeDetectorRef
   ) {
-    super(message, servicio, consultor);
-    this.consultor.cargarFiltros();
+    super(message, servicio, paramsSrvc, cdr);
   }
 
 }

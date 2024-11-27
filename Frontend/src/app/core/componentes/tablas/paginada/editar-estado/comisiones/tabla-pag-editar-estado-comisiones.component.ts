@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, ViewContainerRef} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,12 +16,14 @@ import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.servi
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ComisionService } from '../../../../../servicios/rest/comision/comision.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
+import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new.component';
+import { ComisionParamsService } from '../../../../../servicios/consultor/comision/comision-consultor';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-comisiones',
@@ -41,12 +43,14 @@ import { CargadorDatosService } from '../../../../../servicios/utilidades/cargad
     NzSwitchModule,
     NzPopconfirmModule,
     NzTagModule,
-    BuscadorTablaComponent
-  ],
-  templateUrl: '../tabla-pag-editar-estado.component.html',
+    NzDropDownModule,
+    BuscadorTablaComponent,
+],
+  templateUrl: '../tabla-pag-editar-estado-new.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
+  providers: [FiltroService]
 })
-export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstadoComponent {
+export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstadoNewComponent {
   override modal = 'modalFormComision';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
@@ -59,6 +63,10 @@ export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstad
       columnKey: 'nombre',
       default: true,
     },
+    {
+      name: 'Estado',
+      columnKey: 'estado',
+    }
 
   ];
   override columnas: ColumnItem[] = [
@@ -83,7 +91,6 @@ export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstad
       showSort: true,
       sortFn: true,
       filterFn: true,
-      pipe: { nombre: 'state', datos: ['ACTIVO', 'DE BAJA'] },
       etiquetable: true,
     },
     {
@@ -102,10 +109,27 @@ export class TablaPagEditarEstadoComisionesComponent extends TablaPagEditarEstad
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: ComisionService,
-    cdService: CargadorDatosService,
+    filtroSrvc: FiltroService,
+    paramsServ: ComisionParamsService,
+    cdr: ChangeDetectorRef,
     modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, cdService, modalService);
-    this.cdService.cargarFiltros();
+    
+    super(msgService, pipeService, servicio, filtroSrvc, paramsServ, cdr, modalService);
   }
+
+  ngOnInit(): void {
+    this.filtros.forEach((filtro) => {
+      let index =
+        this.columnas?.findIndex(
+          (columna) => columna.attribute == filtro.attribute
+        ) ?? -1;
+      if (index !== -1) {
+        this.columnas![index].listOfFilter = [...filtro.list];
+      }
+    }); 
+  }
+
+  
+
 }

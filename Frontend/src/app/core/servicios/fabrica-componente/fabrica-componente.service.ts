@@ -10,12 +10,16 @@ import { ModalFormProcesoPeriodoComponent } from '../../componentes/modales/form
 import { ModalFormEspecialidadComponent } from '../../componentes/modales/formulario/especialidad/modal-form-especialidad.component';
 import { ModalFormAulaComponent } from '../../componentes/modales/formulario/aula/modal-form-aula.component';
 import { ModalFormPabellonComponent } from '../../componentes/modales/formulario/pabellon/modal-form-pabellon.component';
+import { FiltradorTablaComponent } from '../../componentes/filtrador-tabla/filtrador-tabla.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FabricaComponenteService {
   private componentes: { [key: string]: Type<any> } = {
+    // Utilidades
+    // Filtro
+    filtradorTabla: FiltradorTablaComponent,
     // Modales
     // Pabellon
     modalFormPabellon: ModalFormPabellonComponent,

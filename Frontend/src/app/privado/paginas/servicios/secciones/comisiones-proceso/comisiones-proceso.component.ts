@@ -18,6 +18,7 @@ import { ProcesoService } from '../../../../../core/servicios/rest/proceso/proce
 import { FicheroComisionesComponent } from "../../../../../core/componentes/ficheros/comisiones/fichero-comisiones.component";
 import { Range } from '../../../../../core/interfaces/utilidades/range.interface';
 import { CargadorDatosService } from '../../../../../core/servicios/utilidades/cargador-datos/cargador-datos.service';
+import { ComisionProcesoParamsService } from '../../../../../core/servicios/consultor/comision-proceso/comision-proceso-consultor.service';
 
 @Component({
     selector: 'app-comisiones-proceso',
@@ -48,73 +49,41 @@ export class ComisionesProcesoComponent {
   @ViewChild('vcrModal', { read: ViewContainerRef }) vcr!: ViewContainerRef;
   @ViewChild('ficheroComisiones') ficheroComisiones!: FicheroComisionesComponent;
 
-  nroFiltros: number = 3;
-  rango: Range = {
-    key: '',
-    bounds: []
-  }
-  filtro: any = {
-    key: '',
-    value: ''
-  }
+  inicio:number | null = null;
+  fin:number | null = null;
 
   constructor(
-    private cdService: CargadorDatosService,
+    private paramsSrvc: ComisionProcesoParamsService,
     private modalService: ModalService,
     public periodoService: PeriodoService,
     public procesoService: ProcesoService
   ) {
   }
 
-  ngAfterViewInit(): void {
-    this.ficheroComisiones.setFiltros(this.filtro.key, this.filtro.value);
-    this.ficheroComisiones.setRangos(this.rango.key, this.rango.bounds[0], this.rango.bounds[1]);
-    if (this.nroFiltros == 0) {
-    this.cdService.cargarDatosServidor();
-    }
+  ranguear(key:string, extremo:string, valor:any) {
+    this.inicio = extremo === 'inicial' ? valor.periodo_numerico : this.inicio;
+    this.fin = extremo === 'final' ? valor.periodo_numerico : this.fin;
+    this.paramsSrvc.updateParametro('range', {
+      key: key,
+      bounds: [this.inicio, this.fin]
+    });
   }
 
-  filtroCargado() {
-    this.nroFiltros--;
-    if (this.nroFiltros == 0) {
-      this.ficheroComisiones?.setFiltros(this.filtro.key, this.filtro.value);
-      this.ficheroComisiones?.setRangos(this.rango.key, this.rango.bounds[0], this.rango.bounds[1]);
-      this.cdService.cargarFiltrosExternos();
-    }
-  }
-
-  filtrar(key:string, value:any) {
-    if (this.nroFiltros == 0) {
-    this.ficheroComisiones.filtrar(key, value.descripcion);
+  filtrar(key:string, valor:any) {
+    let filters = this.paramsSrvc.params.filter;
+    const filtro = filters.find(f => f.key === key);
+    if (filtro) {
+      filtro.value = valor.nombre;
+      this.paramsSrvc.updateParametro('filter', [...filters]);
     } else {
-      this.setFiltros(key, value.descripcion);
+      this.paramsSrvc.updateParametro('filter', [...filters, { key, value: valor.nombre }]);
     }
   }
-
-  filtrarRango(key:string, inicio:any, fin:any) {
-    if (this.nroFiltros == 0) {
-    this.ficheroComisiones.filtrarRango(key, inicio?.periodo_numerico, fin?.periodo_numerico);
-    } else {
-      this.setRangos(key, inicio?.periodo_numerico, fin?.periodo_numerico);
-    }
-  }
-
-  setRangos(key:string, inicio:any, fin:any) {
-    this.rango.key = key;
-    if (inicio) this.rango.bounds[0] = inicio;
-    if (fin) this.rango.bounds[1] = fin;
-  }
-
-  setFiltros(key:string, value:any) {
-    this.filtro.key = key;
-    this.filtro.value = value;
-  }
-
 
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormComisionProceso');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.ficheroComisiones.cargarDatosServidor();
+      this.ficheroComisiones.cargarData();
     });
   }
 }

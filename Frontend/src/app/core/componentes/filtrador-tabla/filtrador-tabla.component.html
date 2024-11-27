@@ -1,0 +1,21 @@
+<div class="contenedor ant-table-filter-dropdown">
+  @if(!cargando) {
+      <nz-radio-group [(ngModel)]="idValor" nzSize="small">
+      @for (item of options; track $index) {
+        <label nz-radio [nzValue]="item[atributte[0]]">{{ item[atributte[1]] }}</label>
+      } @empty {
+        @if (option && option[0] && option[1]) {
+          <label nz-radio [nzValue]="option[0]">{{ option[1] }}</label>
+        } @else {
+          No hay datos
+        }  
+      }
+      </nz-radio-group>
+    } @else {
+      <span nz-icon nzType="loading" class="loading-icon"></span>
+      Cargando datos...
+    }
+  <nz-divider class="divisor"></nz-divider>
+  <button nz-button nzSize="small" nzType="text" style="margin-right: .5em;">Reiniciar</button>
+  <button nz-button nzSize="small" nzType="primary">Aceptar</button>
+</div>

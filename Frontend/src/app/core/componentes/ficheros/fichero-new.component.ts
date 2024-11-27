@@ -1,10 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable, Subject, debounceTime, tap, catchError, of, map } from 'rxjs';
 import { ColumnaBusqueda } from '../../interfaces/utilidades/columna-busqueda.interface';
 import { ParametroPaginado } from '../../interfaces/utilidades/parametro-paginado';
 import { ServicioCrud } from '../../servicios/rest/servicio-crud';
-import { BuscadorTablaComponent } from "../buscador-tabla/buscador-tabla.component";
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { CommonModule } from '@angular/common';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -16,12 +15,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { FormsModule } from '@angular/forms';
-import { OrganizadorFicheroComponent } from '../organizador-fichero/organizador-fichero.component';
 import { ColumnaOrden } from '../../interfaces/utilidades/columna-orden.interface';
 import { ServicioParams } from '../../servicios/consultor/ServicioParams';
 
 @Component({
-  selector: 'app-fichero',
+  selector: 'app-fichero-new',
   standalone: true,
   imports: [
     CommonModule,
@@ -38,55 +36,41 @@ import { ServicioParams } from '../../servicios/consultor/ServicioParams';
   ],
   template: '',
 })
-export class FicheroComponent {
+export class FicheroNewComponent {
   @Input() scroll?: any;
   @Input() columnasBusqueda?: ColumnaBusqueda[];
   @Input() columnasOrden?: ColumnaOrden[];
 
   datos$?: Observable<any[]>;
   datos: any[] = [];
-  parametrosPag: ParametroPaginado = {
-    pageIndex: 1,
-    pageSize: 10,
-    sortField: null,
-    sortOrder: null,
-    searchTerm: '',
-    searchColumn: 'id',
-    filter: [],
-  };
+  parametros?: ParametroPaginado;
   total = 0;
   loading = true;
-  busqueda = new Subject<string>();
 
   constructor(
     protected msgService: NzMessageService,
     protected servicio: ServicioCrud<any>,
-    protected consultor: ServicioParams<any>
+    protected paramsSrvc: ServicioParams<any>,
+    protected cdr: ChangeDetectorRef
   ) {
-    
-    this.busqueda.pipe(debounceTime(500)).subscribe((termino) => {
-      this.parametrosPag.pageIndex = 1;
-      this.parametrosPag.searchTerm = termino;
-      this.cargarDatosServidor();
-    });
+    this.paramsSrvc.params$.pipe(debounceTime(300)).subscribe(() => this.cargarData());
   }
 
   ngOnInit(): void {
     this.columnasOrden == null ? this.columnasOrden = this.columnasBusqueda : this.columnasOrden;
   }
 
-  cargarDatosServidor(): void {
+  cargarData(): void {
     this.loading = true;
-    this.datos$ = this.servicio?.obtenerTodoPag(this.parametrosPag).pipe(
-      tap(d => {
-        this.manejarRespuesta(d);
-      }),
-      catchError(error => {
-        this.manejarError(error);
+    this.datos$ = this.servicio?.obtenerTodoPag(this.paramsSrvc.params).pipe(
+      tap(d => this.manejarRespuesta(d)),
+      catchError(e => {
+        this.manejarError(e);
         return of(null);
       }),
       map(d => d.data)
     );
+    console.warn(this.paramsSrvc.params);
   }
 
   manejarRespuesta(respuesta: any): void {
@@ -101,14 +85,30 @@ export class FicheroComponent {
     this.loading = false;
   }
 
+  buscarTermino(searchTerm:string):void {
+    this.paramsSrvc.updateParametros({ searchTerm, pageIndex: 1 });
+    this.cdr.detectChanges();
+  }
+
+  get termino(): string {
+    return this.paramsSrvc.params.searchTerm??'';
+  }
+
+  buscarColumna(searchColumn:string): void {
+    this.paramsSrvc.updateParametros({ searchColumn, pageIndex: 1 });
+    this.cdr.detectChanges();
+  }  
+
+  get columna(): string {
+    return this.paramsSrvc.params.searchColumn??'';
+  }
+
   ordenarPor(columnKey: string): void {
-    this.parametrosPag.sortField = columnKey;
-    this.cargarDatosServidor();
+    this.paramsSrvc.updateParametros({ sortField: columnKey });
   }
 
   cambiarOrden(orden: string): void {
-    this.parametrosPag.sortOrder = orden;
-    this.cargarDatosServidor();
+    this.paramsSrvc.updateParametros({ sortOrder: orden });
   }
 
 }

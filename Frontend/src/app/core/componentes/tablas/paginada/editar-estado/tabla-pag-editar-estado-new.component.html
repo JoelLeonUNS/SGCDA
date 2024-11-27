@@ -1,0 +1,110 @@
+<div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
+  <app-buscador-tabla
+    [columnasBusqueda]="columnasBusqueda"
+    (columnaBusquedaChange)="buscarColumna($event)"
+    [columnaBusqueda]="columna"
+    (terminoBusquedaChange)="buscarTermino($event)"
+    [terminoBusqueda]="termino"
+    style="width: 100%"
+  />
+  <nz-divider nzType="vertical" style="margin: .75em 0;"></nz-divider>
+  <div nz-flex [nzVertical]="false" nzGap="small" nzAlign="center">
+    <span>Reiniciar</span>
+    <button nz-button (click)="reiniciarFiltros()">
+      <span nz-icon nzType="filter" nzTheme="outline"></span>
+      <span class="hidden">Filtros</span>
+    </button>
+    <button nz-button (click)="reiniciarOrden()">
+      <span nz-icon nzType="sort-ascending" nzTheme="outline"></span>
+      <span class="hidden">Orden</span>
+    </button>
+  </div>
+</div>
+<nz-table
+  #tabla
+  nzShowSizeChanger
+  [nzShowTotal]="totalTemplate"
+  [nzData]="datos$ | async"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total"
+  [nzPageIndex]="parametros?.pageIndex??1"
+  [nzPageSize]="parametros?.pageSize??10"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [nzScroll]="scroll ?? { y: '400px' }"
+  nzSize="small"
+>
+  <thead>
+    <tr>
+      @for (c of columnas; track c) {
+      <th
+        [nzCustomFilter]="c.filterCustom ?? false"
+        [nzColumnKey]="c.columnKey ?? c.attribute"
+        [nzWidth]="c.width ?? null"
+        [nzShowSort]="c.showSort"
+        [nzSortOrder]="c.sortOrder ?? null"
+        [nzSortFn]="c.sortFn ?? null"
+        [nzSortDirections]="c.sortDirections ?? []"
+        [nzShowFilter]="c.showFilter"
+        [nzFilters]="c.listOfFilter ?? []"
+        [nzFilterFn]="c.filterFn ?? null"
+        [nzFilterMultiple]="c.filterMultiple ?? false"
+        [nzLeft]="c.left ?? false"
+        [nzRight]="c.right ?? false"
+        >
+        {{ c.name }}
+        @if (c.filterCustom) {
+          <nz-filter-trigger [nzDropdownMenu]="menuFiltro" (nzVisibleChange)="$event ? mostrarFiltro(c.columnKey) : null">
+            <span nz-icon nzType="filter" nzTheme="fill"></span>
+          </nz-filter-trigger>
+        }
+      </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (data of tabla.data; track data) {
+    <tr>
+      @for (c of columnas; track c) {
+        @if(c.attribute) {
+        <td [nzLeft]="c.left ?? false" [nzAlign]="c.align ?? 'left'">
+            @if(c.etiquetable) {
+              <nz-tag [nzColor]="tags[data[c.attribute]] ? tags[data[c.attribute]].color : 'default'">
+                {{ transPipe(data[c.attribute], c.pipe) }}</nz-tag
+              >
+            } @else {
+              {{ transPipe(data[c.attribute], c.pipe) }}
+            }
+        </td>
+      } @else {
+        @if (c.name  == 'Acción') {
+          <td [nzRight]="c.right ?? false">
+            <a nz-button nzType="link" (click)="abrirModal(data)">Editar</a>
+          </td>
+        } @else {
+          <td [nzRight]="c.right ?? false">
+            <nz-switch
+              [(ngModel)]="data.estado"
+              [nzSize]="'small'"
+              [nzControl]="true"
+              [nzLoading]="cargarSwitch && $index + 1 == idSwitch"
+              nz-popconfirm
+              [nzPopconfirmTitle]="data.estado ? '¿Está seguro de dar de baja?' : '¿Está seguro de activarlo?'"
+              (nzOnConfirm)="cambiarEstado(data)"
+              (nzOnCancel)="cancelar()"
+              nzPopconfirmPlacement="left"
+              style="margin: 0 1.25em;"
+            ></nz-switch>
+          </td>
+        }
+      }
+    }
+    </tr>
+    }
+  </tbody>
+</nz-table>
+<ng-template #totalTemplate let-total>Se encontraron {{ total }} registros</ng-template>
+<ng-container #vcrModal></ng-container>
+<nz-dropdown-menu #menuFiltro>
+  <ng-container #vcrFiltro></ng-container>
+</nz-dropdown-menu>

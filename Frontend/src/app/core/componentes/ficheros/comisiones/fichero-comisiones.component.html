@@ -1,10 +1,12 @@
 <div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
   <app-buscador-tabla
     [columnasBusqueda]="columnasBusqueda"
-    (columnaBusquedaChange)="parametrosPag.searchColumn = $event"
-    (terminoBusquedaChange)="busqueda.next($event)"
+    (columnaBusquedaChange)="buscarColumna($event)"
+    [columnaBusqueda]="columna"
+    (terminoBusquedaChange)="buscarTermino($event)"
+    [terminoBusqueda]="termino"
     style="width: 100%"
-  ></app-buscador-tabla>
+  />
   <app-organizador-fichero 
     [columnasOrden]="columnasOrden"
     (columnaOrdenChange)="ordenarPor($event)"
@@ -23,7 +25,7 @@
           [nroMiembros]="item.nro_miembros"
           [estado]="item.estado"
           [item]="item"
-          (refrescar)="cargarDatosServidor()"
+          (refrescar)="cargarData()"
           />
       }  @empty {
         <nz-empty nzNotFoundContent="No se encontraron resultados" style="width: 100%"></nz-empty>
@@ -32,7 +34,7 @@
     
   </nz-spin>
   <nz-flex nzJustify="end" nzAlign="center" style="margin-top: 2em;">
-      <nz-pagination [nzPageIndex]="parametrosPag.pageIndex" [nzPageSize]="parametrosPag.pageSize" [nzTotal]="total" [nzShowTotal]="totalTemplate" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+      <nz-pagination [nzPageIndex]="parametros?.pageIndex??1" [nzPageSize]="parametros?.pageSize??10" [nzTotal]="total" [nzShowTotal]="totalTemplate" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
   </nz-flex>
 </div>
 <ng-template #totalTemplate>

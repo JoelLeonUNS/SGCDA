@@ -19,6 +19,7 @@ export interface ColumnItem {
   showFilter?: boolean;
   filterFn?: NzTableFilterFn<any> | boolean | null;
   filterMultiple?: boolean;
+  filterCustom?: boolean;
   left?: boolean | string;
   right?: boolean | string;
   align?: 'left' | 'right' | 'center';

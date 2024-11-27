@@ -1,0 +1,13 @@
+.contenedor {
+  padding: .5em 1em;
+}
+
+.divisor {
+    margin: .5em 0;
+}
+
+[nz-radio] {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+}

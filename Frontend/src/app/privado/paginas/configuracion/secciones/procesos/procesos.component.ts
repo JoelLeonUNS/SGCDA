@@ -36,7 +36,6 @@ import { SelectItemComponent } from "../../../../../core/componentes/controles/n
     NzPageHeaderModule,
     TablaPagEditarEstadoProcesosComponent,
     ControlExportacionProcesoComponent,
-    SelectItemComponent
 ]
 })
 export class ProcesosComponent {
@@ -52,7 +51,7 @@ export class ProcesosComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormProceso');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaProcesos.cargarDatosServidor();
+      this.tablaProcesos.cargarData();
     });
   }
 }

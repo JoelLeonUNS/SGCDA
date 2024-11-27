@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectorRef, Component} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,13 +16,14 @@ import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.servi
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { AulaService } from '../../../../../servicios/rest/aula/aula.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 import { EspecialidadService } from '../../../../../servicios/rest/especialidad/especialidad.service';
+import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new.component';
+import { EspecialidadParamsService } from '../../../../../servicios/consultor/especialidad/especialidad-consultor';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-especialidades',
@@ -42,12 +43,14 @@ import { EspecialidadService } from '../../../../../servicios/rest/especialidad/
     NzSwitchModule,
     NzPopconfirmModule,
     NzTagModule,
+    NzDropDownModule,
     BuscadorTablaComponent
   ],
-  templateUrl: '../tabla-pag-editar-estado.component.html',
+  templateUrl: '../tabla-pag-editar-estado-new.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
+  providers: [FiltroService]
 })
-export class TablaPagEditarEstadoEspecialidadesComponent extends TablaPagEditarEstadoComponent {
+export class TablaPagEditarEstadoEspecialidadesComponent extends TablaPagEditarEstadoNewComponent {
   override modal = 'modalFormEspecialidad';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
@@ -82,7 +85,6 @@ export class TablaPagEditarEstadoEspecialidadesComponent extends TablaPagEditarE
       showSort: true,
       sortFn: true,
       filterFn: true,
-      pipe: { nombre: 'state', datos: ['ACTIVO', 'DE BAJA'] },
       etiquetable: true,
     },
     {
@@ -101,10 +103,11 @@ export class TablaPagEditarEstadoEspecialidadesComponent extends TablaPagEditarE
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: EspecialidadService,
-    cdService: CargadorDatosService,
+    filtroSrvc: FiltroService,
+    paramsSrvc: EspecialidadParamsService,
+    cdr: ChangeDetectorRef,
     modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, cdService, modalService);
-    this.cdService.cargarFiltros();
+    super(msgService, pipeService, servicio, filtroSrvc, paramsSrvc, cdr, modalService);
   }
 }

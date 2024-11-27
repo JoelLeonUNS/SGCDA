@@ -78,7 +78,7 @@ class ComisionService
      * @param int $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->comisionRepository->cambiarEstado($id, $estado);
     }

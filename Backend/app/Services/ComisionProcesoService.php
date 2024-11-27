@@ -196,7 +196,7 @@ class ComisionProcesoService
             return [
                 'id' => $comisionProceso->id,
                 'comision_id' => $comisionProceso->comision_id,
-                'comision' => $comisionProceso->comision->descripcion,
+                'comision' => $comisionProceso->comision->nombre,
                 'nro_miembros' => $nroMiembros,
                 'miembros' => $miembrosNombres,
                 'fecha' => $this->convertirFecha($comisionProceso->fecha),

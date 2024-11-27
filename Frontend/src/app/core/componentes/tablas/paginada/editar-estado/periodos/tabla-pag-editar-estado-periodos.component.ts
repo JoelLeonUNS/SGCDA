@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectorRef, Component} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,13 +16,14 @@ import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.servi
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
-import { ProcesoService } from '../../../../../servicios/rest/proceso/proceso.service';
 import { PeriodoService } from '../../../../../servicios/rest/periodo/periodo.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
+import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new.component';
+import { PeriodoParamsService } from '../../../../../servicios/consultor/periodo/periodo-consultor.service';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-periodos',
@@ -42,12 +43,14 @@ import { CargadorDatosService } from '../../../../../servicios/utilidades/cargad
     NzSwitchModule,
     NzPopconfirmModule,
     NzTagModule,
-    BuscadorTablaComponent
+    NzDropDownModule,
+    BuscadorTablaComponent,
   ],
-  templateUrl: '../tabla-pag-editar-estado.component.html',
+  templateUrl: '../tabla-pag-editar-estado-new.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
+  providers: [FiltroService]
 })
-export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoComponent {
+export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoNewComponent {
   override modal = 'modalFormPeriodo';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
@@ -63,7 +66,7 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
     },
     {
       name: 'Fecha Inicial',
-      columnKey: 'fecha_incial',
+      columnKey: 'fecha_inicial',
       type: 'DATE',
     },
     {
@@ -133,10 +136,11 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoC
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: PeriodoService,
-    cdService: CargadorDatosService,
+    filtroSrvc: FiltroService,
+    paramsSrvc: PeriodoParamsService,
+    cdr: ChangeDetectorRef,
     modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, cdService, modalService);
-    this.cdService.cargarFiltros();
+    super(msgService, pipeService, servicio, filtroSrvc, paramsSrvc, cdr, modalService);
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,8 @@ import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabl
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ComisionMiembroService } from '../../../../../servicios/rest/comision-miembro/comision-miembro.service';
 import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
+import { ComisionMiembroParamsService } from '../../../../../servicios/consultor/comision-miembro/comision-miembro-consultor';
 
 @Component({
   selector: 'app-tabla-pag-mostrar-miembros',
@@ -90,58 +92,12 @@ export class TablaPagMostrarMiembrosComponent extends TablaPagMostrarComponent {
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: ComisionMiembroService,
-    cdService: CargadorDatosService
+    filtroSrvc: FiltroService,
+    paramsSrvc: ComisionMiembroParamsService,
+    cdr: ChangeDetectorRef,
   ) {
-    super(msgService, pipeService, servicio, cdService);
-    this.cdService.cargarFiltrosInternos();
+    super(msgService, pipeService, servicio, filtroSrvc, paramsSrvc, cdr);
   }
 
-  setRangos(key: string, inicio: any, fin: any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-  } 
-
-  setFiltros(key: string, value: any) {
-    this.consultarFiltro(key, value);
-  }
-
-  filtrarRango(key: string, inicio:any, fin:any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-    this.cargarDatosServidor();
-  }
-
-  filtrar(key: string, value: any) {
-    this.consultarFiltro(key, value);
-    this.cargarDatosServidor();
-  }
-
-  consultarFiltro(key:string, value: any) {
-    if (!key && !value) {
-      return
-    }
-    const existe = this.parametrosPag.filter.find(
-      (filtro) => filtro.key === key
-    );
-    if (!existe) {
-      this.parametrosPag.filter.push({key: key, value: value});
-    } else {
-      this.parametrosPag.filter.forEach((filtro) => {
-        if (filtro.key === key) {
-          filtro.value = value;
-        }
-      });
-    }
-  }
-
-
-
+  
 }

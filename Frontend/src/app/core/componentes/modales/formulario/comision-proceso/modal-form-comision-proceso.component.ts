@@ -32,17 +32,14 @@ import { MostrarProcesoPeriodoComponent } from "../../../mostrar-proceso-periodo
     CommonModule,
     ReactiveFormsModule,
     NzFormModule,
-    InputComponent,
     NzModalModule,
     NzButtonModule,
     NzRadioModule,
     NzSelectModule,
     NzDatePickerModule,
     NzGridModule,
-    DateRangeComponent,
     SelectComponent,
     DateComponent,
-    InputNumberComponent,
     BuscarAgregarMultipleComponent,
     TimeComponent,
     MostrarProcesoPeriodoComponent
@@ -54,7 +51,9 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     comision_id: [null, [Validators.required]],
     miembros_ids: [null, [Validators.required]],
     proceso_periodo_id: [null, [Validators.required]],
-    horario_id: [null,  [Validators.required]],
+    // horario_id: [null],
+    fecha: [null, [Validators.required]],
+    hora: [null, [Validators.required]],
   });
 
   constructor(

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectorRef, Component} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,12 +16,14 @@ import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.servi
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { MiembroCargoService } from '../../../../../servicios/rest/miembro-cargo/miembro-cargo.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
+import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new.component';
+import { MiembroCargoParamsService } from '../../../../../servicios/consultor/miembro-cargo/miembro-cargo-consultor';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-miembros',
@@ -41,12 +43,14 @@ import { CargadorDatosService } from '../../../../../servicios/utilidades/cargad
     NzSwitchModule,
     NzPopconfirmModule,
     NzTagModule,
+    NzDropDownModule,
     BuscadorTablaComponent
   ],
-  templateUrl: '../tabla-pag-editar-estado.component.html',
+  templateUrl: '../tabla-pag-editar-estado-new.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
+  providers: [FiltroService]
 })
-export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoComponent {
+export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoNewComponent {
   override modal = 'modalFormMiembro';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
@@ -121,7 +125,6 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
       showSort: true,
       sortFn: true,
       filterFn: true,
-      pipe: { nombre: 'state', datos: ['ACTIVO', 'DE BAJA'] },
       etiquetable: true,
     },
     {
@@ -140,10 +143,11 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoC
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: MiembroCargoService,
-    cdService: CargadorDatosService,
+    filtroSrvc: FiltroService,
+    paramsSrvc: MiembroCargoParamsService,
+    cdr: ChangeDetectorRef,
     modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, cdService, modalService);
-    this.cdService.cargarFiltros();
+    super(msgService, pipeService, servicio, filtroSrvc, paramsSrvc, cdr, modalService);
   }
 }

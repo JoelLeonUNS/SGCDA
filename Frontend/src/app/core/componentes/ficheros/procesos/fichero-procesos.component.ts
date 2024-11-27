@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BuscadorTablaComponent } from '../../buscador-tabla/buscador-tabla.component';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -12,13 +12,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { FormsModule } from '@angular/forms';
-import { FicheroComponent } from '../fichero.component';
 import { OrganizadorFicheroComponent } from "../../organizador-fichero/organizador-fichero.component";
 import { ColumnaBusqueda } from '../../../interfaces/utilidades/columna-busqueda.interface';
 import { TarjetaProcesosComponent } from "../../tarjetas/tarjeta-procesos/tarjeta-procesos.component";
 import { ProcesoPeriodoService } from '../../../servicios/rest/proceso-periodo/proceso-periodo.service';
-import { CargadorDatosService } from '../../../servicios/utilidades/cargador-datos/cargador-datos.service';
-import { ProcesoConsultorService } from '../../../servicios/consultor/proceso/proceso-consultor.service';
+import { ProcesoParamsService } from '../../../servicios/consultor/proceso/proceso-consultor.service';
+import { FicheroNewComponent } from '../fichero-new.component';
 
 @Component({
   selector: 'app-fichero-procesos',
@@ -42,7 +41,7 @@ import { ProcesoConsultorService } from '../../../servicios/consultor/proceso/pr
   templateUrl: './fichero-procesos.component.html',
   styleUrls: ['../fichero.component.css'],
 })
-export class FicheroProcesosComponent extends FicheroComponent {
+export class FicheroProcesosComponent extends FicheroNewComponent {
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
       name: 'Id',
@@ -70,36 +69,12 @@ export class FicheroProcesosComponent extends FicheroComponent {
     },
   ];
   
-  rangoInicial?: any;
-  rangoFinal?: any;
-  
   constructor(
     message: NzMessageService,
     servicio: ProcesoPeriodoService,
-    consultor: ProcesoConsultorService
+    paramsSrvc: ProcesoParamsService,
+    cdr: ChangeDetectorRef
   ) {
-    super(message, servicio, consultor);
-
-    this.consultor.cargarFiltrosInt();
+    super(message, servicio, paramsSrvc, cdr);
   }
-
-  setRangos(key: string, inicio: any, fin: any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-  } 
-
-  filtrarRango(key: string, inicio:any, fin:any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-    this.cargarDatosServidor();
-  }
-
 }

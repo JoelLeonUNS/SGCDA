@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BuscadorTablaComponent } from '../../buscador-tabla/buscador-tabla.component';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
@@ -12,13 +12,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { FormsModule } from '@angular/forms';
-import { FicheroComponent } from '../fichero.component';
 import { OrganizadorFicheroComponent } from "../../organizador-fichero/organizador-fichero.component";
 import { ColumnaBusqueda } from '../../../interfaces/utilidades/columna-busqueda.interface';
 import { TarjetaComisionesComponent } from '../../tarjetas/tarjeta-comisiones/tarjeta-comisiones.component';
 import { ComisionProcesoService } from '../../../servicios/rest/comision-proceso/comision-proceso.service';
-import { CargadorDatosService } from '../../../servicios/utilidades/cargador-datos/cargador-datos.service';
-import { ComisionProcesoConsultorService } from '../../../servicios/consultor/comision-proceso/comision-proceso-consultor.service';
+import { ComisionProcesoParamsService } from '../../../servicios/consultor/comision-proceso/comision-proceso-consultor.service';
+import { FicheroNewComponent } from '../fichero-new.component';
 
 @Component({
   selector: 'app-fichero-comisiones',
@@ -42,7 +41,7 @@ import { ComisionProcesoConsultorService } from '../../../servicios/consultor/co
   templateUrl: './fichero-comisiones.component.html',
   styleUrls: ['../fichero.component.css'],
 })
-export class FicheroComisionesComponent extends FicheroComponent {
+export class FicheroComisionesComponent extends FicheroNewComponent {
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
       name: 'Id',
@@ -64,45 +63,14 @@ export class FicheroComisionesComponent extends FicheroComponent {
       type: 'DATE',
     },
   ];
-
-  rangoInicial?: any;
-  rangoFinal?: any;
   
   constructor(
     message: NzMessageService,
     servicio: ComisionProcesoService,
-    consultor: ComisionProcesoConsultorService
+    paramsSrvc: ComisionProcesoParamsService,
+    cdr: ChangeDetectorRef
   ) {
-    super(message, servicio, consultor);
-    this.consultor.cargarFiltrosInt();
-  }
-
-  setRangos(key: string, inicio: any, fin: any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-  } 
-
-  setFiltros(key: string, value: any) {
-    this.parametrosPag.filter = [{key: key, value: value}];
-  }
-
-  filtrarRango(key: string, inicio:any, fin:any) {
-    if(inicio) this.rangoInicial = inicio;
-    if(fin) this.rangoFinal = fin;
-    this.parametrosPag.range = {
-      key: key,
-      bounds: [this.rangoInicial, this.rangoFinal]
-    }
-    this.cargarDatosServidor();
-  }
-
-  filtrar(key: string, value: any) {
-    this.parametrosPag.filter = [{key: key, value: value}];
-    this.cargarDatosServidor();
+    super(message, servicio, paramsSrvc, cdr);
   }
 
 }

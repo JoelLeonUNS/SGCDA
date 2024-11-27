@@ -50,7 +50,7 @@ export class MiembrosComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormMiembro');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaMiembros.cargarDatosServidor();
+      this.tablaMiembros.cargarData();
     });
   }
 }

@@ -50,7 +50,7 @@ export class AulasComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormAula');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaAulas.cargarDatosServidor();
+      this.tablaAulas.cargarData();
     });
   }
 }

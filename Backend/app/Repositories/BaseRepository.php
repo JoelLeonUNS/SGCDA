@@ -165,8 +165,8 @@ abstract class BaseRepository
         $sortOrder = $criterios['sortOrder'];
         $range = $criterios['range'] ?? null;
         $filters = $criterios['filters'];
-        $searchTerm = $criterios['searchTerm'] ?? null;
-        $searchColumn = $criterios['searchColumn'] ?? null;
+        $searchTerm = $criterios['searchTerm'];
+        $searchColumn = $criterios['searchColumn'];
         $query = $query ?? $this->modelo->query();
 
         // Aplicar rango

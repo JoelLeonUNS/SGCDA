@@ -50,7 +50,7 @@ export class CargosComponent {
   abrirModal() {
     this.modalService.insertarModalCrear(this.vcr, 'modalFormCargo');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
-      this.tablaCargos.cargarDatosServidor();
+      this.tablaCargos.cargarData();
     });
   }
 }

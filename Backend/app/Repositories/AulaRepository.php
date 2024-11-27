@@ -16,8 +16,8 @@ class AulaRepository extends EstadoRepository
 
     protected function aplicarRango(Builder $consulta, ?array $range): void
     {
-        if ($range) {
-            $consulta->whereBetween($range['key'], $range['bounds']);
+        if ($range['field'] && $range['values']) {
+            $consulta->whereBetween($range['field'], [$range['values']['start'], $range['values']['end']]);
         }
     }
 

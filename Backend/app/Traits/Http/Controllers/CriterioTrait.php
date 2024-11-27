@@ -47,7 +47,7 @@ trait CriterioTrait
                 'pageSize' => $validatedData['pageSize'] ?? 10,
                 'sortField' => $sortField,
                 'sortOrder' => $sortOrder,
-                'searchTerm' => $validatedData['searchTerm'] ?? null,
+                'searchTerm' => $validatedData['searchTerm'] ?? '',
                 'searchColumn' => $validatedData['searchColumn'] ?? null,
                 'range' => [
                     'field' => $validatedData['rangeField'] ?? null,

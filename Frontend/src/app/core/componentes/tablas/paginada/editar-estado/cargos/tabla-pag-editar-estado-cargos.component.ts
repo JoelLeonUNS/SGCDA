@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { ChangeDetectorRef, Component} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,12 +16,14 @@ import { PipeService } from '../../../../../servicios/utilidades/pipe/pipe.servi
 import { ColumnItem } from '../../../../../interfaces/utilidades/column-item.interface';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { TablaPagEditarEstadoComponent } from '../tabla-pag-editar-estado.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { CargoService } from '../../../../../servicios/rest/cargo/cargo.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
+import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new.component';
+import { CargoParamsService } from '../../../../../servicios/consultor/cargo/cargo-consultor';
+import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-cargos',
@@ -41,12 +43,14 @@ import { CargadorDatosService } from '../../../../../servicios/utilidades/cargad
     NzSwitchModule,
     NzPopconfirmModule,
     NzTagModule,
+    NzDropDownModule,
     BuscadorTablaComponent
   ],
-  templateUrl: '../tabla-pag-editar-estado.component.html',
+  templateUrl: '../tabla-pag-editar-estado-new.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
+  providers: [FiltroService]
 })
-export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoComponent {
+export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoNewComponent {
   override modal = 'modalFormCargo';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
@@ -102,10 +106,11 @@ export class TablaPagEditarEstadoCargosComponent extends TablaPagEditarEstadoCom
     msgService: NzMessageService,
     pipeService: PipeService,
     servicio: CargoService,
-    cdService: CargadorDatosService,
+    filtroSrvc: FiltroService,
+    paramsSrvc: CargoParamsService,
+    cdr: ChangeDetectorRef,
     modalService:ModalService,
   ) {
-    super(msgService, pipeService, servicio, cdService, modalService);
-    this.cdService.cargarFiltros();
+    super(msgService, pipeService, servicio, filtroSrvc, paramsSrvc, cdr, modalService);
   }
 }
