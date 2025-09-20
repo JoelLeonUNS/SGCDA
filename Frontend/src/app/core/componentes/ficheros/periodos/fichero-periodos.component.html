@@ -15,7 +15,7 @@
 </div>
 <div nz-flex [nzVertical]="true">
   <nz-spin [nzSpinning]="loading" nzTip="Cargando" style="width: 100%">
-    <nz-flex nzGap="large" nzWrap="wrap">
+    <!-- <nz-flex nzGap="large" nzWrap="wrap">
       @for (item of datos$ | async; track $index) {
           <app-tarjeta-periodo 
           [titulo]="item.anio + ' - ' + item.correlat_romano" 
@@ -28,7 +28,25 @@
       }  @empty {
         <nz-empty nzNotFoundContent="No se encontraron resultados" style="width: 100%"></nz-empty>
       }
-    </nz-flex>
+    </nz-flex> -->
+    <nz-row [nzGutter]="[(datos.length)*8, 24]" nzJustify="start" nzAlign="middle">
+      @for (item of datos$ | async; track $index) {
+        <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8">
+          <app-tarjeta-periodo 
+            [titulo]="item.anio + ' - ' + item.correlat_romano" 
+            [fechaInicial]="item.fecha_inicial"
+            [fechaFinal]="item.fecha_final"
+            [estado]="item.estado"
+            [item]="item"
+            (refrescar)="cargarData()"
+            />
+        </nz-col>
+      } @empty {
+        <nz-col [nzXs]="24" [nzSm]="24" [nzMd]="12" [nzLg]="12" [nzXl]="8">
+          <nz-empty nzNotFoundContent="No se encontraron resultados"></nz-empty>
+        </nz-col>
+      }
+    </nz-row>
     
   </nz-spin>
   <nz-flex nzJustify="end" nzAlign="center" style="margin-top: 2em;">

@@ -32,6 +32,8 @@ export class PipeService {
         return this.mes.transform(dato);
       case 'state':
         return dato ? pipe.datos[0] : pipe.datos[1];
+      case 'states':
+        return pipe.datos[dato];
       case 'unidad':
         return (dato??'') + ' ' + pipe.datos[0]; // se concatena la unidad
       default:

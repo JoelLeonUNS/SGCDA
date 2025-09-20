@@ -4,7 +4,7 @@ nz-form-item {
 }
 
 .ant-table-tbody > tr > td {
-  padding: 0 8px 1px;
+  padding: 6px 12px;
 }
 
 /* media queries, para cuando la pantalla es menor a 1000px */

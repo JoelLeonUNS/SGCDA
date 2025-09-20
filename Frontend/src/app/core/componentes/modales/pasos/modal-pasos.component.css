@@ -1,0 +1,58 @@
+nz-date-picker ::ng-deep .ant-calendar-picker {
+  width: 100%;
+}
+
+nz-range-picker,
+nz-date-picker,
+nz-time-picker {
+  width: 100%;
+}
+
+::ng-deep .ant-modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.contenido-paso {
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid #e6f4ff95;
+  border-radius: .45em;
+  background-color: #f4f5f785;
+}
+
+.contenido-mensaje {
+  margin: 2em 0 0;
+}
+
+.mensaje {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 1.5em;
+}
+
+.cargando {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  height: 25em;
+  width: 100%;
+}
+
+::ng-deep .ant-modal-body::-webkit-scrollbar {
+  width: 7px;
+}
+
+::ng-deep .ant-modal-body::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+::ng-deep .ant-modal-body::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+::ng-deep .ant-modal-body::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}

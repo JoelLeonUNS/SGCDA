@@ -22,13 +22,19 @@
         </div>
       </div>
       <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="12">
+        <div nz-col [nzSpan]="24">
           <app-input [label]="'DNI'" [controlName]="'dni'" [type]="'number'"></app-input>
         </div>
+      </div>
+      <nz-divider nzType="horizontal"></nz-divider>
+      <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="12">
-          <app-select [controlName]="'cargo_id'" [label]="'Cargo'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.cargo_id, item.cargo]" [servicio]="cargoService" [accion]="accion"/>
+          <app-select [controlName]="'cargo_id'" [label]="'Cargo'" [atributte]="['id', 'nombre', 'estado']" [option]="[item.cargo_id, item.cargo]" [servicio]="cargoService" [accion]="accion"/>
         </div>
-      </div>        
+        <div nz-col [nzSpan]="12">
+          <app-select [controlName]="'especialidad_id'" [label]="'Especialidad'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.especialidad_id, item.especialidad]" [servicio]="especialidadService" [accion]="accion"/>
+        </div>
+      </div> 
     </Form>
   </ng-template>
   <ng-template #modalFooter>

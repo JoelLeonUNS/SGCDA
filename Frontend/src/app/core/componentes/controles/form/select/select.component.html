@@ -1,5 +1,8 @@
 <nz-form-item>
-  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-label [nzSpan]="null">
+    @if(icon) { <span nz-icon [nzType]="icon" nzTheme="outline"></span> }
+   {{ label }}
+  </nz-form-label>
   <nz-form-control
     [nzSpan]="null"
     nzHasFeedback
@@ -8,6 +11,7 @@
     <nz-select
       nzShowSearch
       nzAllowClear
+      [nzSize]="size"
       [nzPlaceHolder]="'Seleccione un' + prefijo + ' ' + label"
       [formControlName]="controlName!"
       (ngModelChange)="cambio($event)"
@@ -30,7 +34,6 @@
           Cargando datos...
         </nz-option>
       }
-      
     </nz-select>
   </nz-form-control>
 </nz-form-item>

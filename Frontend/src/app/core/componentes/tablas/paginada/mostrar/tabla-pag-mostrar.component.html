@@ -1,8 +1,10 @@
 <div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
   <app-buscador-tabla
     [columnasBusqueda]="columnasBusqueda"
-    (columnaBusquedaChange)="parametrosPag.searchColumn = $event"
-    (terminoBusquedaChange)="busqueda.next($event)"
+    (columnaBusquedaChange)="buscarColumna($event)"
+    [columnaBusqueda]="columna"
+    (terminoBusquedaChange)="buscarTermino($event)"
+    [terminoBusqueda]="termino"
     style="width: 100%"
   />
   <nz-divider nzType="vertical" style="margin: 0.75em 0"></nz-divider>
@@ -24,8 +26,8 @@
   [nzFrontPagination]="false"
   [nzLoading]="loading"
   [nzTotal]="total"
-  [nzPageIndex]="parametrosPag.pageIndex"
-  [nzPageSize]="parametrosPag.pageSize"
+  [nzPageIndex]="parametros?.pageIndex??1"
+  [nzPageSize]="parametros?.pageSize??10"
   (nzQueryParams)="onQueryParamsChange($event)"
   [nzScroll]="scroll == undefined ? { y: '400px' } : scroll"
   nzSize="small"
@@ -34,18 +36,18 @@
     <tr>
       @for (c of columnas; track c) {
       <th
-        [nzColumnKey]="c.columnKey == undefined ? c.attribute : c.columnKey"
-        [nzWidth]="c.width == undefined ? null : c.width"
+        [nzColumnKey]="c.columnKey??c.attribute"
+        [nzWidth]="c.width??null"
         [nzShowSort]="c.showSort"
-        [nzSortOrder]="c.sortOrder == undefined ? null : c.sortOrder"
-        [nzSortFn]="c.sortFn == undefined ? null : c.sortFn"
-        [nzSortDirections]="c.sortDirections == undefined ? [] : c.sortDirections"
+        [nzSortOrder]="c.sortOrder?? null"
+        [nzSortFn]="c.sortFn??null"
+        [nzSortDirections]="c.sortDirections??[]"
         [nzShowFilter]="c.showFilter"
-        [nzFilters]="c.listOfFilter == undefined ? [] : c.listOfFilter"
-        [nzFilterFn]="c.filterFn == undefined ? null : c.filterFn"
-        [nzFilterMultiple]="c.filterMultiple == undefined ? false : c.filterMultiple"
-        [nzLeft]="c.left == undefined ? false : c.left"
-        [nzRight]="c.right == undefined ? false : c.right"
+        [nzFilters]="c.listOfFilter??[]"
+        [nzFilterFn]="c.filterFn??null"
+        [nzFilterMultiple]="c.filterMultiple??false"
+        [nzLeft]="c.left??false"
+        [nzRight]="c.right??false"
         >
         {{ c.name }}
       </th>
@@ -56,8 +58,8 @@
     @for (data of tabla.data; track data) {
     <tr (click)="mostrar(data)">
       @for (c of columnas; track c) { @if(c.attribute != undefined) {
-      <td [nzLeft]="c.left == undefined ? false : c.left"
-          [nzAlign]="c.align == undefined ? 'left' : c.align">
+      <td [nzLeft]="c.left??false"
+          [nzAlign]="c.align??'left'">
         @if(c.etiquetable) {
           <nz-tag [nzColor]="tags[data[c.attribute]] ? tags[data[c.attribute]].color : 'default'">
             {{ transPipe(data[c.attribute], c.pipe) }}</nz-tag

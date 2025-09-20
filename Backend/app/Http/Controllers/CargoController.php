@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdate\StoreUpdateCargoRequest;
-use App\Http\Requests\Validacion\EstadoBitRequest;
+use App\Http\Requests\Validacion\EstadoEnumRequest;
 use App\Services\ResponseService;
 use App\Services\CargoService;
 use App\Traits\Http\Controllers\CriterioTrait;
@@ -125,11 +125,11 @@ class CargoController extends Controller
     /**
      * Cambia el estado de un cargo.
      *
-     * @param EstadoBitRequest $request
+     * @param EstadoEnumRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function cambiarEstado(EstadoBitRequest $request, int $id): JsonResponse
+    public function cambiarEstado(EstadoEnumRequest $request, int $id): JsonResponse
     {
         try {
             $this->cargoService->cambiarEstado($id, $request->validated()['estado']);
@@ -151,22 +151,6 @@ class CargoController extends Controller
             return $this->responseService->success($cargosActivos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener los cargos activos: ' . $e->getMessage());
-        }
-    }
-
-
-    /**
-     * Obtiene todos los cargos con columnas específicas.
-     *
-     * @return JsonResponse
-     */
-    public function obtenerTodosConColumnasEspecificas(): JsonResponse
-    {
-        try {
-            $cargos = $this->cargoService->obtenerConColumnas();
-            return $this->responseService->success($cargos);
-        } catch (Exception $e) {
-            return $this->responseService->error('Error al obtener los cargos: ' . $e->getMessage());
         }
     }
 

@@ -75,10 +75,10 @@ class PabellonService
      * Cambia el estado de un pabellón.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->pabellonRepository->cambiarEstado($id, $estado);
     }

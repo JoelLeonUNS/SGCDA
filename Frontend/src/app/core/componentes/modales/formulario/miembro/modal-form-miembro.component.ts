@@ -14,6 +14,8 @@ import { InputComponent } from '../../../controles/form/input/input.component';
 import { MiembroCargoService } from '../../../../servicios/rest/miembro-cargo/miembro-cargo.service';
 import { CargoService } from '../../../../servicios/rest/cargo/cargo.service';
 import { SelectComponent } from "../../../controles/form/select/select.component";
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { EspecialidadService } from '../../../../servicios/rest/especialidad/especialidad.service';
 
 @Component({
     selector: 'app-modal-form-miembro',
@@ -31,6 +33,7 @@ import { SelectComponent } from "../../../controles/form/select/select.component
         NzSelectModule,
         NzDatePickerModule,
         NzGridModule,
+        NzDividerModule,
         SelectComponent
     ]
 })
@@ -41,7 +44,9 @@ export class ModalFormMiembroComponent extends ModalFormComponent {
     nombres: [null, [Validators.required]],
     apellidos: [null, [Validators.required]],
     dni: [null], // despues poner required
-    cargo_especialidad_id: [null, [Validators.required]],
+    cargo_especialidad_id: [null],
+    cargo_id: [null, [Validators.required]],
+    especialidad_id: [null, [Validators.required]],
   });
 
   constructor(
@@ -49,6 +54,7 @@ export class ModalFormMiembroComponent extends ModalFormComponent {
     servicio: MiembroCargoService, // Se inyecta el servicio de miembro-cargo
     fb: NonNullableFormBuilder,
     public cargoService: CargoService, // Se inyecta el servicio de cargo
+    public especialidadService: EspecialidadService // Se inyecta el servicio de especialidad
   ) {
     super(msgService, servicio, fb);
   }

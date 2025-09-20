@@ -31,6 +31,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('miembro_id')->nullable()->comment('Identificador del miembro');
             $table->unsignedBigInteger('cargo_especialidad_id')->nullable()->default(1)->comment('Identificador de la especialidad del cargo');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('miembro_id')->references('id')->on('miembros');
             $table->foreign('cargo_especialidad_id')->references('id')->on('cargo_especialidades');
         });
@@ -123,7 +124,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('miembro_cargos', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado del cargo del miembro');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+            ->default('ACTIVO')->comment('Estado del cargo del miembro: ACTIVO o INACTIVO');
         });
     }
 };

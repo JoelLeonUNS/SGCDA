@@ -1,0 +1,63 @@
+<div (contextmenu)="contextMenu($event, menu)">
+    <nz-card class="tarjeta" (click)="verDetalles()">
+        <div class="encabezado">
+            <span class="titulo">{{ titulo }}</span>
+            <ng-container *ngTemplateOutlet="estadosTemplate"></ng-container>
+        </div>
+        <div class="contenido">
+            <span>Encargado: {{ encargado }}</span>
+        </div>
+        <div class="footer">
+            <div>
+                <ng-container *ngTemplateOutlet="pisoTemplate"></ng-container>
+                <ng-container *ngTemplateOutlet="nroMiembrosTemplate"></ng-container>
+            </div>
+            <div class="controles">
+                <button nz-button nzType="link" (click)="editar($event)" [disabled]="estado == 'CERRADO'">Asignar</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzDanger nzType="link"
+                nz-popconfirm="¿Está seguro de cerrar esta aula?" 
+                (nzOnConfirm)="cerrar()">Cerrar</button>
+            </div>
+        </div>
+    </nz-card>
+</div>
+<ng-template #estadosTemplate>
+    @if(estado === 'ABIERTO') {
+        <nz-tag nzColor="success">
+            <span nz-icon nzType="check-circle"></span>
+            <span>ABIERTO</span>
+        </nz-tag>
+    } @else {
+        <nz-tag nzColor="error">
+            <span nz-icon nzType="close-circle"></span>
+            <span>CERRADO</span>
+        </nz-tag>
+    }
+</ng-template>
+<ng-template #nroMiembrosTemplate>
+    <nz-tag nzColor="blue">
+        <span nz-icon nzType="user"></span>
+        <span>{{ nroMiembros }}</span>
+    </nz-tag>
+</ng-template>
+<ng-template #pisoTemplate>
+    <nz-tag nzColor="orange">
+        <span nz-icon nzType="field-number"></span>
+        <span>Piso {{ piso }}</span>
+    </nz-tag>
+</ng-template>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+        <li nz-menu-item (click)="verDetalles()">
+            <span nz-icon nzType="bars" nzTheme="outline"></span>
+            <span style="margin-left: .75em;">Ver detalles</span>
+        </li>
+        <li nz-menu-item nzDanger (click)="eliminar()">
+            <span nz-icon nzType="delete" nzTheme="outline"></span>
+            <span style="margin-left: .75em;">Eliminar</span>
+        </li>
+    </ul>
+</nz-dropdown-menu>
+
+<ng-container #vcrModal></ng-container>

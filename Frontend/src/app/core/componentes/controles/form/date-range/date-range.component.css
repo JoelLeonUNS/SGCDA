@@ -7,3 +7,7 @@ nz-date-picker,
 nz-time-picker {
   width: 50%;
 }
+
+nz-form-label span {
+  margin-right: 0.5em;
+}

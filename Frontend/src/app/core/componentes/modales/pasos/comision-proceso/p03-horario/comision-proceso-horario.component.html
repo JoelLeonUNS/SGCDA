@@ -1,0 +1,58 @@
+<Form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24" style="margin-bottom: 1.5em;">
+      <nz-switch formControlName="usa_horarios" nzCheckedChildren="Sí" nzUnCheckedChildren="No"></nz-switch>
+      <span style="margin-left: .65em;">Usar horario general</span>
+    </div>
+  </div>
+  @if (form.get('usa_horarios')?.value) {
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSpan]="8">
+        <app-date [icon]="'calendar'" [size]="'large'" [label]="'Fecha de Ingreso'" [controlName]="'fecha'" [gender]="'F'"/>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <app-time [icon]="'clock-circle'" [size]="'large'" [label]="'Hora de Ingreso'" [controlName]="'hora_inicial'" [gender]="'F'"/>
+      </div>
+      <div nz-col [nzSpan]="8">
+        <app-time [icon]="'clock-circle'" [size]="'large'" [label]="'Hora de Salida'" [controlName]="'hora_final'" [gender]="'F'"/>
+      </div>
+    </div>
+  }
+  @else {
+    <div nz-row [nzGutter]="8">
+      <div nz-col [nzSpan]="24">
+        @if (cargando) {
+          <nz-spin [nzSpinning]="cargando" [nzTip]="'Cargando horarios...'">
+          </nz-spin>
+        } @else {
+          <nz-table #basicTable [nzData]="miembros" [nzBordered]="true" [nzSize]="'middle'" [nzPageSize]="10">
+            <thead>
+              <tr>
+                <th nzWidth="36%">Nombre/Apellido</th>
+                <th nzWidth="22%">Fecha Ingreso</th>
+                <th nzWidth="22%">Hora Inicial</th>
+                <th nzWidth="22%">Hora Final</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (miembro of basicTable.data; track miembro; let i = $index) {
+                <tr [formGroup]="obtenerHorarioForm(i)">
+                  <td>{{ miembro.title }}</td>
+                  <td>
+                    <app-date [size]="'large'" [controlName]="'fecha'" [gender]="'F'" [borderless]="true"/>
+                  </td>
+                  <td>
+                    <app-time [size]="'large'" [controlName]="'hora_inicial'" [gender]="'F'" [borderless]="true"/>
+                  </td>
+                  <td>
+                    <app-time [size]="'large'" [controlName]="'hora_final'" [gender]="'F'" [borderless]="true"/>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </nz-table>
+        }
+      </div>
+    </div>
+  }
+</Form>

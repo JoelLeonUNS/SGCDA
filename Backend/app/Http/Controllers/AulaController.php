@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdate\StoreUpdateAulaRequest;
-use App\Http\Requests\Validacion\EstadoBitRequest;
+use App\Http\Requests\Validacion\EstadoEnumRequest;
 use App\Services\ResponseService;
 use App\Services\AulaService;
 use App\Traits\Http\Controllers\CriterioTrait;
@@ -135,17 +135,17 @@ class AulaController extends Controller
     /**
      * Cambia el estado de un aula.
      *
-     * @param EstadoBitRequest $request
+     * @param EstadoEnumRequest $request
      * @param int $id
      * @return JsonResponse
      */
-    public function cambiarEstado(EstadoBitRequest $request, int $id): JsonResponse
+    public function cambiarEstado(EstadoEnumRequest $request, int $id): JsonResponse
     {
         try {
             $this->aulaService->cambiarEstado($id, $request->validated()['estado']);
-            return $this->responseService->success("Estado del pabellón actualizado correctamente");
+            return $this->responseService->success("Estado del aula actualizado correctamente");
         } catch (Exception $e) {
-            return $this->responseService->error('Error al cambiar el estado del pabellón: ' . $e->getMessage());
+            return $this->responseService->error('Error al cambiar el estado del aula: ' . $e->getMessage());
         }
     }
 
@@ -161,22 +161,6 @@ class AulaController extends Controller
             return $this->responseService->success($aulasActivos);
         } catch (Exception $e) {
             return $this->responseService->error('Error al obtener las aulas activos: ' . $e->getMessage());
-        }
-    }
-
-
-    /**
-     * Obtiene todos las aulas con columnas específicas.
-     *
-     * @return JsonResponse
-     */
-    public function obtenerTodosConColumnasEspecificas(): JsonResponse
-    {
-        try {
-            $aulas = $this->aulaService->obtenerConColumnas();
-            return $this->responseService->success($aulas);
-        } catch (Exception $e) {
-            return $this->responseService->error('Error al obtener las aulas: ' . $e->getMessage());
         }
     }
 

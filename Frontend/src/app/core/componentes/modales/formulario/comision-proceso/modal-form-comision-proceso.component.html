@@ -33,11 +33,16 @@
         </div>
       </div>
       <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="12">
+        <div nz-col [nzSpan]="24">
           <app-date [label]="'Fecha de Ingreso'" [controlName]="'fecha'" [gender]="'F'"/>
         </div>
+      </div>
+      <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="12">
-          <app-time [label]="'Hora de Ingreso'" [controlName]="'hora'" [gender]="'F'"/>
+          <app-time [label]="'Hora de Ingreso'" [controlName]="'hora_inicial'" [gender]="'F'"/>
+        </div>
+        <div nz-col [nzSpan]="12">
+          <app-time [label]="'Hora de Salida'" [controlName]="'hora_final'" [gender]="'F'"/>
         </div>
       </div>
     </Form>

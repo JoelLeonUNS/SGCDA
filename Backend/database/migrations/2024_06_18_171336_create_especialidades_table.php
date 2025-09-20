@@ -29,6 +29,8 @@ return new class extends Migration {
         Schema::create('especialidades', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador único para la especialidad');
             $table->string('descripcion', 255)->nullable()->comment('Descripcion de la especialidad');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -66,8 +68,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('especialidades', function (Blueprint $table) {
-            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
-                  ->default('ACTIVO')->comment('Estado de la especialidad: ACTIVO, INACTIVO o ELIMINADO');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                  ->default('ACTIVO')->comment('Estado de la especialidad: ACTIVO o INACTIVO');
         });
     }
 };

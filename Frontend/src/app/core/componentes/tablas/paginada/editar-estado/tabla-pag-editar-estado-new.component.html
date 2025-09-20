@@ -84,7 +84,7 @@
         } @else {
           <td [nzRight]="c.right ?? false">
             <nz-switch
-              [(ngModel)]="data.estado"
+              [ngModel]="isEstado(data.estado)"
               [nzSize]="'small'"
               [nzControl]="true"
               [nzLoading]="cargarSwitch && $index + 1 == idSwitch"

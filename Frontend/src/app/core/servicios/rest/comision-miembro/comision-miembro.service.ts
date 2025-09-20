@@ -11,4 +11,8 @@ export class ComisionMiembroService extends ServicioCrud<any> {
   constructor(http: HttpClient) {
     super(http, `${environment.apiURL}/comision-miembros`);
   }
+
+  obtenerMiembrosPorComision(comisionId: number) {
+    return this.http.get<any[]>(`${this.API_URL}/comision/${comisionId}`);
+  }
 }

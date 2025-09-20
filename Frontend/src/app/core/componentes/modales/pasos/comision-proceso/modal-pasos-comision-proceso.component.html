@@ -1,0 +1,83 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzDraggable
+  nzCentered
+  nzMaskClosable="false"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  (nzOnCancel)="cerrar()"
+  [nzWidth]="ancho"
+>
+  <ng-template #modalTitle>
+    {{ titulo }}
+  </ng-template>
+  <ng-template #modalContent>
+    <nz-steps [nzCurrent]="current" [nzSize]="'small'">
+      <nz-step nzTitle="Comisiones"></nz-step>
+      <nz-step nzTitle="Miembros"></nz-step>
+      <nz-step nzTitle="Horarios"></nz-step>
+    </nz-steps>
+    <div class="contenido-mensaje">
+      <nz-alert nzType="info" [nzMessage]="mensajeInfos[current]" nzShowIcon></nz-alert>
+    </div>
+    <div class="contenido-paso">
+      @switch (current) {
+        @case (0) {
+          <app-comision-proceso-comision [accion]="accion" (isValido)="pasosValidos[current] = $event"/>
+        }
+        @case (1) {
+          <app-comision-proceso-miembro [accion]="accion" (isValido)="pasosValidos[current] = $event"/>
+        } 
+        @case (2) {
+          <app-comision-proceso-horario [accion]="accion" (isValido)="pasosValidos[current] = $event"/>
+        }
+      }
+    </div>
+    
+  </ng-template>
+  <ng-template #modalFooter>
+    <!-- <button
+      nz-button
+      nzType="default"
+      nzSize="large"
+      [disabled]="disabledCancelar"
+      [nzLoading]="cancelando"
+      (click)="cerrar()"
+    >
+      {{ btnSecundario }}
+    </button> -->
+    <button
+      nz-button
+      nzType="default"
+      nzSize="large"
+      [disabled]="disabledAnt"
+      (click)="irAtras()"
+    >
+      Anterior
+    </button>
+    @if (current !== steps -1) {
+      <button
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      [disabled]="disabledSig || !isValido"
+      (click)="irAdelante()"
+      >
+        Siguiente
+      </button>
+    } @else {
+      <button
+      nz-button
+      nzType="primary"
+      nzSize="large"
+      [disabled]="disabledConfirmar || !isValido"
+      [nzLoading]="confirmando"
+      (click)="guardar()"
+      >
+        {{ btnPrimario }}
+      </button>
+    }
+  </ng-template>
+</nz-modal>
+ 

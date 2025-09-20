@@ -24,6 +24,7 @@ import { TablaPagEditarEstadoNewComponent } from '../tabla-pag-editar-estado-new
 import { PeriodoParamsService } from '../../../../../servicios/consultor/periodo/periodo-consultor.service';
 import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { TagsEstados } from '../../../../../interfaces/utilidades/tags.interface';
 
 @Component({
   selector: 'app-tabla-pag-editar-estado-periodos',
@@ -46,7 +47,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzDropDownModule,
     BuscadorTablaComponent,
   ],
-  templateUrl: '../tabla-pag-editar-estado-new.component.html',
+  templateUrl: './tabla-pag-editar-estado-periodos.component.html',
   styleUrl: '../tabla-pag-editar-estado.component.css',
   providers: [FiltroService]
 })
@@ -91,7 +92,7 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoN
     },
     {
       name: 'Correlativo',
-      attribute: 'correlativo_romano',
+      attribute: 'correlat_romano',
       showSort: true,
       sortFn: true,
     },
@@ -117,7 +118,7 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoN
       showSort: true,
       sortFn: true,
       filterFn: true,
-      pipe: { nombre: 'state', datos: ['ACTIVO', 'DE BAJA'] },
+      pipe: { nombre: 'states', datos: {ABIERTO:'ABIERTO', CERRADO:'CERRADO'} },
       etiquetable: true,
     },
     {
@@ -126,11 +127,35 @@ export class TablaPagEditarEstadoPeriodosComponent extends TablaPagEditarEstadoN
       right: true
     },
     {
-      name: 'Baja/Alta',
-      width: '80px',
+      name: 'Cerrar/Abrir',
+      width: '95px',
       right: true
     }
   ];
+  override tags: TagsEstados = {
+    'ABIERTO': { color: 'green' },
+    'CERRADO': { color: 'red' },
+  };
+  override estado: string | number | boolean = 'ABIERTO';
+
+  override cambiarEstado(data: any) {
+    this.cargarSwitch = true;
+    this.idSwitch = data.id;
+    if (this.servicio) {
+      data.estado = data.estado === 'ABIERTO' ? 'CERRADO' : 'ABIERTO';
+      this.servicio.cambiarEstado(data.id, data).subscribe({
+        next: () => {
+          this.msgService.success('Se cambió el estado correctamente.');
+          this.cargarSwitch = false;
+        },
+        error: () => {
+          this.msgService.error('Error al editar');
+          this.cargarSwitch = false;
+          data.estado = data.estado === 'ABIERTO' ? 'CERRADO' : 'ABIERTO';
+        },
+      });
+    }
+  }
 
   constructor(
     msgService: NzMessageService,

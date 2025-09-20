@@ -24,12 +24,12 @@
       </div>
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="24">
-          <app-select [controlName]="'proceso_id'" [label]="'Tipo de Proceso'" [atributte]="['id', 'descripcion', 'estado']" [option]="[item.proceso_id, item.proceso]" [servicio]="procesoService"/>
+          <app-select [icon]="'control'" [controlName]="'proceso_id'" [label]="'Tipo de Proceso'" [atributte]="['id', 'nombre', 'estado']" [option]="[item.proceso_id, item.proceso]" [servicio]="procesoService" [accion]="accion"/>
         </div>
       </div>
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="24">
-          <app-date-range [inicio]="modalForm.get('fecha_inicial')?.value" [fin]="modalForm.get('fecha_finanl')?.value" />
+          <app-date-range [icon]="'calendar'" [inicio]="modalForm.get('fecha_inicial')?.value" [fin]="modalForm.get('fecha_finanl')?.value" />
         </div>
       </div>
     </Form>

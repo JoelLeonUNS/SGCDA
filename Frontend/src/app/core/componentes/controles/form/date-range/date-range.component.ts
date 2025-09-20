@@ -2,11 +2,12 @@ import { Component, Input, ViewChild, inject } from '@angular/core';
 import { ControlContainer, ReactiveFormsModule } from '@angular/forms';
 import { NzDatePickerComponent, NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-date-range',
   standalone: true,
-  imports: [NzDatePickerModule, ReactiveFormsModule, NzFormModule],
+  imports: [NzDatePickerModule, ReactiveFormsModule, NzFormModule, NzIconModule],
   templateUrl: './date-range.component.html',
   styleUrl: './date-range.component.css',
   viewProviders: [{
@@ -20,6 +21,8 @@ export class DateRangeComponent {
   @Input() controlNames:string[] = ['fecha_inicial', 'fecha_final'];
   @Input() label?:string = 'Fecha de inicio y fin'
   @Input() gender?:string;
+
+  @Input() icon?:string;
 
   get prefijo() {
     return this.gender == 'F' ? 'a' : ''

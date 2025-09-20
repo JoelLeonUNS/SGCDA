@@ -1,0 +1,67 @@
+<nz-form-item>
+  <nz-form-label [nzSpan]="null">
+    @if(icon) { <span nz-icon [nzType]="icon" nzTheme="outline"></span> }
+    {{ label }}
+  </nz-form-label>
+  <nz-form-control
+    [nzSpan]="null"
+    nzHasFeedback
+    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label! + '!'"
+  >
+    <nz-transfer 
+      [nzDataSource]="lista" 
+      [nzShowSearch]="showSearch"
+      [nzShowSelectAll]="false"
+      [nzRenderList]="[renderList, renderList]"
+      [nzTitles]="titles" 
+      (nzChange)="change($event)">
+        <ng-template
+          #renderList
+          let-items
+          let-direction="direction"
+          let-stat="stat"
+          let-disabled="disabled"
+          let-onItemSelectAll="onItemSelectAll"
+          let-onItemSelect="onItemSelect"
+        >
+          <nz-table #t [nzData]="$asTransferItems(items)" nzSize="small" [nzPageSize]="5">
+            <thead>
+              <tr>
+                <th
+                  [nzDisabled]="disabled"
+                  [nzChecked]="stat.checkAll"
+                  [nzIndeterminate]="stat.checkHalf"
+                  (nzCheckedChange)="onItemSelectAll($event)"
+                ></th>
+                @for (columna of columnas; track columna) {
+                  <th>{{ columna.name }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (data of t.data; track data) {
+                <tr (click)="onItemSelect(data)">
+                  <td
+                    [nzChecked]="!!data.checked"
+                    [nzDisabled]="disabled || data.disabled"
+                    (nzCheckedChange)="onItemSelect(data)"
+                  ></td>
+                  @for (columna of columnas; track columna) {
+                    @if (columna.attribute) {
+                      <td>
+                        @if (columna.etiquetable) {
+                          <nz-tag [nzColor]="data[columna.attribute]" class="tag-circular"></nz-tag>
+                        } @else {
+                          {{ data[columna.attribute] }}
+                        }
+                      </td>
+                    }
+                  }
+                </tr>
+              }
+            </tbody>
+          </nz-table>
+        </ng-template>
+    </nz-transfer>
+  </nz-form-control>
+</nz-form-item>

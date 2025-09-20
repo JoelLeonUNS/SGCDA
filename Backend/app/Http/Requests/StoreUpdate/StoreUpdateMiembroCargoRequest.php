@@ -14,6 +14,8 @@ class StoreUpdateMiembroCargoRequest extends ValidacionRequest
             'apellidos' => 'required|string|max:100',
             'dni' => 'required|string|max:8',
             'cargo_especialidad_id' => 'required|integer',
+            'cargo_id' => 'required|integer',
+            'especialidad_id' => 'required|integer',
         ];
     }
 }

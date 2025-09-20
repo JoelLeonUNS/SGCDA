@@ -1,0 +1,45 @@
+<Form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+  <div nz-row [nzGutter]="8" nzAlign="middle">
+    <div nz-col [nzSpan]="20">
+      <app-select
+        [icon]="'team'"
+        [size]="'large'"
+        [controlName]="'comision_id'"
+        [label]="'Comision'"
+        [option]="[form.get('comision_id')?.value, form.get('comision')?.value]"
+        (valor)="setValorForm('comision', $event.nombre)"
+        [servicio]="comisionSrvc"
+        [filtrosExcluyentes]="[form.get('comision_id_actual')?.value]"
+        [isTodos]="true"
+        [optionTodos]="'Miembros sin comisión'"
+        [atributte]="['id', 'nombre', 'estado']"
+        [accion]="accion"
+      />
+    </div>
+    <div nz-col [nzSpan]="4">
+      <button
+        nz-button
+        nzType="primary"
+        nzSize="large"
+        nzBlock
+        (click)="transferir()"
+        style="margin-top: 0.5em"
+      >
+        <span nz-icon nzType="swap" nzTheme="outline"></span>
+        Confirmar
+      </button>
+    </div>
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <app-transfer-table
+        [icon]="'user'"
+        [label]="'Miembros'"
+        [titles]="['De: ' + form.get('comision')?.value, 'A: ' + comisionActual]" 
+        [lista]="lista"
+        [columnas]="columnas"
+        (transferChange)="setComisionMiembros($event)"
+      />
+    </div>
+  </div>
+</Form>

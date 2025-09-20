@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComisionProceso extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'comision_procesos';
-    public $timestamps = false;
 
     protected $fillable = [
         'proceso_periodo_id',
@@ -19,6 +19,7 @@ class ComisionProceso extends Model
         'estado',
     ];
 
+    protected $dates = ['deleted_at'];
 
     public function procesoPeriodo(): BelongsTo
     {
@@ -29,5 +30,4 @@ class ComisionProceso extends Model
     {
         return $this->belongsTo(Comision::class);
     }
-
 }

@@ -36,8 +36,8 @@ export class ControlExportacionCargoComponent extends ControlExportacionComponen
       ancho: 33, 
     },
     { 
-      encabezado: 'Descripción', 
-      atributo: 'descripcion', 
+      encabezado: 'Nombre',
+      atributo: 'nombre',
       ancho: 'auto' 
     },
   ]

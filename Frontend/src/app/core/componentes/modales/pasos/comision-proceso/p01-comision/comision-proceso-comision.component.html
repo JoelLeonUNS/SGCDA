@@ -1,0 +1,36 @@
+<Form nz-form [formGroup]="form" [nzLayout]="'vertical'">
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <app-select
+        [icon]="'team'"
+        [size]="'large'"
+        [controlName]="'comision_id'"
+        [label]="'Comisión'"
+        [atributte]="['id', 'nombre', 'estado']"
+        [option]="[form.get('comision_id')?.value, form.get('comision')?.value]"
+        (valor)="setValorForm('comision', $event.nombre)"
+        [servicio]="comisionSrvc"
+        [accion]="accion"
+      />
+    </div>    
+  </div>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <nz-switch formControlName="usa_aulas" nzCheckedChildren="Sí" nzUnCheckedChildren="No" (ngModelChange)="setAulasRequeridas($event)"></nz-switch>
+      <span style="margin-left: .65em;">Requiere uso de aulas</span>
+    </div>
+  </div>
+  @if(form.get('usa_aulas')?.value) {
+  <nz-divider></nz-divider>
+  <div nz-row [nzGutter]="8">
+    <div nz-col [nzSpan]="24">
+      <app-tabla-pag-agregar-multiple-aulas ngSkipHydration
+        [size]="'large'"
+        [scroll]="{ y: '365px' }"
+        (itemsInputChange)="setItemsInput($event)"
+        [itemsInput]="itemsInput"
+      />
+    </div>
+  </div>
+  }
+</Form>

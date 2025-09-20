@@ -30,6 +30,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('proceso_id')->nullable()->comment('Identificador del proceso');
             $table->date('fecha_inicial')->nullable()->comment('Fecha inicial del proceso periodo');
             $table->date('fecha_final')->nullable()->comment('Fecha final del proceso periodo');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('periodo_id')->references('id')->on('periodos');
             $table->foreign('proceso_id')->references('id')->on('procesos');
         });
@@ -38,7 +40,7 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('proceso_periodos', function (Blueprint $table) {
-            $table->enum('estado', ['ABIERTO', 'CERRADO', 'ELIMINADO'])->default('ABIERTO')->comment('Estado del proceso periodo');
+            $table->enum('estado', ['ABIERTO', 'CERRADO'])->default('ABIERTO')->comment('Estado del proceso periodo');
         });
     }
 };

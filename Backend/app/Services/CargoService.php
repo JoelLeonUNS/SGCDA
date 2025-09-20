@@ -75,10 +75,10 @@ class CargoService
      * Cambia el estado de un cargo.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->cargoRepository->cambiarEstado($id, $estado);
     }
@@ -101,16 +101,6 @@ class CargoService
     public function obtenerActivos(): Collection
     {
         return $this->cargoRepository->obtenerActivos();
-    }
-
-    /**
-     * Obtiene todos los cargos con selección de columnas específicas.
-     *
-     * @return Collection
-     */
-    public function obtenerConColumnas(): Collection
-    {
-        return $this->cargoRepository->obtenerTodosConColumnasEspecificas();
     }
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator

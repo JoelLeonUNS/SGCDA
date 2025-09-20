@@ -27,11 +27,11 @@ class PeriodoService
      */
     public function getAll(): Collection
     {
-        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlat_romano
         return $this->periodoRepository->obtenerTodos()->map(function ($periodo) {
             $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
             $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
-            $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+            $periodo->periodo = "{$periodo->anio} - {$periodo->correlat_romano}";
             return $periodo;
         });
     }
@@ -44,11 +44,11 @@ class PeriodoService
      */
     public function getById(int $id): Model
     {
-        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlat_romano
         $periodo = $this->periodoRepository->obtenerPorId($id);
         $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
         $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
-        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlat_romano}";
         return $periodo;
     }
 
@@ -60,7 +60,7 @@ class PeriodoService
      */
     public function create(array $data): Model
     {
-        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlativo_romano']);
+        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlat_romano']);
         $data['periodo_numerico'] = $periodo_numerico;
         return $this->periodoRepository->crear($data);
     }
@@ -74,7 +74,7 @@ class PeriodoService
      */
     public function update(int $id, array $data): bool
     {
-        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlativo_romano']);
+        $periodo_numerico = $this->toPeriodoNumerico($data['anio'], $data['correlat_romano']);
         $data['periodo_numerico'] = $periodo_numerico;
         return $this->periodoRepository->actualizar($id, $data);
     }
@@ -120,11 +120,11 @@ class PeriodoService
 
     public function obtenerUltimo(): Model
     {
-        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlat_romano
         $periodo = $this->periodoRepository->obtenerUltimo();
         $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
         $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
-        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlat_romano}";
         return $periodo;
     }
 
@@ -138,7 +138,7 @@ class PeriodoService
         $periodo = $this->periodoRepository->obtenerPeriodoActual();
         $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
         $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
-        $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+        $periodo->periodo = "{$periodo->anio} - {$periodo->correlat_romano}";
         return $periodo;
     }
     
@@ -149,11 +149,11 @@ class PeriodoService
      */
     public function obtenerActivos(): Collection
     {
-        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlativo_romano
+        // Modificar el formato de las fechas y agregar el atributo periodo = anio - correlat_romano
         return $this->periodoRepository->obtenerActivos()->map(function ($periodo) {
             $periodo->fecha_inicial = $this->convertirFecha($periodo->fecha_inicial);
             $periodo->fecha_final = $this->convertirFecha($periodo->fecha_final);
-            $periodo->periodo = "{$periodo->anio} - {$periodo->correlativo_romano}";
+            $periodo->periodo = "{$periodo->anio} - {$periodo->correlat_romano}";
             return $periodo;
         });
     }
@@ -189,7 +189,7 @@ class PeriodoService
                 'fecha_inicial' => $periodo->fecha_inicial,
                 'fecha_final' => $periodo->fecha_final,
                 'anio' => $periodo->anio,
-                'correlativo_romano' => $periodo->correlat_romano,  
+                'correlat_romano' => $periodo->correlat_romano,  
             ];
         });
     }

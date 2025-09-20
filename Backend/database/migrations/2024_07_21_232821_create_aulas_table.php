@@ -33,6 +33,8 @@ return new class extends Migration
             $table->integer('piso')->nullable()->comment('Piso de la aula');
             $table->string('correlativo', 7)->nullable()->comment('Correlativo de la aula');
             $table->integer('aforo')->nullable()->comment('Aforo de la aula');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('pabellon_id')->references('id')->on('pabellones');
         });
     }
@@ -60,7 +62,8 @@ return new class extends Migration
     private function addEstadoColumn(): void
     {
         Schema::table('aulas', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado de la aula');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                ->default('ACTIVO')->comment('Estado de la aula: ACTIVO o INACTIVO');
         });
     }
 };

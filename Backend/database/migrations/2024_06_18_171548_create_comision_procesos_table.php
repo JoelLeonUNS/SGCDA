@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->id()->autoIncrement()->comment('Identificador de la comisión proceso');
             $table->unsignedBigInteger('proceso_periodo_id')->nullable()->comment('Identificador del proceso periodo');
             $table->unsignedBigInteger('comision_id')->nullable()->comment('Identificador de la comisión');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('proceso_periodo_id')->references('id')->on('proceso_periodos');
             $table->foreign('comision_id')->references('id')->on('comisiones');
         });
@@ -36,8 +38,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('comision_procesos', function (Blueprint $table) {
-            $table->enum('estado', ['ABIERTO', 'CERRADO', 'ELIMINADO'])
-                  ->default('ABIERTO')->comment('Estado de la comisión proceso: ABIERTO, CERRADO o ELIMINADO');
+            $table->enum('estado', ['ABIERTO', 'CERRADO'])
+                  ->default('ABIERTO')->comment('Estado de la comisión proceso: ABIERTO o CERRADO');
         });
     }
 };

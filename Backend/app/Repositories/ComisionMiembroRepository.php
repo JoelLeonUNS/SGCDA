@@ -2,10 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Http\Enums\Estados;
 use App\Models\ComisionMiembro;
+use App\Models\MiembroCargo;
+use App\Models\ProcesoPeriodo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class ComisionMiembroRepository extends EstadoRepository
 {
@@ -23,6 +27,44 @@ class ComisionMiembroRepository extends EstadoRepository
     public function obtenerTodosConColumnasEspecificas(): Collection
     {
         return $this->modelo::select('id', 'descripcion', 'estado')->get();
+    }
+
+    public function obtenerMiembrosPorComision(int | null $comisionId = null): Collection
+    {
+        // Obtener el id del proceso actual
+        $procesoActualId = ProcesoPeriodo::where('estado', Estados::ABIERTO)
+        ->orderBy('fecha_final', 'desc')
+        ->value('id');
+
+        if (!$procesoActualId) {
+            return MiembroCargo::where('estado', '!=', 'ELIMINADO')->get();
+        }
+
+        // Subconsulta: Obtener los miembro_cargos asignados en el proceso actual
+        $miembroCargosAsignados = ComisionMiembro::join('comision_procesos', 'comision_miembros.comision_proceso_id', '=', 'comision_procesos.id')
+            ->where('comision_procesos.proceso_periodo_id', $procesoActualId)
+            ->pluck('comision_miembros.miembro_cargo_id')
+            ->toArray();
+
+        $query = MiembroCargo::where('miembro_cargos.estado', '!=', 'ELIMINADO');
+
+        if ($comisionId === -1 || $comisionId === null) {
+            // Obtener los miembros que NO están asignados a ninguna comisión del proceso actual
+            return $query
+                ->whereNotIn('miembro_cargos.id', $miembroCargosAsignados)
+                ->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')
+                ->orderBy('miembros.id', 'asc')
+                ->get();
+        } else {
+            // Obtener los miembros de una comisión específica
+            return $query
+                ->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')
+                ->join('comision_miembros', 'miembro_cargos.id', '=', 'comision_miembros.miembro_cargo_id')
+                ->join('comision_procesos', 'comision_miembros.comision_proceso_id', '=', 'comision_procesos.id')
+                ->where('comision_procesos.comision_id', $comisionId)
+                ->orderBy('miembros.id', 'asc')
+                ->get();
+        }
     }
 
     public function obtenerMiembros(int $comisionProcesoId): Collection
@@ -64,13 +106,13 @@ class ComisionMiembroRepository extends EstadoRepository
                 case 'comision':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');
                     $this->aplicarJoinCondicional($consulta, 'comisiones', 'comision_procesos.comision_id', 'comisiones.id');
-                    $consulta->where('comisiones.descripcion', $value);
+                    $consulta->where('comisiones.nombre', $value);
                     break;
                 case 'proceso':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');
                     $this->aplicarJoinCondicional($consulta, 'proceso_periodos', 'comision_procesos.proceso_periodo_id', 'proceso_periodos.id');
                     $this->aplicarJoinCondicional($consulta, 'procesos', 'proceso_periodos.proceso_id', 'procesos.id');
-                    $consulta->where('procesos.descripcion', $value);
+                    $consulta->where('procesos.nombre', $value);
                     break;
                 case 'periodo':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');
@@ -95,13 +137,13 @@ class ComisionMiembroRepository extends EstadoRepository
                 case 'comision':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');
                     $this->aplicarJoinCondicional($consulta, 'comisiones', 'comision_procesos.comision_id', 'comisiones.id');
-                    $consulta->where('comisiones.descripcion', 'like', '%' . $searchTerm . '%');
+                    $consulta->where('comisiones.nombre', 'like', '%' . $searchTerm . '%');
                     break;
                 case 'proceso':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');
                     $this->aplicarJoinCondicional($consulta, 'proceso_periodos', 'comision_procesos.proceso_periodo_id', 'proceso_periodos.id');
                     $this->aplicarJoinCondicional($consulta, 'procesos', 'proceso_periodos.proceso_id', 'procesos.id');
-                    $consulta->where('procesos.descripcion', 'like', '%' . $searchTerm . '%');
+                    $consulta->where('procesos.nombre', 'like', '%' . $searchTerm . '%');
                     break;
                 case 'periodo':
                     $this->aplicarJoinCondicional($consulta, 'comision_procesos', 'comision_miembros.comision_proceso_id', 'comision_procesos.id');

@@ -180,6 +180,9 @@ abstract class BaseRepository
 
         // Aplicar ordenamiento
         $this->aplicarOrdenamiento($query, $sortField, $sortOrder);
+
+        
+        
         // Paginar los resultados
         $paginados = $query->paginate($pageSize, ['*'], 'page', $pageIndex);
         if ($paginados->isEmpty()) {
@@ -220,6 +223,11 @@ abstract class BaseRepository
     protected function unirTabla(Builder $query, string $table, ...$conditions): void
     {
         $query->join($table, ...$conditions);
+
+        // // Si la tabla tiene columna 'estado', aplicar filtro
+        // if ($this->tablaTieneEstado($table)) {
+        //     $query->where("$table.estado", '!=', 'ELIMINADO');
+        // }
     }
 
     /**
@@ -234,5 +242,15 @@ abstract class BaseRepository
         if ($this->necesitaJoin($query, $table)) {
             $this->unirTabla($query, $table, ...$conditions);
         }
+    }
+
+    /**
+     * Verifica si una tabla tiene un campo de estado.
+     * @param string $table
+     * @return bool
+     */
+    protected function tablaTieneEstado(string $table): bool
+    {
+        return in_array($table, $this->tablasConEstado ?? []);
     }
 }

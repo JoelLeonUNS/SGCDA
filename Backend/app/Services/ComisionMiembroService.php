@@ -115,20 +115,25 @@ class ComisionMiembroService
         return $this->comisionMiembroRepository->obtenerTodosConColumnasEspecificas();
     }
 
+    public function obtenerMiembrosPorComision(int $comisionId): Collection
+    {
+        return $this->comisionMiembroRepository->obtenerMiembrosPorComision($comisionId);
+    }
+
     public function obtenerPaginado(array $criteria): LengthAwarePaginator
     {
         $comisionMiembroPag =  $this->comisionMiembroRepository->obtenerPaginado($criteria);
         $comisionMiembroPag->getCollection()->transform(function ($comisionMiembro) {
             return [
                 'id' => $comisionMiembro->id,
-                'comision' => $comisionMiembro->comisionProceso->comision->descripcion,
-                'proceso_periodo' => $comisionMiembro->comisionProceso->procesoPeriodo->proceso->descripcion .
-                    ' ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->correlativo_romano,
+                'comision' => $comisionMiembro->comisionProceso->comision->nombre,
+                'proceso_periodo' => $comisionMiembro->comisionProceso->procesoPeriodo->proceso->nombre .
+                    ' ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionMiembro->comisionProceso->procesoPeriodo->periodo->correlat_romano,
                 'nombres' => $comisionMiembro->miembroCargo->miembro->nombres,
                 'apellidos' => $comisionMiembro->miembroCargo->miembro->apellidos,
-                'cargo' => $comisionMiembro->miembroCargo->cargo->descripcion,
-                'fecha' => $comisionMiembro->comisionProceso->fecha,
-                'hora' => $comisionMiembro->comisionProceso->hora,
+                'cargo' => $comisionMiembro->miembroCargo->cargoEspecialidad->cargo->nombre,
+                'fecha' => $comisionMiembro->horario->fecha,
+                'hora' => $comisionMiembro->horario->hora_inicial . ' - ' . $comisionMiembro->horario->hora_final,
                 'estado' => $comisionMiembro->estado,
             ];
         });

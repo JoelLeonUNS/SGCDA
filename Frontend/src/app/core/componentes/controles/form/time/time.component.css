@@ -1,4 +1,16 @@
 nz-time-picker {
-  margin: 0 8px 12px 0;
+  margin: 0;
   width: 100%;
+}
+
+nz-form-label span {
+  margin-right: 0.5em;
+}
+
+nz-form-label {
+  font-weight: 600;
+}
+
+nz-form-item {
+  margin-bottom: 0;
 }

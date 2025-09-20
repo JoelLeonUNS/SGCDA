@@ -53,6 +53,7 @@ export class TablaPagEditarEstadoNewComponent extends TablaPagNewComponent {
   @Input() modal?:string;
   cargarSwitch: boolean = false;
   idSwitch: number = -1;
+  estado: string | number | boolean = 'ACTIVO';
 
   override filtros: FiltroItem[] = [
     {
@@ -110,6 +111,10 @@ export class TablaPagEditarEstadoNewComponent extends TablaPagNewComponent {
 
   cancelar() {
     this.msgService.info('Se canceló');
+  }
+
+  isEstado(estado:any): boolean {
+    return estado === this.estado;
   }
 
   isArray(value: any):boolean {

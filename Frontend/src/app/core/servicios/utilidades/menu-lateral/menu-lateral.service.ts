@@ -48,6 +48,12 @@ export class MenuLateralService {
         },
         {
           level: 2,
+          title: 'Aulas',
+          icon: 'appstore',
+          routerLink: '/servicios/aulas',
+        },
+        {
+          level: 2,
           title: 'Credenciales',
           icon: 'idcard',
           routerLink: '/servicios/credenciales',

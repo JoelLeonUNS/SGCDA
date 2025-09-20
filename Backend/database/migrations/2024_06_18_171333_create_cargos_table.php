@@ -29,6 +29,8 @@ return new class extends Migration {
         Schema::create('cargos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador único para el cargo');
             $table->string('nombre', 255)->nullable()->comment('Descripcion del cargo');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -51,8 +53,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('cargos', function (Blueprint $table) {
-            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
-                  ->default('ACTIVO')->comment('Estado del cargo: ACTIVO, INACTIVO o ELIMINADO');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                  ->default('ACTIVO')->comment('Estado del cargo: ACTIVO o INACTIVO');
         });
     }
 };

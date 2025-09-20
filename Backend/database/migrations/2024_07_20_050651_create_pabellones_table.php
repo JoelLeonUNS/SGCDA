@@ -30,6 +30,8 @@ return new class extends Migration
         Schema::create('pabellones', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador del pabellón');
             $table->string('nombre', 255)->nullable()->comment('Nombre del pabellón');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -46,7 +48,8 @@ return new class extends Migration
     private function addEstadoColumn(): void
     {
         Schema::table('pabellones', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado del pabellón');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                ->default('ACTIVO')->comment('Estado del pabellón: ACTIVO o INACTIVO');
         });
     }
 };

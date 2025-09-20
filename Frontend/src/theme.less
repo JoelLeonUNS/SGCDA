@@ -6,41 +6,95 @@
 // Override less variables to here
 // View all variables: https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/components/style/themes/default.less
 
-@primary-color: #0f68e6;
+@primary-color: #1d4ed8;
 
-@btn-default-bg: #ffff; // Cambia al color deseado
+// Sobrescribir la variable del color del borde para un contraste sutil
+@border-color-base: #bfbfbf;  // Un gris más oscuro que antes
+@border-color-hover: #a6a6a6;  // Gris más oscuro para el hover
+@border-color-focus: #a6a6a6;  // Igual que el hover para el foco
 
-@border-color-base: #a7a7a7;
-@border-radius-base: 0.4em;
+// @border-width-base: 2px;  // Ancho base del borde
 
-@table-row-hover-bg: #f1f1f1; // Cambia al color deseado
+@border-radius-base: 0.45em;
+/* Cambios en colores principales para tablas en un tema moderno */
 
-// Cambiar color de bordes de tablas
-@table-border-color: #dcdcdc;
+// Color de fondo al pasar el cursor por una fila
+@table-row-hover-bg: #f3f6fa; // Un tono claro y suave
 
-// Cambiar color de fondo de celdas de encabezado
-@table-header-bg: #e5e5e5;
+// Color de los bordes de las tablas
+@table-border-color: #e0e6ed; // Gris claro para una separación sutil
 
+// Color de fondo de las celdas del encabezado
+@table-header-bg: #f4f5f7; // Tono gris claro con un matiz moderno
+
+// Estilo de las columnas con sorters al pasar el cursor
 .ant-table-thead th.ant-table-column-has-sorters.ant-table-cell-fix-right:hover {
-    color: #efefef; // Texto en color blanco
-    background: #707070
+    color: #1d4ed8; // Azul moderno para el texto
+    background: #e3e8f0; // Azul muy claro para resaltar
 }
 
 .ant-table-thead th.ant-table-column-has-sorters:hover {
-    color: #efefef; // Texto en color blanco
-    background: #707070
+    color: #1d4ed8; // Azul moderno para el texto
+    background: #e3e8f0; // Azul muy claro
 }
 
+// Fondo para columnas en estado "sorted"
 .ant-table-thead th.ant-table-column-sort {
-    background: #e8e8e8;
+    background: #e8effa; // Azul sutil para indicar que está ordenado
 }
 
-// Cambiar color de fondo de celdas del cuerpo
-@table-body-bg: #f5f5f5;
+// Color de fondo de las celdas del cuerpo
+@table-body-bg: #ffffff; // Blanco limpio para un diseño minimalista
+
+// Añadir efecto sombra sutil para el header
+.ant-table-thead > tr > th {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombras suaves
+}
+
+// Mejorar el diseño de las celdas del cuerpo
+.ant-table-cell {
+    border-color: #e0e6ed; // Consistencia con los bordes
+}
+
+// Añadir transiciones para interacciones suaves
+.ant-table-cell, .ant-table-thead th {
+    transition: all 0.3s ease-in-out;
+}
+
+// Fondo para filas alternadas
+.ant-table-tbody > tr:nth-child(odd) {
+    background: #f9fafb; // Fondo alternado sutil
+}
+
+.ant-table-tbody > tr:nth-child(even) {
+    background: #ffffff; // Fondo blanco para contraste
+}
+
+// Resaltar fila seleccionada
+.ant-table-tbody > tr.ant-table-row-selected {
+    background: #dbeafe; // Azul claro para la fila seleccionada
+    transition: background 0.3s ease-in-out;
+}
+
+/* Cambios en colores principales para modales en un tema moderno */
 
 // Cambiar color de fondo del encabezado del modal
-@modal-header-bg: #f2f2f2;
-@modal-footer-bg: #f2f2f2;
+@modal-header-bg: #f4f5f7; // Fondo gris claro moderno
+
+// Cambiar color de fondo del pie del modal
+@modal-footer-bg: #f4f5f7; // Consistencia con el encabezado
 
 // Cambiar color de fondo del cuerpo del modal
-@modal-body-bg: #f7f7f7;
+@modal-body-bg: #ffffff; // Blanco limpio para un diseño minimalista
+
+// Añadir sombra al modal para un diseño más elegante
+.ant-modal {
+    // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 16px; // Bordes redondeados modernos
+}
+
+// Cambiar estilo del título del modal
+.ant-modal-title {
+    color: #1f2937; // Tono oscuro para mayor contraste
+    font-weight: 600;
+}

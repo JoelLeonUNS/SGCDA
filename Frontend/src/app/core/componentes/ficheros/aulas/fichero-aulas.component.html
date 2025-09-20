@@ -1,0 +1,52 @@
+<div nz-flex [nzVertical]="false" nzGap="large" nzAlign="start">
+  <app-buscador-tabla
+    [columnasBusqueda]="columnasBusqueda"
+    (columnaBusquedaChange)="buscarColumna($event)"
+    [columnaBusqueda]="columna"
+    (terminoBusquedaChange)="buscarTermino($event)"
+    [terminoBusqueda]="termino"
+    style="width: 100%"
+  />
+  <app-organizador-fichero 
+    [columnasOrden]="columnasOrden"
+    (columnaOrdenChange)="ordenarPor($event)"
+    (ordenChange)="cambiarOrden($event)"
+  />
+</div>
+<div nz-flex [nzVertical]="true">
+  <nz-spin [nzSpinning]="loading" nzTip="Cargando" style="width: 100%">
+    <nz-flex nzGap="large" nzWrap="wrap">
+      @for (item of datos$ | async; track $index) {
+          <app-tarjeta-aulas 
+          [titulo]="'Aula: ' + item.correlativo"
+          [nroMiembros]="item.nro_miembros"
+          [aforo]="item.aforo"
+          [encargado]="item.encargado"
+          [estado]="item.estado"
+          [item]="item"
+          (refrescar)="cargarData()"
+          />
+      }  @empty {
+        <nz-empty nzNotFoundContent="No se encontraron resultados" style="width: 100%"></nz-empty>
+      }
+    </nz-flex>
+    
+  </nz-spin>
+  <nz-flex nzJustify="end" nzAlign="center" style="margin-top: 2em;">
+      <nz-pagination [nzPageIndex]="parametros?.pageIndex??1" [nzPageSize]="parametros?.pageSize??10" [nzTotal]="total" [nzShowTotal]="totalTemplate" nzShowSizeChanger nzShowQuickJumper></nz-pagination>
+  </nz-flex>
+</div>
+<ng-template #totalTemplate>
+  @switch (total) {
+      @case (0) {
+          <span>No se encontró ningún elemento</span>
+      }
+      @case (1) {
+          <span>Se encontró 1 elemento</span>
+      }
+      @default {
+          <span>Se encontraron {{total}} elementos</span>
+      }
+  }
+</ng-template>
+<ng-container #vcrModal></ng-container>

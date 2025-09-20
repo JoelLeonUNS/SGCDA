@@ -20,7 +20,6 @@ import { TablaPagMostrarComponent } from '../tabla-pag-mostrar.component';
 import { BuscadorTablaComponent } from '../../../../buscador-tabla/buscador-tabla.component';
 import { ColumnaBusqueda } from '../../../../../interfaces/utilidades/columna-busqueda.interface';
 import { ComisionMiembroService } from '../../../../../servicios/rest/comision-miembro/comision-miembro.service';
-import { CargadorDatosService } from '../../../../../servicios/utilidades/cargador-datos/cargador-datos.service';
 import { FiltroService } from '../../../../../servicios/filtro/filtro.service';
 import { ComisionMiembroParamsService } from '../../../../../servicios/consultor/comision-miembro/comision-miembro-consultor';
 
@@ -46,6 +45,7 @@ import { ComisionMiembroParamsService } from '../../../../../servicios/consultor
   ],
   templateUrl: '../tabla-pag-mostrar.component.html',
   styleUrl: '../tabla-pag-mostrar.component.css',
+  providers: [FiltroService]
 })
 export class TablaPagMostrarMiembrosComponent extends TablaPagMostrarComponent {
   override columnasBusqueda?: ColumnaBusqueda[] = [

@@ -1,4 +1,11 @@
 .loading-icon {
-    margin-right: 8px;
-  }
-  
+  margin-right: 8px;
+}
+
+nz-form-label span {
+  margin-right: 0.5em;
+}
+
+nz-form-label {
+  font-weight: 600;
+}

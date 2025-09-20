@@ -81,7 +81,7 @@ export class ComisionesProcesoComponent {
   }
 
   abrirModal() {
-    this.modalService.insertarModalCrear(this.vcr, 'modalFormComisionProceso');
+    this.modalService.insertarModalCrear(this.vcr, 'modalPasosComisionProceso');
     this.modalService.obtenerInstancia().onConfirmar.subscribe(() => {
       this.ficheroComisiones.cargarData();
     });

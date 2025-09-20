@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AulaController;
 use App\Http\Controllers\CargoController;
+use App\Http\Controllers\ComisionAulaController;
 use App\Http\Controllers\ComisionController;
 use App\Http\Controllers\ComisionMiembroController;
 use App\Http\Controllers\ComisionProcesoController;
@@ -44,6 +45,10 @@ Route::group(["prefix" => "v1"], function () {
     // Comision Miembro routes
     Route::resource('comision-miembros', ComisionMiembroController::class);
     Route::get('/comision-miembros-pag', [ComisionMiembroController::class, 'obtenerPag']);
+    Route::get('/comision-miembros-activos', [ComisionMiembroController::class, 'obtenerActivos']);
+    Route::get('/comision-miembros-ultimo-id', [ComisionMiembroController::class, 'obtenerUltimoId']);
+    Route::patch('/comision-miembros/{id}/cambiar-estado',[ComisionMiembroController::class, 'cambiarEstado']);
+    Route::get('/comision-miembros/comision/{comisionId}', [ComisionMiembroController::class, 'obtenerMiembrosPorComision']);
     // Cargo routes
     Route::resource('cargos', CargoController::class);
     Route::get('/cargos-pag', [CargoController::class, 'obtenerPag']);
@@ -97,4 +102,11 @@ Route::group(["prefix" => "v1"], function () {
     Route::get('/pabellones-ultimo-id', [PabellonController::class, 'obtenerUltimoId']);
     Route::patch('/pabellones/{id}/cambiar-estado',[PabellonController::class, 'cambiarEstado']);
     Route::get('/pabellones-ultimo', [PabellonController::class, 'obtenerUltimo']);
+    // Comision Aula routes
+    Route::resource('comision-aulas', ComisionAulaController::class);
+    Route::get('/comision-aulas-pag', [ComisionAulaController::class, 'obtenerPag']);
+    Route::get('/comision-aulas-activos', [ComisionAulaController::class, 'obtenerActivos']);
+    Route::get('/comision-aulas-ultimo-id', [ComisionAulaController::class, 'obtenerUltimoId']);
+    Route::patch('/comision-aulas/{id}/cambiar-estado',[ComisionAulaController::class, 'cambiarEstado']);
+    Route::get('/comision-aulas-ultimo', [ComisionAulaController::class, 'obtenerUltimo']);
 });

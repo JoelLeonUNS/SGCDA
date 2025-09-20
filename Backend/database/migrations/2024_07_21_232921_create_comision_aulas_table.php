@@ -20,24 +20,27 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aula_miembros');
+        Schema::dropIfExists('comision_aulas');
     }
 
     private function createTable(): void
     {
-        Schema::create('aula_miembros', function (Blueprint $table) {
+        Schema::create('comision_aulas', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador de la aula miembro');
             $table->unsignedBigInteger('aula_id')->nullable()->comment('Identificador del aula');
-            $table->unsignedBigInteger('comision_miembro_id')->nullable()->comment('Identificador del miembro');
+            $table->unsignedBigInteger('comision_proceso_id')->nullable()->comment('Identificador de la comisión proceso');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('aula_id')->references('id')->on('aulas');
-            $table->foreign('comision_miembro_id')->references('id')->on('comision_miembros');
+            $table->foreign('comision_proceso_id')->references('id')->on('comision_procesos');
         });
     }
 
     private function addEstadoColumn(): void
     {
-        Schema::table('aula_miembros', function (Blueprint $table) {
-            $table->boolean('estado')->default(1)->comment('Estado de la aula miembro');
+        Schema::table('comision_aulas', function (Blueprint $table) {
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                ->default('ACTIVO')->comment('Estado de la comisión aula: ACTIVO o INACTIVO');
         });
     }
 };

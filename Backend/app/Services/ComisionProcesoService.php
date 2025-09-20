@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Repositories\ComisionMiembroRepository;
 use App\Repositories\ComisionProcesoRepository;
+use App\Repositories\HorarioRepository;
 use App\Repositories\ProcesoPeriodoRepository;
 use App\Traits\General\FechaFormatoABarraTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
+
 
 class ComisionProcesoService
 {
@@ -16,12 +19,14 @@ class ComisionProcesoService
     protected ProcesoPeriodoRepository $procesoPeriodoRepository;
     protected ComisionMiembroRepository $comisionMiembroRepository;
     protected ComisionProcesoRepository $comisionProcesoRepository;
+    protected HorarioRepository $horarioRepository;
 
-    public function __construct(ComisionProcesoRepository $comisionProcesoRepository, ComisionMiembroRepository $comisionMiembroRepository, ProcesoPeriodoRepository $procesoPeriodoRepository)
+    public function __construct(ComisionProcesoRepository $comisionProcesoRepository, ComisionMiembroRepository $comisionMiembroRepository, ProcesoPeriodoRepository $procesoPeriodoRepository, HorarioRepository $horarioRepository)
     {
         $this->comisionMiembroRepository = $comisionMiembroRepository;
         $this->comisionProcesoRepository = $comisionProcesoRepository;
         $this->procesoPeriodoRepository = $procesoPeriodoRepository;
+        $this->horarioRepository = $horarioRepository;
     }
 
     /**
@@ -68,16 +73,33 @@ class ComisionProcesoService
      */
     public function create(array $data): Model
     {
+        Log::debug('data: ' . json_encode($data));
         // Desacoplar cada id de miembros_ids
         $miembros_ids = $data['miembros_ids'];
+        // Desacoplar fecha y hora inicial y final
+        $fecha = $data['fecha'];
+        $hora_inicial = $data['hora_inicial'];
+        $hora_final = $data['hora_final'];
+        // Eliminar miembros_ids, fecha y hora del array de datos
         unset($data['miembros_ids']);
+        unset($data['fecha']);
+        unset($data['hora_inicial']);
+        unset($data['hora_final']);
+
         // Crear la comisión proceso
         $comisionProceso = $this->comisionProcesoRepository->crear($data);
+        // Crear el horario
+        $horario = $this->horarioRepository->crear([
+            'fecha' => $fecha,
+            'hora_inicial' => $hora_inicial,
+            'hora_final' => $hora_final,
+        ]);
         // Asignar los miembros a la comisión
         foreach ($miembros_ids as $miembro_id) {
             $this->comisionMiembroRepository->crear([
                 'comision_proceso_id' => $comisionProceso->id,
                 'miembro_cargo_id' => $miembro_id,
+                'horario_id' => $horario->id,
             ]);
         }
         return $comisionProceso;
@@ -192,6 +214,10 @@ class ComisionProcesoService
             foreach ($comisionMiembros as $cm) {
                 $miembrosNombres[] = $cm->miembroCargo->miembro->nombres . ' ' . $cm->miembroCargo->miembro->apellidos;
             }
+            // Los miembros pueden tener el mismo horario o diferente, por lo que se obtiene los diferentes horarios
+            // $horarios = $comisionMiembros->unique('horario_id');
+            // // Si hay más de un horario, se muestra la cantidad de horarios
+
             $nroMiembros = $comisionMiembros->count();
             return [
                 'id' => $comisionProceso->id,
@@ -199,10 +225,10 @@ class ComisionProcesoService
                 'comision' => $comisionProceso->comision->nombre,
                 'nro_miembros' => $nroMiembros,
                 'miembros' => $miembrosNombres,
-                'fecha' => $this->convertirFecha($comisionProceso->fecha),
-                'hora' => $comisionProceso->hora,
+                // 'fecha' => $this->convertirFecha(fecha: $comisionProceso->horario->fecha),
+                // 'hora' => $comisionProceso->horario->hora,
                 'periodo_id' => $comisionProceso->procesoPeriodo->periodo->id,
-                'periodo' => $comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionProceso->procesoPeriodo->periodo->correlativo_romano,
+                'periodo' => $comisionProceso->procesoPeriodo->periodo->anio . ' - ' . $comisionProceso->procesoPeriodo->periodo->correlat_romano,
                 'estado' => $comisionProceso->estado,
             ];
         }); 

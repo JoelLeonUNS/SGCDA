@@ -15,15 +15,15 @@
     <Form nz-form [formGroup]="modalForm" [nzLayout]="'vertical'">
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="12">
-          <app-date  [label]="'Año'" [controlName]="'anio'" [type]="'year'" />
+          <app-date [icon]="'calendar'"  [label]="'Año'" [controlName]="'anio'" [type]="'year'" />
         </div>
         <div nz-col [nzSpan]="12">
-          <app-input [label]="'Correlativo'" [controlName]="'correlativo_romano'" />
+          <app-input [icon]="'field-number'" [label]="'Correlativo'" [controlName]="'correlat_romano'" />
         </div>
       </div>
       <div nz-row [nzGutter]="8">
         <div nz-col [nzSpan]="24">
-          <app-date-range [inicio]="modalForm.get('fecha_inicial')?.value" [fin]="modalForm.get('fecha_finanl')?.value" />
+          <app-date-range [icon]="'calendar'" [inicio]="modalForm.get('fecha_inicial')?.value" [fin]="modalForm.get('fecha_final')?.value" />
         </div>
       </div>
     </Form>

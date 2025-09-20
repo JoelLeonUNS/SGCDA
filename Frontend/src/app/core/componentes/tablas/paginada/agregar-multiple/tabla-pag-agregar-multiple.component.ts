@@ -8,7 +8,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSelectModule, NzSelectSizeType } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { ServicioCrud } from '../../../../servicios/rest/servicio-crud';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
@@ -42,14 +42,18 @@ import { CargadorDatosService } from '../../../../servicios/utilidades/cargador-
   providers: [ModalService],
 })
 export class TablaPagAgregarMultipleComponent extends TablaPagComponent implements OnChanges {
-  @Input() itemsInput = new Map<number, string>(); // Usa Map en lugar de Set
-  @Input() label?:string;
   separador: string = ' ';
   atributte?: string[];
   entidad?: string;
   listaSeleccionada: any[] = [];
+
+  @Input() itemsInput = new Map<number, string>(); // Usa Map en lugar de Set
+  @Input() label?:string;
+  @Input() size: NzSelectSizeType = 'default';
+  
   @Output() itemsInputChange = new EventEmitter<Map<number, string>>();
   @Output() crearChange = new EventEmitter<boolean>();
+
 
   constructor(
     msgService: NzMessageService,

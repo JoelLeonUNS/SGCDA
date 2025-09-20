@@ -10,14 +10,11 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalFormComponent } from '../modal-form.component';
-import { InputComponent } from '../../../controles/form/input/input.component';
 import { PeriodoService } from '../../../../servicios/rest/periodo/periodo.service';
-import { DateRangeComponent } from "../../../controles/form/date-range/date-range.component";
 import { ComisionProcesoService } from '../../../../servicios/rest/comision-proceso/comision-proceso.service';
 import { ComisionService } from '../../../../servicios/rest/comision/comision.service';
 import { SelectComponent } from "../../../controles/form/select/select.component";
 import { DateComponent } from "../../../controles/form/date/date.component";
-import { InputNumberComponent } from "../../../controles/form/input-number/input-number.component";
 import { BuscarAgregarMultipleComponent } from '../../../controles/form/buscar-agregar-multiple/buscar-agregar-multiple.component';
 import { TimeComponent } from "../../../controles/form/time/time.component";
 import { ProcesoService } from '../../../../servicios/rest/proceso/proceso.service';
@@ -53,7 +50,8 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     proceso_periodo_id: [null, [Validators.required]],
     // horario_id: [null],
     fecha: [null, [Validators.required]],
-    hora: [null, [Validators.required]],
+    hora_inicial: [null, [Validators.required]],
+    hora_final: [null, [Validators.required]]
   });
 
   constructor(
@@ -74,7 +72,7 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
       const control = this.modalForm.get(key);
       let valor = data[key];
       if (control && valor) {
-        if (key == 'hora') {
+        if (key.includes('hora')) {
           valor = this.convertirHora(valor);
           console.log(valor);
         }
@@ -87,7 +85,7 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     Object.entries(data).forEach(([key, value]) => {
       const control = this.modalForm.get(key);
       if (control) { 
-        if (key == 'hora') {
+        if (key.includes('hora')) {
           value = this.convertirHora(value);
         }
         control.setValue(value) 
@@ -115,7 +113,8 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
       miembros_ids: [null],
       proceso_periodo_id: [null],
       fecha: [null],
-      hora: [null],
+      hora_inicial: [null],
+      hora_final: [null]
     });
 
     formParseado.setValue(this.modalForm.getRawValue());
@@ -123,8 +122,10 @@ export class ModalFormComisionProcesoComponent extends ModalFormComponent {
     // Parsear la fecha y hora
     let nuevaFecha = this.datePipe.transform(formParseado.get('fecha')?.value, 'yyyy-MM-dd');
     formParseado.get('fecha')?.setValue(nuevaFecha!);
-    let nuevaHora = this.datePipe.transform(formParseado.get('hora')?.value, 'HH:mm');
-    formParseado.get('hora')?.setValue(nuevaHora!);
+    let nuevaHora = this.datePipe.transform(formParseado.get('hora_inicial')?.value, 'HH:mm');
+    formParseado.get('hora_inicial')?.setValue(nuevaHora!);
+    nuevaHora = this.datePipe.transform(formParseado.get('hora_final')?.value, 'HH:mm');
+    formParseado.get('hora_final')?.setValue(nuevaHora!);
   
     return formParseado;
   }

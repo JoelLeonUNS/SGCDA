@@ -75,10 +75,10 @@ class AulaService
      * Cambia el estado de una aula.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->aulaRepository->cambiarEstado($id, $estado);
     }
@@ -111,16 +111,6 @@ class AulaService
     public function obtenerActivos(): Collection
     {
         return $this->aulaRepository->obtenerActivos();
-    }
-
-    /**
-     * Obtiene todos las aulas con selección de columnas específicas.
-     *
-     * @return Collection
-     */
-    public function obtenerConColumnas(): Collection
-    {
-        return $this->aulaRepository->obtenerTodosConColumnasEspecificas();
     }
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator

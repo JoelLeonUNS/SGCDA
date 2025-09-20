@@ -20,14 +20,14 @@
   <span style="margin-left: 1em">Filtros:</span>
   <app-select-item
     [servicio]="comisionService"
-    [atributos]="['descripcion']"
+    [atributos]="['nombre']"
     label="Comisión"
     (itemChange)="filtrar('comision', $event)"
   />
   <nz-divider nzType="vertical"></nz-divider>
   <app-select-item
     [servicio]="procesoService"
-    [atributos]="['descripcion']"
+    [atributos]="['nombre']"
     label="Proceso"
     (itemChange)="filtrar('proceso', $event)"
   />
@@ -35,14 +35,14 @@
   <span style="margin-left: 1em">Rango:</span>
   <app-select-item
     [servicio]="periodoService"
-    [atributos]="['anio', 'correlativo_romano']"
+    [atributos]="['anio', 'correlat_romano']"
     label="Periodo"
     (itemChange)="ranguear('periodo_numerico', 'inicial', $event)"
   />
   <span>-</span>
   <app-select-item
     [servicio]="periodoService"
-    [atributos]="['anio', 'correlativo_romano']"
+    [atributos]="['anio', 'correlat_romano']"
     label="Periodo"
     (itemChange)="ranguear('periodo_numerico', 'final', $event)"
   />

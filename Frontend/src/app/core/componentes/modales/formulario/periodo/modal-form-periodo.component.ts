@@ -39,7 +39,7 @@ export class ModalFormPeriodoComponent extends ModalFormComponent {
   
   protected override modalForm = this.fb.group({
     anio: [new Date(), [Validators.required]],
-    correlativo_romano: ['I', [Validators.required]],
+    correlat_romano: ['I', [Validators.required]],
     fecha_inicial: [null, [Validators.required]],
     fecha_final: [null, [Validators.required]],
   });
@@ -66,7 +66,7 @@ export class ModalFormPeriodoComponent extends ModalFormComponent {
   private crearFormParseado(): FormGroup {
     let formParseado: FormGroup = this.fb.group({
       anio: [null],
-      correlativo_romano: [null],
+      correlat_romano: [null],
       fecha_inicial: [null],
       fecha_final: [null],
     });

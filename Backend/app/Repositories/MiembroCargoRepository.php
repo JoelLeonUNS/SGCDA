@@ -30,7 +30,7 @@ class MiembroCargoRepository extends EstadoRepository
 
     public function obtenerMiembrosSinComision(): Builder
     {
-        // Aquí obtenemos el id del proceso actual, puedes ajustar esto según tu lógica
+        // Aquí obtenemos el id del proceso actual
         $procesoActualId = ProcesoPeriodo::where('estado', Estados::ABIERTO)->orderBy('fecha_final', 'desc')->value('proceso_id');
 
         // Subconsulta para obtener los miembro_cargos ya asignados a comisiones del proceso actual
@@ -103,6 +103,8 @@ class MiembroCargoRepository extends EstadoRepository
                     break;
             }
         }
+        // Soft Deletes automáticamente excluye los registros eliminados
+        // Ya no necesitamos filtrar manualmente por estado eliminado
     }
 
     protected function aplicarBusqueda(Builder $consulta, ?string $searchTerm, ?string $searchColumn): void
@@ -137,15 +139,15 @@ class MiembroCargoRepository extends EstadoRepository
         if ($sortField && $sortOrder) {
             switch ($sortField) {
                 case 'nombres':
-                    $consulta->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')->select('miembro_cargos.*');
+                    $this->aplicarJoinCondicional($consulta, 'miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id');
                     $consulta->orderBy('miembros.nombres', $sortOrder);
                     break;
                 case 'apellidos':
-                    $consulta->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')->select('miembro_cargos.*');
+                    $this->aplicarJoinCondicional($consulta, 'miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id');
                     $consulta->orderBy('miembros.apellidos', $sortOrder);
                     break;
                 case 'cargo':
-                    $consulta->join('cargos', 'miembro_cargos.cargo_id', '=', 'cargos.id')->select('miembro_cargos.*');
+                    $this->aplicarJoinCondicional($consulta, 'cargos', 'miembro_cargos.cargo_id', '=', 'cargos.id');
                     $consulta->orderBy('cargos.descripcion', $sortOrder);
                     break;
                 default:
@@ -155,6 +157,38 @@ class MiembroCargoRepository extends EstadoRepository
         }
     }
 
+    /**
+     * Obtiene registros incluyendo los eliminados
+     */
+    public function obtenerConEliminados(): Builder
+    {
+        return $this->modelo->withTrashed();
+    }
 
+    /**
+     * Obtiene solo los registros eliminados
+     */
+    public function obtenerSoloEliminados(): Builder
+    {
+        return $this->modelo->onlyTrashed();
+    }
+
+    /**
+     * Restaura un registro eliminado
+     */
+    public function restaurar(int $id): bool
+    {
+        $registro = $this->modelo->withTrashed()->find($id);
+        return $registro ? $registro->restore() : false;
+    }
+
+    /**
+     * Elimina permanentemente un registro
+     */
+    public function eliminarPermanentemente(int $id): bool
+    {
+        $registro = $this->modelo->withTrashed()->find($id);
+        return $registro ? $registro->forceDelete() : false;
+    }
 }
 

@@ -54,8 +54,8 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoN
   override modal = 'modalFormMiembro';
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
-      name: 'Id',
-      columnKey: 'id',
+      name: 'Miembro Id',
+      columnKey: 'miembro_id',
       type: 'NUMBER',
     },
     {
@@ -80,10 +80,11 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoN
   override columnas: ColumnItem[] = [
     {
       name: 'Id',
-      attribute: 'id',
+      attribute: 'miembro_id',
       width: '50px',
       showSort: true,
       sortFn: true,
+      sortOrder: 'ascend',
     },
     {
       name: 'Nombres',
@@ -102,10 +103,17 @@ export class TablaPagEditarEstadoMiembrosComponent extends TablaPagEditarEstadoN
       attribute: 'dni',
       showSort: true,
       sortFn: true,
+      width: '90px',
     },
     {
       name: 'Cargo',
       attribute: 'cargo',
+      showSort: true,
+      sortFn: true,
+    },
+    {
+      name: 'Especialidad',
+      attribute: 'especialidad',
       showSort: true,
       sortFn: true,
     },

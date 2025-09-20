@@ -1,5 +1,9 @@
 <nz-form-item>
-  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  <nz-form-label [nzSpan]="null">
+    @if(icon) { <span nz-icon [nzType]="icon" nzTheme="outline"></span> }
+    {{ label }}
+  </nz-form-label>
+  @if(!readonly) {
   <nz-form-control
     [nzSpan]="null"
     nzHasFeedback
@@ -21,4 +25,9 @@
       }
     </ng-template>
   </nz-form-control>
+  } @else {
+    <nz-form-control>
+      <input nz-input [nzSize]="size" [formControlName]="controlName!" nzBorderless="true" [placeholder]="'No se ha registrado un' + prefijo + ' ' + label" readonly style="padding:0;"/>
+    </nz-form-control>
+    }
 </nz-form-item>

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\CargoEspecialidadRepository;
 use App\Repositories\ComisionMiembroRepository;
 use App\Repositories\MiembroCargoRepository;
 use App\Repositories\MiembroRepository;
@@ -13,11 +14,13 @@ class MiembroCargoService
 {
     protected ComisionMiembroRepository $comisionMiembroRepository;
     protected MiembroRepository $miembroRepository;
+    protected CargoEspecialidadRepository $cargoEspecialidadRepository;
     protected MiembroCargoRepository $miembroCargoRepository;
 
-    public function __construct(MiembroCargoRepository $miembroCargoRepository, MiembroRepository $miembroRepository, ComisionMiembroRepository $comisionMiembroRepository)
+    public function __construct(MiembroCargoRepository $miembroCargoRepository, MiembroRepository $miembroRepository, CargoEspecialidadRepository $cargoEspecialidadRepository, ComisionMiembroRepository $comisionMiembroRepository)
     {
         $this->comisionMiembroRepository = $comisionMiembroRepository;
+        $this->cargoEspecialidadRepository = $cargoEspecialidadRepository;
         $this->miembroCargoRepository = $miembroCargoRepository;
         $this->miembroRepository = $miembroRepository;
     }
@@ -54,11 +57,16 @@ class MiembroCargoService
         $miembro = [
             'nombres' => $data['nombres'],
             'apellidos' => $data['apellidos'],
+            'dni' => $data['dni'],
         ];
         $nuevoMiembroId = $this->miembroRepository->insertarObtenerId($miembro);
+        $nuevoCargoEspecialidadId = $this->cargoEspecialidadRepository->insertarBuscarId([
+            'cargo_id' => $data['cargo_id'],
+            'especialidad_id' => $data['especialidad_id'],
+        ]);
         $miembroCargo = [
             'miembro_id' => $nuevoMiembroId,
-            'cargo_id' => $data['cargo_id'],
+            'cargo_especialidad_id' => $nuevoCargoEspecialidadId,
         ];
         return $this->miembroCargoRepository->crear($miembroCargo);
     }
@@ -75,17 +83,25 @@ class MiembroCargoService
         $this->miembroRepository->actualizar($data['miembro_id'], [
             'nombres' => $data['nombres'],
             'apellidos' => $data['apellidos'],
+            'dni' => $data['dni'],
         ]);
-        unset($data['nombres'], $data['apellidos']);
+        unset($data['nombres'], $data['apellidos'], $data['dni']);
+        $cargoEspecialidadId = $this->cargoEspecialidadRepository->insertarBuscarId([
+            'cargo_id' => $data['cargo_id'],
+            'especialidad_id' => $data['especialidad_id'],
+        ]);
         /**
-         * Si el cargo es diferente al actual, se actualiza la fecha de asignación y se crea un nuevo miembro cargo.
+         * Si el cargo es diferente al actual, se crea un nuevo miembro cargo.
          * De lo contrario, se actualiza el miembro cargo.
          * Esto se hace para llevar un registro de la fecha de asignación de un cargo.
          */
-        if ($data['cargo_id'] != $this->miembroCargoRepository->obtenerPorId($id)->cargo_id) {
-            $data['fecha_asignacion'] = now();
+        if ($data['cargo_especialidad_id'] != $cargoEspecialidadId) {
+            $data['cargo_especialidad_id'] = $cargoEspecialidadId;
+            // Crear un nuevo miembro cargo, para eso el anterior debe ser cambiado su estado a Eliminado
+            $this->miembroCargoRepository->cambiarEstado($id, 'ELIMINADO');
             return $this->miembroCargoRepository->crear($data) ? true : false;
         } else {
+            $data['cargo_especialidad_id'] = $cargoEspecialidadId;
             return $this->miembroCargoRepository->actualizar($id, $data);
         }
     }
@@ -105,10 +121,10 @@ class MiembroCargoService
      * Cambia el estado de un miembro cargo.
      *
      * @param int $id
-     * @param int $estado
+     * @param string $estado
      * @return bool
      */
-    public function cambiarEstado(int $id, int $estado): bool
+    public function cambiarEstado(int $id, string $estado): bool
     {
         return $this->miembroCargoRepository->cambiarEstado($id, $estado);
     }
@@ -156,9 +172,12 @@ class MiembroCargoService
                 'miembro_id' => $miembroCargo->miembro_id,
                 'nombres' => $miembroCargo->miembro->nombres,
                 'apellidos' => $miembroCargo->miembro->apellidos,
-                'cargo_id' => $miembroCargo->cargo_id,
-                'cargo' => $miembroCargo->cargo->descripcion ?? 'Sin cargo asignado',
-                'fecha_asignacion' => $miembroCargo->fecha_asignacion,
+                'dni' => $miembroCargo->miembro->dni,
+                'cargo_id' => $miembroCargo->cargoEspecialidad->cargo->id,
+                'cargo' => $miembroCargo->cargoEspecialidad->cargo->nombre,
+                'especialidad_id' => $miembroCargo->cargoEspecialidad->especialidad->id,
+                'especialidad' => $miembroCargo->cargoEspecialidad->especialidad->descripcion,
+                'fecha_asignacion' => $miembroCargo->created_at,
                 'estado' => $miembroCargo->estado,
             ];
         });

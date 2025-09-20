@@ -16,8 +16,8 @@ import { OrganizadorFicheroComponent } from "../../organizador-fichero/organizad
 import { ColumnaBusqueda } from '../../../interfaces/utilidades/columna-busqueda.interface';
 import { TarjetaProcesosComponent } from "../../tarjetas/tarjeta-procesos/tarjeta-procesos.component";
 import { ProcesoPeriodoService } from '../../../servicios/rest/proceso-periodo/proceso-periodo.service';
-import { ProcesoParamsService } from '../../../servicios/consultor/proceso/proceso-consultor.service';
 import { FicheroNewComponent } from '../fichero-new.component';
+import { ProcesoPeriodoParamsService } from '../../../servicios/consultor/proceso-periodo/proceso-periodo-consultor.service';
 
 @Component({
   selector: 'app-fichero-procesos',
@@ -72,7 +72,7 @@ export class FicheroProcesosComponent extends FicheroNewComponent {
   constructor(
     message: NzMessageService,
     servicio: ProcesoPeriodoService,
-    paramsSrvc: ProcesoParamsService,
+    paramsSrvc: ProcesoPeriodoParamsService,
     cdr: ChangeDetectorRef
   ) {
     super(message, servicio, paramsSrvc, cdr);

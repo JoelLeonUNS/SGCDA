@@ -33,6 +33,8 @@ return new class extends Migration {
             $table->integer('periodo_numerico')->nullable()->comment('Correlativo numérico del periodo');
             $table->date('fecha_inicial')->nullable()->comment('Fecha de inicio del periodo');
             $table->date('fecha_final')->nullable()->comment('Fecha de fin del periodo');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -49,8 +51,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('periodos', function (Blueprint $table) {
-            $table->enum('estado', ['ABIERTO', 'CERRADO', 'ELIMINADO'])
-                  ->default('ABIERTO')->comment('Estado del periodo: ABIERTO, CERRADO o ELIMINADO');
+            $table->enum('estado', ['ABIERTO', 'CERRADO'])
+                  ->default('ABIERTO')->comment('Estado del periodo: ABIERTO o CERRADO');
         });
     }
 };

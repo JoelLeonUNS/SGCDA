@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdate\StoreUpdateComisionRequest;
-use App\Http\Requests\Validacion\EstadoBitRequest;
 use App\Http\Requests\Validacion\EstadoEnumRequest;
 use App\Services\ResponseService;
 use App\Services\ComisionService;

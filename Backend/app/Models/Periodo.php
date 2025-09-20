@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Periodo extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'periodos';
-    public $timestamps = false;
 
     protected $fillable = [
         'fecha_inicial',
@@ -21,4 +21,5 @@ class Periodo extends Model
         'estado',
     ];
 
+    protected $dates = ['deleted_at'];
 }

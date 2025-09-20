@@ -181,6 +181,16 @@ class ComisionMiembroController extends Controller
 
     }
 
+    public function obtenerMiembrosPorComision(int $comisionId): JsonResponse
+    {
+        try {
+            $miembros = $this->comisionMiembroService->obtenerMiembrosPorComision($comisionId);
+            return $this->responseService->success($miembros);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener los miembros de la comisión: ' . $e->getMessage());
+        }
+    }
+
     public function obtenerPag(Request $request): JsonResponse
     {
         try {

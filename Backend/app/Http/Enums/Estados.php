@@ -8,7 +8,6 @@ enum Estados: string
     case INACTIVO = 'INACTIVO';
     case ABIERTO = 'ABIERTO';
     case CERRADO = 'CERRADO';
-    case ELIMINADO = 'ELIMINADO';
 
     public static function fromValue(string $value): ?self
     {

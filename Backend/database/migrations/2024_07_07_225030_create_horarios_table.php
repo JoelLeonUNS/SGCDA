@@ -30,14 +30,16 @@ return new class extends Migration
             $table->date('fecha')->nullable()->comment('Fecha del horario');
             $table->time('hora_inicial')->nullable()->comment('Hora de inicio del horario');
             $table->time('hora_final')->nullable()->comment('Hora de fin del horario');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
     private function addEstadoColumn(): void
     {
         Schema::table('horarios', function (Blueprint $table) {
-            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
-                  ->default('ACTIVO')->comment('Estado del horario: ACTIVO, INACTIVO o ELIMINADO');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                  ->default('ACTIVO')->comment('Estado del horario: ACTIVO o INACTIVO');
         });
     }
 };

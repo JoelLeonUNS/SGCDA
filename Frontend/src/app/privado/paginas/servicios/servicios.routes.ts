@@ -3,6 +3,7 @@ import { CredencialesComponent } from './secciones/credenciales/credenciales.com
 import { ComisionesProcesoComponent } from './secciones/comisiones-proceso/comisiones-proceso.component';
 import { PeriodosComponent } from './secciones/periodos/periodos.component';
 import { ProcesosComponent } from './secciones/procesos/procesos.component';
+import { AulasComponent } from './secciones/aulas/aulas.component';
 
 export const SERVICIOS_ROUTES: Routes = [
   {
@@ -24,6 +25,13 @@ export const SERVICIOS_ROUTES: Routes = [
     component: ComisionesProcesoComponent,
     data: {
       breadcrumb: 'Comisiones'
+    }
+  },
+  {
+    path: 'aulas',
+    component: AulasComponent,
+    data: {
+      breadcrumb: 'Aulas'
     }
   },
   {

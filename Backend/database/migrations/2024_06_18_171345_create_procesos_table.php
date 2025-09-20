@@ -29,6 +29,8 @@ return new class extends Migration {
         Schema::create('procesos', function (Blueprint $table) {
             $table->id()->autoIncrement()->comment('Identificador del proceso');
             $table->string('nombre', 255)->nullable()->comment('Nombre del proceso');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -46,8 +48,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('procesos', function (Blueprint $table) {
-            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
-                  ->default('ACTIVO')->comment('Estado del proceso: ACTIVO, INACTIVO o ELIMINADO');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                  ->default('ACTIVO')->comment('Estado del proceso: ACTIVO o INACTIVO');
         });
     }
 };

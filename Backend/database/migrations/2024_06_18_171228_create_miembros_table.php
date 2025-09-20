@@ -31,6 +31,8 @@ return new class extends Migration {
             $table->string('nombres', 100)->nullable()->comment('Nombre del miembro');
             $table->string('apellidos', 100)->nullable()->comment('Apellido del miembro');
             $table->string('dni', '8')->nullable()->unique()->comment('Documento Nacional de Identidad del miembro');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -130,8 +132,8 @@ return new class extends Migration {
     private function addEstadoColumn(): void
     {
         Schema::table('miembros', function (Blueprint $table) {
-            $table->enum('estado', ['ACTIVO', 'INACTIVO', 'ELIMINADO'])
-                  ->default('ACTIVO')->comment('Estado del miembro: ACTIVO, INACTIVO o ELIMINADO');
+            $table->enum('estado', ['ACTIVO', 'INACTIVO'])
+                  ->default('ACTIVO')->comment('Estado del miembro: ACTIVO o INACTIVO');
         });
     }
 

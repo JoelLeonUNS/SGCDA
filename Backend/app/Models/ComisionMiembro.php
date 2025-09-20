@@ -29,4 +29,9 @@ class ComisionMiembro extends Model
         return $this->belongsTo(MiembroCargo::class);
     }
 
+    public function horario(): BelongsTo
+    {
+        return $this->belongsTo(Horario::class);
+    }
+
 }

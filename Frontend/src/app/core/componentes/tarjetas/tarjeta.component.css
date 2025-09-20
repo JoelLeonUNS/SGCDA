@@ -1,6 +1,6 @@
 .tarjeta {
-    min-width: 375px;
-    max-width: 475px;
+    min-width: 325px;
+    max-width: 485px;
     border-color: #6c757d6c;
     transition: box-shadow 0.3s, scale 0.3s;
 }

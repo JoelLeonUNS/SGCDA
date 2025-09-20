@@ -1,10 +1,21 @@
 <nz-form-item>
-  <nz-form-label [nzSpan]="null">{{ label }}</nz-form-label>
+  @if (label) {
+  <nz-form-label [nzSpan]="null">
+    @if(icon) { <span nz-icon [nzType]="icon" nzTheme="outline"></span> }
+    {{ label }}
+  </nz-form-label>
+  }
   <nz-form-control
     [nzSpan]="null"
     nzHasFeedback
-    [nzErrorTip]="'¡Debe seleccionar un' + prefijo + ' ' + label + '!'"
+    [nzErrorTip]="label ? '¡Debe seleccionar un' + prefijo + ' ' + label + '!' : '¡Complete el campo!'"
   >
-  <nz-date-picker [nzMode]="type" [formControlName]="controlName!" [nzFormat]="formato"></nz-date-picker>
+    <nz-date-picker
+      [nzSize]="size"
+      [nzMode]="type"
+      [nzBorderless]="borderless"
+      [formControlName]="controlName!"
+      [nzFormat]="formato"
+    ></nz-date-picker>
   </nz-form-control>
 </nz-form-item>
