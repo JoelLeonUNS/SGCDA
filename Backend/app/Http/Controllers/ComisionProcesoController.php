@@ -59,6 +59,22 @@ class ComisionProcesoController extends Controller
     }
 
     /**
+     * Obtiene una comisión proceso completa con todos sus datos relacionados.
+     *
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function showCompleto(int $id): JsonResponse
+    {
+        try {
+            $comisionProcesoCompleta = $this->comisionProcesoService->getCompletoById($id);
+            return $this->responseService->success($comisionProcesoCompleta);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener la comisión completa: ' . $e->getMessage());
+        }
+    }
+
+    /**
      * Crea un nuevo comision.
      *
      * @param StoreUpdateComisionProcesoRequest $request
@@ -71,6 +87,40 @@ class ComisionProcesoController extends Controller
             return $this->responseService->success($comisionProceso, ResponseAlias::HTTP_CREATED);
         } catch (Exception $e) {
             return $this->responseService->error('Error al crear el comision: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Crea una nueva comisión con horarios y aulas completos.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function storeCompleto(Request $request): JsonResponse
+    {
+        try {
+            $comisionProceso = $this->comisionProcesoService->createCompleto($request->all());
+            return $this->responseService->success($comisionProceso, ResponseAlias::HTTP_CREATED);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al crear la comisión completa: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Actualiza una comisión proceso completa con horarios y aulas.
+     * Nota: La comisión (comision_id) no puede ser modificada para mantener la integridad de datos.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function updateCompleto(Request $request, int $id): JsonResponse
+    {
+        try {
+            $comisionProceso = $this->comisionProcesoService->updateCompleto($id, $request->all());
+            return $this->responseService->success($comisionProceso, ResponseAlias::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al actualizar la comisión completa: ' . $e->getMessage());
         }
     }
 

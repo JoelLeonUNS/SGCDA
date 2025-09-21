@@ -7,6 +7,7 @@ use App\Repositories\MiembroRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SupportCollection;
 
 class ComisionMiembroService
 {
@@ -115,9 +116,22 @@ class ComisionMiembroService
         return $this->comisionMiembroRepository->obtenerTodosConColumnasEspecificas();
     }
 
-    public function obtenerMiembrosPorComision(int $comisionId): Collection
+    public function obtenerMiembrosPorComision(int $comisionId): SupportCollection
     {
-        return $this->comisionMiembroRepository->obtenerMiembrosPorComision($comisionId);
+        $miembros = $this->comisionMiembroRepository->obtenerMiembrosPorComision($comisionId);
+        
+        return $miembros->map(function ($miembro) {
+            return [
+                'id' => $miembro->id,
+                'miembro_id' => $miembro->miembro_id,
+                'cargo_especialidad_id' => $miembro->cargo_especialidad_id,
+                'estado' => $miembro->estado,
+                'nombres' => $miembro->miembro_nombres,
+                'apellidos' => $miembro->miembro_apellidos,
+                'dni' => $miembro->miembro_dni ?? 'Sin DNI',
+                'nombre_completo' => trim(($miembro->miembro_nombres ?? '') . ' ' . ($miembro->miembro_apellidos ?? '')),
+            ];
+        });
     }
 
     public function obtenerPaginado(array $criteria): LengthAwarePaginator

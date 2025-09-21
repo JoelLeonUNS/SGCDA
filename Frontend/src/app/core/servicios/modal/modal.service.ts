@@ -10,10 +10,21 @@ export class ModalService {
 
   insertarModalEditar(vcr: ViewContainerRef, component: string, item?: any):any {
     const instancia = this.crearModal(vcr, component);
-    instancia.mostrarValores(item);
-    instancia.editarPorId(item.id);
-    instancia.titulo = 'Edición ID: ' + item.id
-    instancia.accion = 'EDITAR';
+    
+    // Verificar si es un modal de pasos
+    if (typeof instancia.abrirParaEditar === 'function') {
+      // Es un modal de pasos
+      instancia.abrirParaEditar(item.id);
+      instancia.titulo = 'Editar Comisión ID: ' + item.id;
+      instancia.accion = 'EDITAR';
+    } else {
+      // Es un modal de formulario tradicional
+      instancia.mostrarValores(item);
+      instancia.editarPorId(item.id);
+      instancia.titulo = 'Edición ID: ' + item.id;
+      instancia.accion = 'EDITAR';
+    }
+    
     return instancia;
   }
 
@@ -21,10 +32,21 @@ export class ModalService {
 
   insertarModalCrear(vcr: ViewContainerRef, component: string):any {
     const instancia = this.crearModal(vcr, component);
-    instancia.obtenerProximaId();
-    instancia.titulo = 'Nuevo ID:'
-    instancia.accion = 'CREAR';
-    instancia.proximaIdChange.subscribe((id: number) => { instancia.titulo = 'Nuevo ID: ' + id; });
+    
+    // Verificar si es un modal de pasos
+    if (typeof instancia.abrirParaCrear === 'function') {
+      // Es un modal de pasos
+      instancia.abrirParaCrear();
+      instancia.titulo = 'Nueva Comisión';
+      instancia.accion = 'CREAR';
+    } else {
+      // Es un modal de formulario tradicional
+      instancia.obtenerProximaId();
+      instancia.titulo = 'Nuevo ID:';
+      instancia.accion = 'CREAR';
+      instancia.proximaIdChange.subscribe((id: number) => { instancia.titulo = 'Nuevo ID: ' + id; });
+    }
+    
     return instancia;
   }
 

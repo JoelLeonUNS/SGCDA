@@ -14,6 +14,17 @@ class ComisionAulaRepository extends EstadoRepository
         parent::__construct($modelo);
     }
 
+    /**
+     * Obtiene todas las aulas de una comisión proceso específica.
+     *
+     * @param int $comisionProcesoId
+     * @return Collection
+     */
+    public function obtenerPorComisionProceso(int $comisionProcesoId): Collection
+    {
+        return $this->modelo::where('comision_proceso_id', $comisionProcesoId)->get();
+    }
+
     // public function obtenerMiembros(int $aulaId, int $comisionId): Collection
     // { 
     //     // Se hace un join con la tabla comisionMiembros para obtener los miembros de una comisión

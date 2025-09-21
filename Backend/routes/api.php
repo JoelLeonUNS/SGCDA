@@ -84,11 +84,14 @@ Route::group(["prefix" => "v1"], function () {
     Route::patch('/proceso-periodos/{id}/cambiar-estado',[ProcesoPeriodoController::class, 'cambiarEstado']);
     Route::get('/proceso-periodos-actual', [ProcesoPeriodoController::class, 'obtenerActual']);
     // Comision Proceso routes
-    Route::resource('comision-procesos', ComisionProcesoController::class);
+    Route::post('/comision-procesos-completo', [ComisionProcesoController::class, 'storeCompleto']);
+    Route::get('/comision-procesos-completo/{id}', [ComisionProcesoController::class, 'showCompleto']);
+    Route::put('/comision-procesos-completo/{id}', [ComisionProcesoController::class, 'updateCompleto']);
     Route::get('/comision-procesos-pag', [ComisionProcesoController::class, 'obtenerPag']);
     Route::get('/comision-procesos-activos', [ComisionProcesoController::class, 'obtenerActivos']);
     Route::get('/comision-procesos-ultimo-id', [ComisionProcesoController::class, 'obtenerUltimoId']);
     Route::patch('/comision-procesos/{id}/cambiar-estado',[ComisionProcesoController::class, 'cambiarEstado']);
+    Route::resource('comision-procesos', ComisionProcesoController::class);
     // Aulas routes
     Route::resource('aulas', AulaController::class);
     Route::get('/aulas-pag', [AulaController::class, 'obtenerPag']);

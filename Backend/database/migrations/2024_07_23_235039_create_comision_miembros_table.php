@@ -32,6 +32,8 @@ return new class extends Migration
             $table->unsignedBigInteger('horario_id')->nullable()->comment('Identificador del horario');
             $table->unsignedBigInteger('aula_id')->nullable()->comment('Identificador del aula');
             $table->boolean('es_encargado')->default(0)->comment('Indica si el miembro es el encargado del aula');
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('comision_proceso_id')->references('id')->on('comision_procesos');
             $table->foreign('miembro_cargo_id')->references('id')->on('miembro_cargos');
             $table->foreign('horario_id')->references('id')->on('horarios');

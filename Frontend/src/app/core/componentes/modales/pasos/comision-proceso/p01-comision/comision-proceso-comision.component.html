@@ -12,6 +12,11 @@
         [servicio]="comisionSrvc"
         [accion]="accion"
       />
+      @if(esEdicion) {
+        <small style="color: #8c8c8c; font-style: italic;">
+          La comisión no puede ser modificada en modo edición
+        </small>
+      }
     </div>    
   </div>
   <div nz-row [nzGutter]="8">

@@ -53,6 +53,10 @@ export class ComisionProcesoComisionComponent {
 
   itemsInput = new Map<number, string>();
 
+  get esEdicion(): boolean {
+    return this.accion === 'EDITAR';
+  }
+
   constructor(
     private dataStorageSrvc: DataStorageService,
     private fb: NonNullableFormBuilder,
@@ -76,6 +80,12 @@ export class ComisionProcesoComisionComponent {
     this.itemsInput = this.getItemsInput();
 
     this.setAulasRequeridas(this.form.get('usa_aulas')!.value);
+
+    // Deshabilitar el campo de comisión si está en modo edición
+    if (this.esEdicion) {
+      this.form.get('comision_id')?.disable();
+      this.form.get('comision')?.disable();
+    }
   }
 
   setAulasRequeridas(usa_aulas: boolean) {

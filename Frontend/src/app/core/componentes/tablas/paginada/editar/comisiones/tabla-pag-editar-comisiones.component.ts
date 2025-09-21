@@ -47,7 +47,7 @@ import { CargadorDatosService } from '../../../../../servicios/utilidades/cargad
   styleUrl: '../tabla-pag-editar.component.css',
 })
 export class TablaPagEditarComisionesComponent extends TablaPagEditarComponent {
-  override modal = 'modalFormComisionProceso'
+  override modal = 'modalPasosComisionProceso'
   override columnasBusqueda?: ColumnaBusqueda[] = [
     {
       name: 'Id',

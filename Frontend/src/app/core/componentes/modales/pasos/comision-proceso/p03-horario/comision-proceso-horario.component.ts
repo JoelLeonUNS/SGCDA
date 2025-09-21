@@ -51,9 +51,9 @@ export class ComisionProcesoHorarioComponent {
 
   form:FormGroup<any> = this.fb.group({
     usa_horarios: [true],
-    fecha: [null, Validators.required],
-    hora_inicial: [null, Validators.required],
-    hora_final: [null, Validators.required],
+    fecha: [null],
+    hora_inicial: [null],
+    hora_final: [null],
     horarios: this.fb.array([]),
   });
 
@@ -82,13 +82,43 @@ export class ComisionProcesoHorarioComponent {
     // Cargar datos
     const form = this.dataStorageSrvc.obtenerDeNamespace<any>(this.namespace, 'form', null, this.accion);    
     this.miembros = this.obtenerMiebros();
+    
+    // Cargar horarios preexistentes (para edición)
+    const horariosPreexistentes = this.dataStorageSrvc.obtenerDeNamespace<any>(this.namespace, 'horarios', [], this.accion);
+    if (horariosPreexistentes && horariosPreexistentes.length > 0) {
+      this.cargarHorariosExistentes(horariosPreexistentes);
+    }
+    
     this.parsearFormMiembros(form);
+    
+    // Aplicar validaciones iniciales después de un breve delay para asegurar que todo esté inicializado
+    setTimeout(() => {
+      const usaHorarios = this.form.get('usa_horarios')?.value ?? true;
+      this.cambiarHorarios(usaHorarios);
+    }, 100);
   }
 
   cambiarHorarios(usar: boolean) {
     const controles = ['fecha', 'hora_inicial', 'hora_final'];
+    console.log(`Cambiar horarios: usar=${usar}, controles:`, controles);
+    
     (this.horarios.controls as FormGroup[]).forEach((control) => this.toggleFormValidators(control, controles, !usar));
     this.toggleFormValidators(this.form, controles, usar);
+    
+    // Forzar validación inmediata después del cambio
+    setTimeout(() => {
+      this.form.updateValueAndValidity();
+      console.log('Estado del formulario después del cambio:', this.form.status);
+      console.log('Errores del formulario:', this.form.errors);
+      
+      // Verificar errores en controles individuales
+      controles.forEach(control => {
+        const formControl = this.form.get(control);
+        if (formControl && formControl.errors) {
+          console.log(`Errores en ${control}:`, formControl.errors);
+        }
+      });
+    }, 0);
   }
   
   obtenerMiebros(): any[] {
@@ -132,8 +162,13 @@ export class ComisionProcesoHorarioComponent {
           this.agregarHorario(miembro);
         }
       });
+      
+      // Aplicar validaciones según el tipo de horario seleccionado
+      this.cambiarHorarios(form.usa_horarios);
     } else {
       this.inicializarHorarios();
+      // Aplicar validaciones iniciales
+      this.cambiarHorarios(true); // Por defecto usa horario general
     }
   }
 
@@ -165,6 +200,21 @@ export class ComisionProcesoHorarioComponent {
 
   obtenerHorarioForm(index: number): FormGroup {
     return this.horarios.at(index) as FormGroup;
+  }
+
+  cargarHorariosExistentes(horariosData: any[]): void {
+    this.horarios.clear();
+    
+    horariosData.forEach(horario => {
+      const grupo = this.fb.group({
+        miembro_id: [horario.miembro_id],
+        miembro: [horario.miembro?.nombres + ' ' + horario.miembro?.apellidos || 'Miembro'],
+        fecha: [horario.fecha ? new Date(horario.fecha) : null, Validators.required],
+        hora_inicial: [horario.hora_inicial ? new Date(`1970-01-01T${horario.hora_inicial}`) : null, Validators.required],
+        hora_final: [horario.hora_final ? new Date(`1970-01-01T${horario.hora_final}`) : null, Validators.required]
+      });
+      this.horarios.push(grupo);
+    });
   }
 
   toggleFormValidators(form: FormGroup, controlNames: string[], required: boolean) {

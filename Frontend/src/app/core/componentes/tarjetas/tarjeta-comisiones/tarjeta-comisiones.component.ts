@@ -29,7 +29,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
   styleUrl: '../tarjeta.component.css'
 })
 export class TarjetaComisionesComponent extends TarjetaComponent {
-  override modal: string = 'modalFormComisionProceso';
+  override modal: string = 'modalPasosComisionProceso';
   @Input() titulo?: string;
   @Input() fecha?: string;
   @Input() hora?: string;

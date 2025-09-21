@@ -86,17 +86,42 @@ export class ComisionProcesoMiembroComponent {
       this.isValido.emit(status === 'VALID');
     });
 
-    // Cargar datos
+    // Cargar datos del storage
     this.comisionesTransfer = this.dataStorageSrvc.obtenerDeNamespace<any>(this.namespace, 'comisionesTransfer', this.comisionesTransfer, this.accion);
-    this.cargarData(-1);
+    
+    // Cargar el form del storage
     const form = this.dataStorageSrvc.obtenerDeNamespace<any>(this.namespace, 'form', null, this.accion);
-    if (form) this.form.setValue(form);
+    if (form) {
+      this.form.setValue(form);
+    }
 
+    // Cargar valores específicos del storage para edición
+    const comisionIdActual = this.dataStorageSrvc.obtenerDeNamespace<number>(this.namespace, 'comision_id_actual', -1, this.accion);
+    const tieneMiembros = this.dataStorageSrvc.obtenerDeNamespace<boolean>(this.namespace, 'tiene_miembros', false, this.accion);
+    
+    if (comisionIdActual !== -1) {
+      this.form.get('comision_id_actual')?.setValue(comisionIdActual);
+    }
+    
+    if (tieneMiembros) {
+      this.form.get('tiene_miembros')?.setValue(tieneMiembros);
+    }
+
+    // Cargar datos de la comisión del paso anterior (para creación y edición)
     const formComision = this.dataStorageSrvc.obtenerDeNamespace<any>('comision_proceso_comision', 'form', null, this.accion);
     if (formComision) {
       this.comisionActual = formComision.comision;
       this.form.get('comision_id_actual')?.setValue(formComision.comision_id);
+    }
+
+    // Para edición: si ya tenemos datos de comisión desde precargarDatos
+    const comisionNombre = this.dataStorageSrvc.obtenerDeNamespace<string>(this.namespace, 'comision', '', this.accion);
+    if (comisionNombre && !this.comisionActual) {
+      this.comisionActual = comisionNombre;
     }    
+
+    // Cargar los datos iniciales
+    this.cargarData(-1);
   }
 
   cargarData(id:number) {

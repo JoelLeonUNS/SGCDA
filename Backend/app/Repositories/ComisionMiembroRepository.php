@@ -37,7 +37,8 @@ class ComisionMiembroRepository extends EstadoRepository
         ->value('id');
 
         if (!$procesoActualId) {
-            return MiembroCargo::where('estado', '!=', 'ELIMINADO')->get();
+            Log::error("No hay proceso actual activo");
+            throw new \Exception('No hay ningún proceso activo. Debe existir al menos un proceso con estado ABIERTO en la tabla proceso_periodos.');
         }
 
         // Subconsulta: Obtener los miembro_cargos asignados en el proceso actual
@@ -46,28 +47,55 @@ class ComisionMiembroRepository extends EstadoRepository
             ->pluck('comision_miembros.miembro_cargo_id')
             ->toArray();
 
-        $query = MiembroCargo::where('miembro_cargos.estado', '!=', 'ELIMINADO');
-
         if ($comisionId === -1 || $comisionId === null) {
             // Obtener los miembros que NO están asignados a ninguna comisión del proceso actual
-            return $query
-                ->whereNotIn('miembro_cargos.id', $miembroCargosAsignados)
+            return MiembroCargo::query()
+                ->whereNotIn('miembro_cargos.id', empty($miembroCargosAsignados) ? [0] : $miembroCargosAsignados)
                 ->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')
+                ->select(
+                    'miembro_cargos.*', 
+                    'miembros.nombres as miembro_nombres', 
+                    'miembros.apellidos as miembro_apellidos', 
+                    'miembros.dni as miembro_dni'
+                )
                 ->orderBy('miembros.id', 'asc')
                 ->get();
         } else {
-            // Obtener los miembros de una comisión específica
-            return $query
+            // Obtener los miembros de una comisión específica del proceso actual
+            // Si no hay miembros asignados a ninguna comisión, devolver colección vacía
+            if (empty($miembroCargosAsignados)) {
+                return new Collection();
+            }
+            
+            return MiembroCargo::query()
                 ->join('miembros', 'miembro_cargos.miembro_id', '=', 'miembros.id')
                 ->join('comision_miembros', 'miembro_cargos.id', '=', 'comision_miembros.miembro_cargo_id')
                 ->join('comision_procesos', 'comision_miembros.comision_proceso_id', '=', 'comision_procesos.id')
                 ->where('comision_procesos.comision_id', $comisionId)
+                ->where('comision_procesos.proceso_periodo_id', $procesoActualId)
+                ->select(
+                    'miembro_cargos.*', 
+                    'miembros.nombres as miembro_nombres', 
+                    'miembros.apellidos as miembro_apellidos', 
+                    'miembros.dni as miembro_dni'
+                )
                 ->orderBy('miembros.id', 'asc')
                 ->get();
         }
     }
 
     public function obtenerMiembros(int $comisionProcesoId): Collection
+    {
+        return $this->modelo::where('comision_proceso_id', $comisionProcesoId)->get();
+    }
+
+    /**
+     * Obtiene todos los miembros de una comisión proceso específica.
+     *
+     * @param int $comisionProcesoId
+     * @return Collection
+     */
+    public function obtenerPorComisionProceso(int $comisionProcesoId): Collection
     {
         return $this->modelo::where('comision_proceso_id', $comisionProcesoId)->get();
     }
@@ -165,6 +193,38 @@ class ComisionMiembroRepository extends EstadoRepository
         }
     }
 
+    /**
+     * Obtiene registros incluyendo los eliminados
+     */
+    public function obtenerConEliminados(): Builder
+    {
+        return $this->modelo->withTrashed();
+    }
 
+    /**
+     * Obtiene solo los registros eliminados
+     */
+    public function obtenerSoloEliminados(): Builder
+    {
+        return $this->modelo->onlyTrashed();
+    }
+
+    /**
+     * Restaura un registro eliminado
+     */
+    public function restaurar(int $id): bool
+    {
+        $registro = $this->modelo->withTrashed()->find($id);
+        return $registro ? $registro->restore() : false;
+    }
+
+    /**
+     * Elimina permanentemente un registro
+     */
+    public function eliminarPermanentemente(int $id): bool
+    {
+        $registro = $this->modelo->withTrashed()->find($id);
+        return $registro ? $registro->forceDelete() : false;
+    }
 }
 
