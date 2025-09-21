@@ -204,4 +204,82 @@ class ComisionMiembroController extends Controller
             return $this->responseService->error($e->getMessage(), ResponseAlias::HTTP_BAD_REQUEST);
         }
     }
+
+    /**
+     * Obtiene miembros disponibles para asignar a un aula (no asignados a ningún aula)
+     *
+     * @param int $comisionProcesoId
+     * @return JsonResponse
+     */
+    public function obtenerMiembrosDisponiblesParaAula(int $comisionProcesoId): JsonResponse
+    {
+        try {
+            $miembros = $this->comisionMiembroService->obtenerMiembrosDisponiblesParaAula($comisionProcesoId);
+            return $this->responseService->success($miembros);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener miembros disponibles: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Obtiene miembros asignados a un aula específica
+     *
+     * @param int $aulaId
+     * @return JsonResponse
+     */
+    public function obtenerMiembrosAsignadosAula(int $aulaId): JsonResponse
+    {
+        try {
+            $miembros = $this->comisionMiembroService->obtenerMiembrosAsignadosAula($aulaId);
+            return $this->responseService->success($miembros);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al obtener miembros asignados: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Asigna miembros a un aula específica
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function asignarMiembrosAula(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'aula_id' => 'required|integer|exists:aulas,id',
+                'comision_proceso_id' => 'required|integer|exists:comision_procesos,id',
+                'miembros_ids' => 'required|array',
+                'miembros_ids.*' => 'required|integer|exists:comision_miembros,id',
+                'encargado_id' => 'required|integer|exists:comision_miembros,id'
+            ]);
+
+            $resultado = $this->comisionMiembroService->asignarMiembrosAula($request->all());
+            return $this->responseService->success($resultado);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al asignar miembros al aula: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remueve miembros de un aula específica
+     *
+     * @param Request $request
+     * @param int $aulaId
+     * @return JsonResponse
+     */
+    public function removerMiembrosAula(Request $request, int $aulaId): JsonResponse
+    {
+        try {
+            $request->validate([
+                'miembros_ids' => 'required|array',
+                'miembros_ids.*' => 'integer|exists:comision_miembros,id'
+            ]);
+
+            $resultado = $this->comisionMiembroService->removerMiembrosAula($aulaId, $request->miembros_ids);
+            return $this->responseService->success($resultado);
+        } catch (Exception $e) {
+            return $this->responseService->error('Error al remover miembros del aula: ' . $e->getMessage());
+        }
+    }
 }

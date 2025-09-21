@@ -39,7 +39,7 @@ export class TarjetaComponent {
   constructor(
     private nzContextMenuService: NzContextMenuService,
     private msg: NzMessageService,
-    private modalService: ModalService,
+    protected modalService: ModalService,
     private servicioCrud: ServicioCrud<any>,
   ) { }
 

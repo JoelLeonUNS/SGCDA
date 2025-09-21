@@ -49,6 +49,11 @@ Route::group(["prefix" => "v1"], function () {
     Route::get('/comision-miembros-ultimo-id', [ComisionMiembroController::class, 'obtenerUltimoId']);
     Route::patch('/comision-miembros/{id}/cambiar-estado',[ComisionMiembroController::class, 'cambiarEstado']);
     Route::get('/comision-miembros/comision/{comisionId}', [ComisionMiembroController::class, 'obtenerMiembrosPorComision']);
+    // Rutas para asignación de miembros a aulas
+    Route::get('/comision-miembros/disponibles-aula/{comisionProcesoId}', [ComisionMiembroController::class, 'obtenerMiembrosDisponiblesParaAula']);
+    Route::get('/comision-miembros/asignados-aula/{aulaId}', [ComisionMiembroController::class, 'obtenerMiembrosAsignadosAula']);
+    Route::post('/comision-miembros/asignar-aula', [ComisionMiembroController::class, 'asignarMiembrosAula']);
+    Route::put('/comision-miembros/remover-aula/{aulaId}', [ComisionMiembroController::class, 'removerMiembrosAula']);
     // Cargo routes
     Route::resource('cargos', CargoController::class);
     Route::get('/cargos-pag', [CargoController::class, 'obtenerPag']);

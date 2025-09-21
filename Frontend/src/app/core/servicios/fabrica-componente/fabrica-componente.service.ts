@@ -13,7 +13,7 @@ import { ModalFormPabellonComponent } from '../../componentes/modales/formulario
 import { FiltradorTablaComponent } from '../../componentes/filtrador-tabla/filtrador-tabla.component';
 import { ModalPasosComisionProcesoComponent } from '../../componentes/modales/pasos/comision-proceso/modal-pasos-comision-proceso.component';
 import { ModalTablaAulaComponent } from '../../componentes/modales/tabla/aula/modal-tabla-aula.component';
-
+import { ModalAsignacionAulaMiembrosComponent } from '../../componentes/modales/asignacion/aula-miembros/modal-asignacion-aula-miembros.component';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +28,7 @@ export class FabricaComponenteService {
     // Aula
     modalFormAula: ModalFormAulaComponent,
     modalTablaAula: ModalTablaAulaComponent,
+    modalAsignacionAulaMiembros: ModalAsignacionAulaMiembrosComponent,
     // Especialidad
     modalFormEspecialidad: ModalFormEspecialidadComponent,
     // Cargo

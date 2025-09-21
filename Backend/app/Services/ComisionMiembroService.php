@@ -163,4 +163,49 @@ class ComisionMiembroService
             ];
         });
     }
+
+    /**
+     * Obtiene miembros de una comisión que no están asignados a ningún aula
+     *
+     * @param int $comisionProcesoId
+     * @return SupportCollection
+     */
+    public function obtenerMiembrosDisponiblesParaAula(int $comisionProcesoId): SupportCollection
+    {
+        return $this->comisionMiembroRepository->obtenerMiembrosDisponiblesParaAula($comisionProcesoId);
+    }
+
+    /**
+     * Obtiene miembros asignados a un aula específica
+     *
+     * @param int $aulaId
+     * @return SupportCollection
+     */
+    public function obtenerMiembrosAsignadosAula(int $aulaId): SupportCollection
+    {
+        return $this->comisionMiembroRepository->obtenerMiembrosAsignadosAula($aulaId);
+    }
+
+    /**
+     * Asigna miembros a un aula específica
+     *
+     * @param array $data
+     * @return array
+     */
+    public function asignarMiembrosAula(array $data): array
+    {
+        return $this->comisionMiembroRepository->asignarMiembrosAula($data);
+    }
+
+    /**
+     * Remueve miembros de un aula específica
+     *
+     * @param int $aulaId
+     * @param array $miembrosIds
+     * @return array
+     */
+    public function removerMiembrosAula(int $aulaId, array $miembrosIds): array
+    {
+        return $this->comisionMiembroRepository->removerMiembrosAula($aulaId, $miembrosIds);
+    }
 }

@@ -117,18 +117,32 @@ class ComisionAulaService
     {
         $comisionAulaPag = $this->comisionAulaRepository->obtenerPaginado($criteria);
         $comisionAulaParse = $comisionAulaPag->getCollection()->map(function ($comisionAula) {
+            // Cargar relaciones necesarias
+            $comisionAula->load([
+                'aula.pabellon',
+                'comisionProceso'
+            ]);
+
+            // Obtener el primer miembro de la comisión para este aula
+            $comisionMiembro = $comisionAula->comisionMiembros()->with([
+                'miembroCargo.miembro',
+                'miembroCargo.cargoEspecialidad.cargo'
+            ])->first();
+
             return [
                 'id' => $comisionAula->id,
-                'pabellon_id' => $comisionAula->aula->pabellon_id,
-                'pabellon' => $comisionAula->aula->pabellon->nombre,
-                'piso' => $comisionAula->aula->piso,
-                'correlativo' => $comisionAula->aula->correlativo,
-                'aforo' => $comisionAula->aula->aforo,
-                'nombre' => $comisionAula->comisionMiembro->miembroCargo->miembro->nombre,
-                'apellido' => $comisionAula->comisionMiembro->miembroCargo->miembro->apellido,
-                'dni' => $comisionAula->comisionMiembro->miembroCargo->miembro->dni,
-                'cargo' => $comisionAula->comisionMiembro->miembroCargo->cargoEspecialidad->cargo->nombre,
-                'es_encargado' => $comisionAula->es_encargado,
+                'comision_proceso_id' => $comisionAula->comision_proceso_id,
+                'aula_id' => $comisionAula->aula_id,
+                'pabellon_id' => $comisionAula->aula->pabellon_id ?? null,
+                'pabellon' => $comisionAula->aula->pabellon->nombre ?? null,
+                'piso' => $comisionAula->aula->piso ?? null,
+                'correlativo' => $comisionAula->aula->correlativo ?? null,
+                'aforo' => $comisionAula->aula->aforo ?? null,
+                'nombre' => $comisionMiembro?->miembroCargo?->miembro?->nombre ?? null,
+                'apellido' => $comisionMiembro?->miembroCargo?->miembro?->apellido ?? null,
+                'dni' => $comisionMiembro?->miembroCargo?->miembro?->dni ?? null,
+                'cargo' => $comisionMiembro?->miembroCargo?->cargoEspecialidad?->cargo?->nombre ?? null,
+                'es_encargado' => $comisionMiembro?->es_encargado ?? false,
                 'estado' => $comisionAula->estado,
             ];
         });

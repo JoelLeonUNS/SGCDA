@@ -1,0 +1,145 @@
+<nz-modal
+  [(nzVisible)]="isVisible"
+  nzDraggable
+  nzCentered
+  nzMaskClosable="false"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+  [nzWidth]="900"
+  (nzOnCancel)="cancelar()">
+  
+  <ng-template #modalTitle>
+    <span nz-icon nzType="team" nzTheme="outline"></span>
+    <span style="margin-left: 8px;">{{ titulo }}</span>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div class="asignacion-container">
+      <!-- Información del aula -->
+      <nz-alert 
+        nzType="info" 
+        nzMessage="Asigne miembros de la comisión al aula seleccionada y designe un encargado."
+        nzShowIcon 
+        style="margin-bottom: 16px;">
+      </nz-alert>
+
+      <nz-card nzTitle="Información del Aula" nzSize="small" style="margin-bottom: 16px;">
+        <div nz-row nzGutter="16">
+          <div nz-col nzSpan="6">
+            <strong>Aula:</strong> {{ aulaData?.correlativo }}
+          </div>
+          <div nz-col nzSpan="6">
+            <strong>Piso:</strong> {{ aulaData?.piso }}
+          </div>
+          <div nz-col nzSpan="6">
+            <strong>Aforo:</strong> {{ aulaData?.aforo }}
+          </div>
+          <div nz-col nzSpan="6">
+            <strong>Pabellón:</strong> {{ aulaData?.pabellon }}
+          </div>
+        </div>
+      </nz-card>
+
+      <!-- Transfer de miembros con estilo similar -->
+      <div class="transfer-section">
+        <nz-spin [nzSpinning]="loading" nzTip="Cargando miembros...">
+          <nz-transfer
+            [nzDataSource]="getAllMiembros()"
+            [nzTitles]="['Miembros Disponibles', 'Miembros Asignados al Aula']"
+            [nzTargetKeys]="getTargetKeys()"
+            [nzListStyle]="{ 'width.px': 350, 'height.px': 350 }"
+            [nzShowSearch]="true"
+            nzSearchPlaceholder="Buscar miembro..."
+            [nzOperations]="['Asignar', 'Quitar']"
+            (nzChange)="onTransferChange($event)">
+            
+            <ng-template #renderItem let-item>
+              <div class="transfer-item">
+                <div class="member-info">
+                  <div class="member-header">
+                    <span class="member-name">{{ item.title }}</span>
+                    <nz-tag *ngIf="item.id === encargadoId" nzColor="gold">
+                      <span nz-icon nzType="crown"></span>
+                      Encargado
+                    </nz-tag>
+                  </div>
+                  <div class="member-details">
+                    <nz-tag nzColor="blue" nzSize="small">{{ item.cargo }}</nz-tag>
+                    <span class="dni">DNI: {{ item.dni || 'Sin DNI' }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </nz-transfer>
+        </nz-spin>
+      </div>
+
+      <!-- Selección de encargado -->
+      <div class="encargado-section" *ngIf="miembrosAsignados.length > 0">
+        <nz-card nzTitle="Designar Encargado del Aula" nzSize="small">
+          <form [formGroup]="asignacionForm" nz-form>
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Debe seleccionar un encargado del aula">
+                <nz-radio-group formControlName="encargado_id" (ngModelChange)="onEncargadoChange($event)">
+                  <div class="radio-grid">
+                    <label 
+                      nz-radio 
+                      [nzValue]="miembro.id" 
+                      *ngFor="let miembro of miembrosAsignados"
+                      class="encargado-option">
+                      <div class="encargado-content">
+                        <div class="encargado-info">
+                          <span class="encargado-name">{{ miembro.nombre }} {{ miembro.apellido }}</span>
+                          <span class="encargado-cargo">{{ miembro.cargo }}</span>
+                        </div>
+                        <span nz-icon nzType="crown" *ngIf="miembro.id === encargadoId" class="crown-icon"></span>
+                      </div>
+                    </label>
+                  </div>
+                </nz-radio-group>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </nz-card>
+      </div>
+
+      <!-- Resumen -->
+      <div class="resumen-section" *ngIf="miembrosAsignados.length > 0">
+        <nz-card nzTitle="Resumen de Asignación" nzSize="small">
+          <div class="resumen-stats">
+            <div class="stat-item">
+              <div class="stat-value" style="color: #1890ff;">{{ miembrosAsignados.length }}</div>
+              <div class="stat-title">Miembros Asignados</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" [style.color]="encargadoId ? '#52c41a' : '#f5222d'">{{ encargadoId ? 1 : 0 }}</div>
+              <div class="stat-title">Encargado Designado</div>
+            </div>
+          </div>
+          <p *ngIf="encargadoId" class="encargado-seleccionado">
+            <strong>Encargado seleccionado:</strong> 
+            <span class="encargado-highlight">{{ getEncargadoNombre() }}</span>
+          </p>
+        </nz-card>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" nzSize="large" (click)="cancelar()" [disabled]="loading">
+      <span nz-icon nzType="close"></span>
+      Cancelar
+    </button>
+    <button 
+      nz-button 
+      nzType="primary" 
+      nzSize="large"
+      (click)="confirmar()" 
+      [nzLoading]="loading"
+      [disabled]="miembrosAsignados.length === 0 || !encargadoId">
+      <span nz-icon nzType="check"></span>
+      Confirmar Asignación
+    </button>
+  </ng-template>
+</nz-modal>

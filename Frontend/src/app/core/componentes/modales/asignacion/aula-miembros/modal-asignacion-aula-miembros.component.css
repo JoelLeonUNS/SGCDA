@@ -1,0 +1,193 @@
+.asignacion-container {
+  padding: 16px;
+}
+
+.transfer-section {
+  margin: 20px 0;
+}
+
+.transfer-item {
+  padding: 8px;
+  width: 100%;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-name {
+  font-weight: 500;
+  color: #262626;
+}
+
+.member-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.dni {
+  color: #8c8c8c;
+}
+
+.encargado-section {
+  margin: 20px 0;
+}
+
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.encargado-option {
+  display: flex !important;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  background: #fafafa;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.encargado-option:hover {
+  border-color: #1890ff;
+  background: #f0f8ff;
+}
+
+.encargado-option.ant-radio-wrapper-checked {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.encargado-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-left: 8px;
+}
+
+.encargado-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.encargado-name {
+  font-weight: 500;
+  color: #262626;
+  margin-bottom: 2px;
+}
+
+.encargado-cargo {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.crown-icon {
+  color: #faad14;
+  font-size: 16px;
+}
+
+.resumen-section {
+  margin: 20px 0;
+}
+
+.resumen-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.stat-title {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin-top: 4px;
+}
+
+.encargado-seleccionado {
+  padding: 12px;
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 6px;
+  margin: 0;
+}
+
+.encargado-highlight {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+/* Transfer customization */
+::ng-deep .ant-transfer-list {
+  border-radius: 6px;
+}
+
+::ng-deep .ant-transfer-list-header {
+  background: #fafafa;
+  border-radius: 6px 6px 0 0;
+}
+
+::ng-deep .ant-transfer-operation {
+  margin: 0 16px;
+}
+
+::ng-deep .ant-btn {
+  border-radius: 6px;
+}
+
+/* Modal footer styling */
+::ng-deep .ant-modal-footer {
+  border-top: 1px solid #f0f0f0;
+  padding: 16px 24px;
+  text-align: right;
+}
+
+::ng-deep .ant-modal-footer .ant-btn {
+  margin-left: 8px;
+}
+
+/* Card styling */
+::ng-deep .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+::ng-deep .ant-card-head {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+::ng-deep .ant-card-head-title {
+  font-weight: 500;
+}
+
+/* Alert styling */
+::ng-deep .ant-alert {
+  border-radius: 6px;
+}
+
+/* Tag styling */
+::ng-deep .ant-tag {
+  border-radius: 4px;
+}

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -11,6 +11,7 @@ import { TarjetaComponent } from '../tarjeta.component';
 import { ComisionProcesoService } from '../../../servicios/rest/comision-proceso/comision-proceso.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { ModalAsignacionAulaMiembrosComponent } from '../../modales/asignacion/aula-miembros/modal-asignacion-aula-miembros.component';
 
 @Component({
   selector: 'app-tarjeta-aulas',
@@ -37,6 +38,8 @@ export class TarjetaAulasComponent extends TarjetaComponent {
   @Input() piso?: number;
   @Input() nroMiembros?: number;
 
+  @ViewChild('vcrModal', { read: ViewContainerRef }) override vcr!: ViewContainerRef;
+
   constructor(
     nzContextMenuService: NzContextMenuService,
     msg: NzMessageService,
@@ -44,6 +47,16 @@ export class TarjetaAulasComponent extends TarjetaComponent {
     servicioCrud: ComisionProcesoService
   ) {
     super(nzContextMenuService, msg, modalService, servicioCrud);
+  }
+
+  // Override del método editar para usar el modal de asignación
+  override editar(event: Event) {
+    event.stopPropagation();
+    const modalAsignacion = this.modalService.crearModal(this.vcr, 'modalAsignacionAulaMiembros') as ModalAsignacionAulaMiembrosComponent;
+    modalAsignacion.mostrar(this.item);
+    modalAsignacion.onConfirmar.subscribe(() => {
+      this.refrescar.emit(true);
+    });
   }
 
 }

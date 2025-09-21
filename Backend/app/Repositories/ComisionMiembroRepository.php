@@ -226,5 +226,131 @@ class ComisionMiembroRepository extends EstadoRepository
         $registro = $this->modelo->withTrashed()->find($id);
         return $registro ? $registro->forceDelete() : false;
     }
+
+    /**
+     * Obtiene miembros de una comisión que no están asignados a ningún aula
+     *
+     * @param int $comisionProcesoId
+     * @return \Illuminate\Support\Collection
+     */
+    public function obtenerMiembrosDisponiblesParaAula(int $comisionProcesoId): \Illuminate\Support\Collection
+    {
+        return $this->modelo::with([
+            'miembroCargo.miembro',
+            'miembroCargo.cargoEspecialidad.cargo'
+        ])
+        ->where('comision_proceso_id', $comisionProcesoId)
+        ->whereNull('aula_id') // Solo miembros sin aula asignada
+        ->where('estado', 1) // Solo miembros activos
+        ->get()
+        ->map(function ($comisionMiembro) {
+            return [
+                'id' => $comisionMiembro->id,
+                'nombre' => $comisionMiembro->miembroCargo->miembro->nombres ?? '',
+                'apellido' => $comisionMiembro->miembroCargo->miembro->apellidos ?? '',
+                'dni' => $comisionMiembro->miembroCargo->miembro->dni ?? '',
+                'cargo' => $comisionMiembro->miembroCargo->cargoEspecialidad->cargo->nombre ?? '',
+                'miembro_cargo_id' => $comisionMiembro->miembro_cargo_id,
+                'es_encargado' => false
+            ];
+        });
+    }
+
+    /**
+     * Obtiene miembros asignados a un aula específica
+     *
+     * @param int $aulaId
+     * @return \Illuminate\Support\Collection
+     */
+    public function obtenerMiembrosAsignadosAula(int $aulaId): \Illuminate\Support\Collection
+    {
+        return $this->modelo::with([
+            'miembroCargo.miembro',
+            'miembroCargo.cargoEspecialidad.cargo'
+        ])
+        ->where('aula_id', $aulaId)
+        ->where('estado', 1) // Solo miembros activos
+        ->get()
+        ->map(function ($comisionMiembro) {
+            return [
+                'id' => $comisionMiembro->id,
+                'nombre' => $comisionMiembro->miembroCargo->miembro->nombres ?? '',
+                'apellido' => $comisionMiembro->miembroCargo->miembro->apellidos ?? '',
+                'dni' => $comisionMiembro->miembroCargo->miembro->dni ?? '',
+                'cargo' => $comisionMiembro->miembroCargo->cargoEspecialidad->cargo->nombre ?? '',
+                'miembro_cargo_id' => $comisionMiembro->miembro_cargo_id,
+                'es_encargado' => $comisionMiembro->es_encargado
+            ];
+        });
+    }
+
+    /**
+     * Asigna miembros a un aula específica
+     *
+     * @param array $data
+     * @return array
+     */
+    public function asignarMiembrosAula(array $data): array
+    {
+        $aulaId = $data['aula_id'];
+        $comisionProcesoId = $data['comision_proceso_id'];
+        $miembrosIds = $data['miembros_ids'];
+        $encargadoId = $data['encargado_id'];
+
+        // Primero, remover la asignación de aula de todos los miembros de esta comisión proceso para esta aula
+        $this->modelo::where('comision_proceso_id', $comisionProcesoId)
+            ->where('aula_id', $aulaId)
+            ->update([
+                'aula_id' => null,
+                'es_encargado' => false
+            ]);
+
+        $asignados = 0;
+        foreach ($miembrosIds as $miembroId) {
+            // Determinar si este miembro es el encargado
+            $esEncargado = ($miembroId == $encargadoId);
+
+            // Asignar el miembro al aula
+            $updated = $this->modelo::where('id', $miembroId)
+                ->where('comision_proceso_id', $comisionProcesoId)
+                ->update([
+                    'aula_id' => $aulaId,
+                    'es_encargado' => $esEncargado
+                ]);
+
+            if ($updated) {
+                $asignados++;
+            }
+        }
+
+        return [
+            'mensaje' => "Se asignaron {$asignados} miembros al aula",
+            'asignados' => $asignados,
+            'aula_id' => $aulaId,
+            'encargado_id' => $encargadoId
+        ];
+    }
+
+    /**
+     * Remueve miembros de un aula específica
+     *
+     * @param int $aulaId
+     * @param array $miembrosIds
+     * @return array
+     */
+    public function removerMiembrosAula(int $aulaId, array $miembrosIds): array
+    {
+        $removidos = $this->modelo::whereIn('id', $miembrosIds)
+            ->where('aula_id', $aulaId)
+            ->update([
+                'aula_id' => null,
+                'es_encargado' => false
+            ]);
+
+        return [
+            'mensaje' => "Se removieron {$removidos} miembros del aula",
+            'removidos' => $removidos
+        ];
+    }
 }
 

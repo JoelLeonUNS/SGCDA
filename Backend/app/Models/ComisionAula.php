@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComisionAula extends Model
@@ -29,5 +30,11 @@ class ComisionAula extends Model
     public function comisionProceso(): BelongsTo
     {
         return $this->belongsTo(ComisionProceso::class);
+    }
+
+    public function comisionMiembros()
+    {
+        return ComisionMiembro::where('comision_proceso_id', $this->comision_proceso_id)
+                              ->where('aula_id', $this->aula_id);
     }
 }
